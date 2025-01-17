@@ -5,7 +5,9 @@ class Array
   # Combines filter_map and join operations
   #
   # @param join_with [String] The delimiter to join elements with (defaults to empty string)
+  #
   # @yield [Object] Block that filters and transforms array elements
+  #
   # @return [String] Joined string of filtered and transformed elements
   #
   # @example

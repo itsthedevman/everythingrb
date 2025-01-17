@@ -21,35 +21,49 @@ class OpenStruct
     end
   end
 
-  #
-  # Adds enumeration
-  #
-  # @yield [String, Object] Block receives key (as string) and value
-  #
-  # @return [Enumerator, self] Returns self, or enumerator if block is nil
-  #
-  #
-  def each(&block)
-    return @table.each if block.nil?
-
-    @table.each do |key, value|
-      yield(key, value)
-    end
-
-    self
-  end
+  alias_method :each, :each_pair
 
   #
   # Maps over OpenStruct entries and returns an array
   #
   # @return [Enumerator, Array] Returns a new array, or enumerator if block is nil
   #
-  def map(&block)
-    return @table.map if block.blank?
+  def map(&)
+    @table.map(&)
+  end
 
-    @table.map do |key, value|
-      yield(key, value)
-    end
+  #
+  # Maps over OpenStruct entries and returns an array without nil values
+  #
+  # @return [Enumerator, Array] Returns a new array, or enumerator if block is nil
+  #
+  def filter_map(&block)
+    return enum_for(:filter_map) unless block
+
+    map(&block).compact
+  end
+
+  #
+  # Combines filter_map and join operations
+  #
+  # @param join_with [String] The delimiter to join elements with (defaults to empty string)
+  #
+  # @yield [Object] Block that filters and transforms hash elements
+  #
+  # @return [String] Joined string of filtered and transformed elements
+  #
+  # @example
+  #   [1, 2, nil, 3].join_map(" ") { |n| n&.to_s if n&.odd? }
+  #   # => "1 3"
+  #
+  # @example
+  #   [1, 2, nil, 3].join_map(", ")
+  #   # => "1, 2, 3"
+  #
+  def join_map(join_with = "", &block)
+    block = ->(i) { i } if block.nil?
+
+    filter_map(&block).join(join_with)
   end
 
   #
@@ -57,30 +71,5 @@ class OpenStruct
   #
   def to_ostruct
     self
-  end
-
-  #
-  # Converts OpenStruct to hash recursively
-  #
-  # @return [Hash]
-  #
-  def to_h
-    @table.each_with_object({}) do |(key, value), hash|
-      key =
-        if key.respond_to?(:to_h)
-          key.to_h
-        else
-          key
-        end
-
-      value =
-        if value.respond_to?(:to_h)
-          value.to_h
-        else
-          value
-        end
-
-      hash[key] = value
-    end
   end
 end
