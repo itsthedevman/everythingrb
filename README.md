@@ -1,5 +1,9 @@
 # EverythingRB
 
+[![Gem Version](https://badge.fury.io/rb/everythingrb.svg)](https://badge.fury.io/rb/everythingrb)
+[![Tests](https://github.com/itsthedevman/everythingrb/actions/workflows/main.yml/badge.svg)](https://github.com/everythingrb/sortsmith/actions/workflows/main.yml)
+![Ruby Version](https://img.shields.io/badge/ruby-3.3.6-ruby)
+
 Useful extensions to Ruby core classes that you never knew you needed until now.
 
 ## Installation
