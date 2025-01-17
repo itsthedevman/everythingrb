@@ -2,8 +2,7 @@
 
 class Array
   #
-  # Enhances Array class with a join_map method that combines filter_map and join operations.
-  # Performs a join if no block is provided
+  # Combines filter_map and join operations
   #
   # @param join_with [String] The delimiter to join elements with (defaults to empty string)
   # @yield [Object] Block that filters and transforms array elements
@@ -18,7 +17,7 @@ class Array
   #   # => "1, 2, 3"
   #
   def join_map(join_with = "", &block)
-    return compact.join(join_with) if block.nil?
+    block = ->(i) { i } if block.nil?
 
     filter_map(&block).join(join_with)
   end
