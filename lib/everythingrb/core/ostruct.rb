@@ -53,15 +53,17 @@ class OpenStruct
   # @return [String] Joined string of filtered and transformed elements
   #
   # @example
-  #   [1, 2, nil, 3].join_map(" ") { |n| n&.to_s if n&.odd? }
-  #   # => "1 3"
+  #   object = OpenStruct.new(a: 1, b: nil, c: 3)
+  #   object.join_map(" ") { |k, v| "#{k}-#{v}" if v }
+  #   # => "a-1 c-3"
   #
   # @example
-  #   [1, 2, nil, 3].join_map(", ")
-  #   # => "1, 2, 3"
+  #   object = OpenStruct.new(a: 1, b: nil, c: 3)
+  #   object.join_map(", ")
+  #   # => "a, 1, b, c, 3"
   #
   def join_map(join_with = "", &block)
-    block = ->(i) { i } if block.nil?
+    block = ->(kv_pair) { kv_pair.compact } if block.nil?
 
     filter_map(&block).join(join_with)
   end
