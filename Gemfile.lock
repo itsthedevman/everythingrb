@@ -11,6 +11,7 @@ GEM
     language_server-protocol (3.17.0.3)
     lint_roller (1.1.0)
     minitest (5.25.4)
+    ostruct (0.6.1)
     parallel (1.26.3)
     parser (3.3.7.0)
       ast (~> 2.4.1)
@@ -57,7 +58,9 @@ PLATFORMS
 
 DEPENDENCIES
   everythingrb!
+  json (~> 2.9)
   minitest (~> 5.16)
+  ostruct (~> 0.6.1)
   rake (~> 13.0)
   standard (~> 1.3)
 

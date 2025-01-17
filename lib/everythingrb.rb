@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "ostruct"
+require "json"
+
 require_relative "everythingrb/version"
 require_relative "everythingrb/core/array"
 require_relative "everythingrb/core/hash"
