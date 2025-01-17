@@ -46,26 +46,26 @@ class String
   # @return [Hash] Deeply parsed hash
   #
   def to_deep_h
-    transformer = lambda do |object|
+    recursive_convert = lambda do |object|
       case object
       when Array
-        object.map { |v| transformer.call(v) }
+        object.map { |v| recursive_convert.call(v) }
       when String
         result = object.to_deep_h
 
-        case result
-        when Array, Hash
-          transformer.call(result)
+        # Nested JSON
+        if result.is_a?(Array) || result.is_a?(Hash)
+          recursive_convert.call(result)
         else
           object
         end
       when Hash
-        object.transform_values { |v| transformer.call(v) }
+        object.transform_values { |v| recursive_convert.call(v) }
       else
         object
       end
     end
 
-    transformer.call(to_h)
+    recursive_convert.call(to_h)
   end
 end
