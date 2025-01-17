@@ -2,6 +2,8 @@ PATH
   remote: .
   specs:
     everythingrb (0.1.0)
+      json (~> 2.9)
+      ostruct (~> 0.6.1)
 
 GEM
   remote: https://rubygems.org/
@@ -85,9 +87,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport (~> 8.0)
   everythingrb!
-  json (~> 2.9)
   minitest (~> 5.16)
-  ostruct (~> 0.6.1)
   rake (~> 13.0)
   standard (~> 1.3)
 
