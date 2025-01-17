@@ -14,31 +14,6 @@ class String
 
   alias_method :to_a, :to_h
 
-  # @return [OpenStruct] Parsed JSON as OpenStruct
-  def to_ostruct
-    JSON.parse(self, object_class: OpenStruct)
-  end
-
-  #
-  # Attempts to parse JSON and convert to Struct.
-  # Returns nil if string does not contain valid JSON
-  #
-  # @return [nil, Struct]
-  #
-  def to_struct
-    to_h&.to_struct
-  end
-
-  #
-  # Attempts to parse JSON and convert to Data struct.
-  # Returns nil if string does not contain valid JSON
-  #
-  # @return [nil, Data]
-  #
-  def to_istruct
-    to_h&.to_istruct
-  end
-
   #
   # Deep parsing of nested JSON strings
   # Recursively attempts to parse string values as JSON
@@ -67,5 +42,34 @@ class String
     end
 
     recursive_convert.call(to_h)
+  end
+
+  #
+  # Attempts to parse JSON and convert to Data struct.
+  # Returns nil if string does not contain valid JSON
+  #
+  # @return [nil, Data]
+  #
+  def to_istruct
+    to_h&.to_istruct
+  end
+
+  #
+  # Attempts to parse JSON and convert to OpenStruct.
+  # Returns nil if string does not contain valid JSON
+  #
+  # @return [nil, OpenStruct]
+  def to_ostruct
+    to_h&.to_ostruct
+  end
+
+  #
+  # Attempts to parse JSON and convert to Struct.
+  # Returns nil if string does not contain valid JSON
+  #
+  # @return [nil, Struct]
+  #
+  def to_struct
+    to_h&.to_struct
   end
 end
