@@ -18,7 +18,7 @@ class Array
   #   # => "1, 2, 3"
   #
   def join_map(join_with = "", &block)
-    return join(join_with) if block.nil?
+    return compact.join(join_with) if block.nil?
 
     filter_map(&block).join(join_with)
   end
