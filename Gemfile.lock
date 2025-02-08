@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    everythingrb (0.1.0)
+    everythingrb (0.1.1)
       json (~> 2.9)
-      ostruct (~> 0.6.1)
+      ostruct (~> 0.6)
 
 GEM
   remote: https://rubygems.org/

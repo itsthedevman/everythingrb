@@ -31,6 +31,6 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "ostruct", "~> 0.6.1"
+  spec.add_dependency "ostruct", "~> 0.6"
   spec.add_dependency "json", "~> 2.9"
 end
