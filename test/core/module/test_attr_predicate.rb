@@ -45,7 +45,6 @@ class TestModuleAttrPredicate < Minitest::Test
       end
     end
 
-    binding.pry
     assert_raises(ArgumentError) { klass.attr_predicate(:foo) }
   end
 end
