@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+
+## [0.1.1] - 12025-02-07
+
+### Added
+
+- Added `Struct` support to `Module.attr_predicate`
+
 ## [0.1.0] - 12025-01-17
 
 ### Added
@@ -36,5 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/itsthedevman/everythingrb/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/itsthedevman/everythingrb/compare/5870052e137cb430d084eab1ec3934f3c50b4501...v0.1.0
