@@ -6,6 +6,8 @@ class Module
   # Similar to attr_reader, attr_writer, etc. Designed to work with
   # regular classes, Struct, and Data objects.
   #
+  # Note: If ActiveSupport is loaded, this will check if the value is present? instead of truthy
+  #
   # @param *attributes [Array<Symbol, String>] Attribute names
   #
   # @return [nil]
@@ -36,17 +38,20 @@ class Module
         raise ArgumentError, "Cannot create predicate method on #{self.class} - #{attribute}? is already defined. Please choose a different name or remove the existing method."
       end
 
-      module_eval <<-STR, __FILE__, __LINE__ + 1
+      module_eval <<-RUBY, __FILE__, __LINE__ + 1
         def #{attribute}?
-          if instance_variable_defined?(:@#{attribute})
-            !!@#{attribute}
-          elsif respond_to?(:#{attribute})
-            !!self.#{attribute}
-          else
-            false
-          end
+          value =
+            if instance_variable_defined?(:@#{attribute})
+              @#{attribute}
+            elsif respond_to?(:#{attribute})
+              self.#{attribute}
+            end
+
+          return false if value.nil?
+
+          defined?(ActiveSupport) ? !!value.presence : !!value
         end
-      STR
+      RUBY
     end
 
     nil
