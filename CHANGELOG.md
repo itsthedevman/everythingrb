@@ -13,6 +13,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [0.1.2] - 12025-02-11
+
+### Added
+
+- Added `#presence` support to `Module.attr_predicate` if `ActiveSupport` is loaded.
+
+### Changed
+
+- Separated out tests that require `ActiveSupport` into their own test process. Files that end with `_active_support` will be tested separately with ActiveSupport loaded
+
 
 ## [0.1.1] - 12025-02-07
 
@@ -43,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.1.1...HEAD
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/itsthedevman/everythingrb/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/itsthedevman/everythingrb/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/itsthedevman/everythingrb/compare/5870052e137cb430d084eab1ec3934f3c50b4501...v0.1.0
