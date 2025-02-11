@@ -3,6 +3,10 @@
 require "test_helper"
 
 class TestOstructPresent < Minitest::Test
+  def setup
+    fail "Active support must be defined for this test" unless defined?(ActiveSupport)
+  end
+
   def test_it_is_present
     input = OpenStruct.new(foo: "bar")
 

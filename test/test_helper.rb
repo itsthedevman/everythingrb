@@ -2,8 +2,10 @@
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 
-require "active_support"
-require "active_support/core_ext"
+if ENV["LOAD_ACTIVE_SUPPORT"] == "true"
+  require "active_support"
+  require "active_support/core_ext"
+end
 
 require "pry"
 require "everythingrb"
