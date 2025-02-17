@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    everythingrb (0.1.2)
+    everythingrb (0.2.0)
       json (~> 2.9)
       ostruct (~> 0.6)
 
@@ -36,7 +36,7 @@ GEM
       rexml (>= 3.3.9)
     language_server-protocol (3.17.0.4)
     lint_roller (1.1.0)
-    logger (1.6.5)
+    logger (1.6.6)
     method_source (1.1.0)
     minitest (5.25.4)
     ostruct (0.6.1)
@@ -52,14 +52,14 @@ GEM
     rake (13.2.1)
     regexp_parser (2.10.0)
     rexml (3.4.1)
-    rubocop (1.70.0)
+    rubocop (1.71.2)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 2.9.3, < 3.0)
-      rubocop-ast (>= 1.36.2, < 2.0)
+      rubocop-ast (>= 1.38.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
     rubocop-ast (1.38.0)
@@ -69,10 +69,10 @@ GEM
       rubocop-ast (>= 1.31.1, < 2.0)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
-    standard (1.44.0)
+    standard (1.45.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
-      rubocop (~> 1.70.0)
+      rubocop (~> 1.71.0)
       standard-custom (~> 1.0.0)
       standard-performance (~> 1.6)
     standard-custom (1.0.2)
@@ -90,7 +90,6 @@ GEM
     yard (0.9.37)
 
 PLATFORMS
-  ruby
   x86_64-linux
 
 DEPENDENCIES
@@ -104,4 +103,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.5.22
+   2.6.2
