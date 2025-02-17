@@ -15,5 +15,7 @@ gem "activesupport", "~> 8.0"
 
 gem "pry"
 
-gem "yard"
-gem "kramdown"
+group :development, :documentation do
+  gem "yard"
+  gem "kramdown"
+end
