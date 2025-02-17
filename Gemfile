@@ -14,3 +14,6 @@ gem "standard", "~> 1.3"
 gem "activesupport", "~> 8.0"
 
 gem "pry"
+
+gem "yard"
+gem "kramdown"
