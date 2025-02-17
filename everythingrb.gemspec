@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "EverythingRB extends Ruby core classes with useful methods for combining operations (join_map), converting data structures (to_struct, to_ostruct, to_istruct), and handling JSON with nested parsing support."
   spec.homepage = "https://github.com/itsthedevman/everythingrb"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.0.0"
+  spec.required_ruby_version = ">= 3.2"
 
   spec.metadata = {
     "source_code_uri" => "https://github.com/itsthedevman/everythingrb",
