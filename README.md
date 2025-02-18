@@ -6,6 +6,38 @@
 
 Useful extensions to Ruby core classes that you never knew you needed until now.
 
+# Table of Contents
+
+- [Installation](#installation)
+- [Core Extensions](#core-extensions)
+  - [Array](#array)
+    - [join_map](#join_map)
+  - [Hash](#hash)
+    - [to_struct](#to_struct)
+    - [to_ostruct](#to_ostruct)
+    - [to_istruct](#to_istruct)
+    - [join_map](#join_map-1)
+  - [Module](#module)
+    - [attr_predicate](#attr_predicate)
+  - [OpenStruct](#openstruct)
+    - [each](#each)
+    - [map](#map)
+    - [filter_map](#filter_map)
+    - [join_map](#join_map-2)
+  - [String](#string)
+    - [to_h / to_a](#to_h--to_a)
+    - [to_istruct](#to_istruct-1)
+    - [to_ostruct](#to_ostruct-1)
+    - [to_struct](#to_struct-1)
+    - [to_deep_h](#to_deep_h)
+- [Requirements](#requirements)
+- [Contributing](#contributing)
+- [License](#license)
+- [Changelog](#changelog)
+- [Credits](#credits)
+
+Also see: [API Documentation](https://itsthedevman.com/docs/everythingrb)
+
 ## Installation
 
 Add this line to your application's Gemfile:
