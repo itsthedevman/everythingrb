@@ -26,27 +26,24 @@ class Hash
     filter_map(&block).join(join_with)
   end
 
-  # to_istruct relies on Data class
-  if defined?(Data)
-    #
-    # Converts hash to an immutable Data structure
-    #
-    # @return [Data]
-    #
-    def to_istruct
-      recurse = lambda do |input|
-        case input
-        when Hash
-          input.to_istruct
-        when Array
-          input.map(&recurse)
-        else
-          input
-        end
+  #
+  # Converts hash to an immutable Data structure
+  #
+  # @return [Data]
+  #
+  def to_istruct
+    recurse = lambda do |input|
+      case input
+      when Hash
+        input.to_istruct
+      when Array
+        input.map(&recurse)
+      else
+        input
       end
-
-      Data.define(*keys.map(&:to_sym)).new(*values.map { |value| recurse.call(value) })
     end
+
+    Data.define(*keys.map(&:to_sym)).new(*values.map { |value| recurse.call(value) })
   end
 
   #
