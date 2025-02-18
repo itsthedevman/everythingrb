@@ -1,13 +1,20 @@
 # EverythingRB
 
 [![Gem Version](https://badge.fury.io/rb/everythingrb.svg)](https://badge.fury.io/rb/everythingrb)
+![Ruby Version](https://img.shields.io/badge/ruby-3.3.7-ruby)
 [![Tests](https://github.com/itsthedevman/everythingrb/actions/workflows/main.yml/badge.svg)](https://github.com/everythingrb/sortsmith/actions/workflows/main.yml)
-![Ruby Version](https://img.shields.io/badge/ruby-3.3.6-ruby)
 
 Useful extensions to Ruby core classes that you never knew you needed until now.
 
+## Looking for a Software Engineer?
+
+I'm currently looking for opportunities where I can tackle meaningful problems and help build reliable software while mentoring the next generation of developers. If you're looking for a senior engineer with full-stack Rails expertise and a passion for clean, maintainable code, let's talk!
+
+[bryan@itsthedevman.com](mailto:bryan@itsthedevman.com)
+
 # Table of Contents
 
+- [Compatibility](#compatibility)
 - [Installation](#installation)
 - [Core Extensions](#core-extensions)
   - [Array](#array)
@@ -37,6 +44,12 @@ Useful extensions to Ruby core classes that you never knew you needed until now.
 - [Credits](#credits)
 
 Also see: [API Documentation](https://itsthedevman.com/docs/everythingrb)
+
+## Compatibility
+
+Currently tested on:
+- MRI Ruby 3.2+
+- NixOS (see `flake.nix` for details)
 
 ## Installation
 
@@ -94,7 +107,7 @@ config.config.api_key # => "secret"
 ```
 
 #### `to_istruct`
-Recursively converts a hash into an immutable Data structure (requires Ruby 3.2+).
+Recursively converts a hash into an immutable Data structure.
 
 ```ruby
 hash = { person: { name: "Bob", age: 30 } }
@@ -184,7 +197,7 @@ Parses JSON string into a Ruby Hash or Array.
 ```
 
 #### `to_istruct`
-Parses JSON string into an immutable Data structure (requires Ruby 3.2+).
+Parses JSON string into an immutable Data structure.
 
 ```ruby
 '{"user": {"name": "Alice"}}'.to_istruct
@@ -220,11 +233,6 @@ nested_json = {
 nested_json.to_deep_h
 # => {users: [{name: "Alice", roles: ["admin", "user"]}]}
 ```
-
-## Requirements
-
-- Ruby 3.0+
-- Ruby 3.2+ for `to_istruct` functionality
 
 ## Contributing
 
