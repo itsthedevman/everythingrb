@@ -72,4 +72,15 @@ class String
   def to_struct
     to_h&.to_struct
   end
+
+  #
+  # Returns self wrapped in double quotes.
+  #
+  # @return [String]
+  #
+  def with_quotes
+    %("#{self}")
+  end
+
+  alias_method :in_quotes, :with_quotes
 end

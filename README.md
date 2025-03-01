@@ -234,6 +234,14 @@ nested_json.to_deep_h
 # => {users: [{name: "Alice", roles: ["admin", "user"]}]}
 ```
 
+#### `with_quotes` / `in_quotes`
+Wraps the string in double quotes
+
+```ruby
+"Hello World".with_quotes
+# => "\"Hello World\""
+```
+
 ## Contributing
 
 1. Fork it
