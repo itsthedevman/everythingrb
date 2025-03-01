@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    everythingrb (0.2.0)
+    everythingrb (0.2.1)
       json (~> 2.9)
       ostruct (~> 0.6)
 
