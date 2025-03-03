@@ -23,4 +23,37 @@ class Array
 
     filter_map(&block).join(join_with)
   end
+
+  #
+  # Maps over hash keys to extract values for a specific key
+  #
+  # @param key [Symbol, String] The key to extract
+  #
+  # @return [Array] Array of values
+  #
+  # @example
+  #   [{name: 'Alice', age: 30}, {name: 'Bob', age: 25}].key_map(:name)
+  #   # => ['Alice', 'Bob']
+  #
+  def key_map(key)
+    map { |v| v[key] }
+  end
+
+  #
+  # Maps over hash keys to extract nested values using dig
+  #
+  # @param keys [Array<Symbol, String>] The keys to dig through
+  #
+  # @return [Array] Array of nested values
+  #
+  # @example
+  #   [
+  #     {user: {profile: {name: 'Alice'}}},
+  #     {user: {profile: {name: 'Bob'}}}
+  #   ].dig_map(:user, :profile, :name)
+  #   # => ['Alice', 'Bob']
+  #
+  def dig_map(*keys)
+    map { |v| v.dig(*keys) }
+  end
 end

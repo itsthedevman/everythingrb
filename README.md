@@ -83,6 +83,32 @@ Combines `filter_map` and `join` operations in one convenient method.
 # => "1 3"
 ```
 
+#### `key_map`
+Extracts a specific key from each hash in an array.
+
+```ruby
+users = [
+  { name: "Alice", age: 30 },
+  { name: "Bob", age: 25 }
+]
+
+users.key_map(:name)
+# => ["Alice", "Bob"]
+```
+
+#### `dig_map`
+Extracts nested values from each hash in an array using the `dig` method.
+
+```ruby
+data = [
+  { user: { profile: { name: "Alice" } } },
+  { user: { profile: { name: "Bob" } } }
+]
+
+data.dig_map(:user, :profile, :name)
+# => ["Alice", "Bob"]
+```
+
 ### Hash
 
 #### `to_struct`
