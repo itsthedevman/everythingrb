@@ -19,14 +19,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+## [0.2.2] - 12025-03-03
+
+### Added
+
 - Added `Array#key_map` and `Array#dig_map` for mapping over `Hash`
 - Added `with_index:` keyword argument to `Array#join_map`. Defaults to `false`
 - Added `Enumerable#join_map`
 - Added `Array#deep_freeze` and `Hash#deep_freeze` to recursively freeze the underlying values
-
-### Changed
-
-### Removed
 
 ## [0.2.1] - 12025-03-01
 
@@ -93,7 +97,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.2.1...HEAD
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/itsthedevman/everythingrb/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/itsthedevman/everythingrb/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/itsthedevman/everythingrb/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/itsthedevman/everythingrb/compare/v0.1.1...v0.1.2
