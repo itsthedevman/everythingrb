@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `Array#key_map` and `Array#dig_map` for mapping over `Hash`
 - Added `with_index:` keyword argument to `Array#join_map`. Defaults to `false`
 - Added `Enumerable#join_map`
+- Added `Array#deep_freeze` and `Hash#deep_freeze` to recursively freeze the underlying values
 
 ### Changed
 

@@ -67,4 +67,18 @@ class Array
   def dig_map(*keys)
     map { |v| v.dig(*keys) }
   end
+
+  #
+  # Recursively freezes self and all of its contents
+  #
+  # @return [self] Returns the frozen array
+  #
+  # @example Freeze an array with nested structures
+  #   ["hello", { name: "Alice" }, [1, 2, 3]].deep_freeze
+  #   # => All elements and nested structures are now frozen
+  #
+  def deep_freeze
+    each { |v| v.respond_to?(:deep_freeze) ? v.deep_freeze : v.freeze }
+    freeze
+  end
 end

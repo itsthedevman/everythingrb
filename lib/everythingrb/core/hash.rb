@@ -85,4 +85,18 @@ class Hash
 
     OpenStruct.new(**transform_values { |value| recurse.call(value) })
   end
+
+  #
+  # Recursively freezes self and all of its values
+  #
+  # @return [self] Returns the frozen hash
+  #
+  # @example Freeze a hash with nested structures
+  #   { user: { name: "Alice", roles: ["admin"] } }.deep_freeze
+  #   # => Hash and all nested structures are now frozen
+  #
+  def deep_freeze
+    each_value { |v| v.respond_to?(:deep_freeze) ? v.deep_freeze : v.freeze }
+    freeze
+  end
 end

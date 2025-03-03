@@ -123,6 +123,15 @@ data.dig_map(:user, :profile, :name)
 # => ["Alice", "Bob"]
 ```
 
+#### `deep_freeze`
+Recursively freezes an array and all of its nested elements.
+
+```ruby
+array = ["hello", { name: "Alice" }, [1, 2, 3]]
+array.deep_freeze
+# => All elements and nested structures are now frozen
+```
+
 ### Enumerable
 
 #### `join_map`
@@ -181,6 +190,15 @@ Similar to Array#join_map but operates on hash values.
 ```ruby
 { a: 1, b: 2, c: nil, d: 3 }.join_map(" ") { |k, v| [k, v] if v }
 # => "a 1 b 2 d 3"
+```
+
+#### `deep_freeze`
+Recursively freezes a hash and all of its nested values.
+
+```ruby
+hash = { user: { name: "Alice", roles: ["admin", "user"] } }
+hash.deep_freeze
+# => Hash and all nested structures are now frozen
 ```
 
 ### Module
