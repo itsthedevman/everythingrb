@@ -19,24 +19,29 @@ I'm currently looking for opportunities where I can tackle meaningful problems a
 - [Core Extensions](#core-extensions)
   - [Array](#array)
     - [join_map](#join_map)
+    - [key_map](#key_map)
+    - [dig_map](#dig_map)
+  - [Enumerable](#enumerable)
+    - [join_map](#join_map-1)
   - [Hash](#hash)
     - [to_struct](#to_struct)
     - [to_ostruct](#to_ostruct)
     - [to_istruct](#to_istruct)
-    - [join_map](#join_map-1)
+    - [join_map](#join_map-2)
   - [Module](#module)
     - [attr_predicate](#attr_predicate)
   - [OpenStruct](#openstruct)
     - [each](#each)
     - [map](#map)
     - [filter_map](#filter_map)
-    - [join_map](#join_map-2)
+    - [join_map](#join_map-3)
   - [String](#string)
     - [to_h / to_a](#to_h--to_a)
     - [to_istruct](#to_istruct-1)
     - [to_ostruct](#to_ostruct-1)
     - [to_struct](#to_struct-1)
     - [to_deep_h](#to_deep_h)
+    - [with_quotes / in_quotes](#with_quotes--in_quotes)
 - [Requirements](#requirements)
 - [Contributing](#contributing)
 - [License](#license)
@@ -116,6 +121,25 @@ data = [
 
 data.dig_map(:user, :profile, :name)
 # => ["Alice", "Bob"]
+```
+
+### Enumerable
+
+#### `join_map`
+Combines filtering, mapping and joining operations into one convenient method.
+
+```ruby
+# Basic usage with arrays
+[1, 2, nil, 3].join_map(", ") { |n| n&.to_s if n&.odd? }
+# => "1, 3"
+
+# Works with any Enumerable
+(1..10).join_map(" | ") { |n| "num#{n}" if n.even? }
+# => "num2 | num4 | num6 | num8 | num10"
+
+# Supports with_index option
+%w[a b c].join_map("-", with_index: true) { |char, i| "#{i}:#{char}" }
+# => "0:a-1:b-2:c"
 ```
 
 ### Hash
