@@ -20,4 +20,11 @@ class TestArrayJoinMap < Minitest::Test
       @input.join_map(", ") { |i| "#{i}!" if i }
     )
   end
+
+  def test_it_includes_the_index
+    assert_equal(
+      "foo0!, bar2!, baz4!",
+      @input.join_map(", ", with_index: true) { |v, i| "#{v}#{i}!" if v }
+    )
+  end
 end

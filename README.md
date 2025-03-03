@@ -76,11 +76,20 @@ $ gem install everythingrb
 ### Array
 
 #### `join_map`
-Combines `filter_map` and `join` operations in one convenient method.
+Combines `filter_map` and `join` operations in one convenient method. Optionally provides the index to the block.
 
 ```ruby
+# Without index
 [1, 2, nil, 3].join_map(" ") { |n| n&.to_s if n&.odd? }
 # => "1 3"
+
+# With index
+["a", "b", "c"].join_map(", ", with_index: true) { |char, i| "#{i}:#{char}" }
+# => "0:a, 1:b, 2:c"
+
+# Default behavior without block
+[1, 2, nil, 3].join_map(", ")
+# => "1, 2, 3"
 ```
 
 #### `key_map`
