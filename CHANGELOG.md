@@ -23,6 +23,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [0.2.3] - 12025-03-09
+
+### Added
+
+- Added `Symbol#with_quotes` and `Symbol#in_quotes`
+
+
 ## [0.2.2] - 12025-03-03
 
 ### Added
@@ -97,7 +104,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.2.2...HEAD
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.2.3...HEAD
+[0.2.3]: https://github.com/itsthedevman/everythingrb/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/itsthedevman/everythingrb/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/itsthedevman/everythingrb/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/itsthedevman/everythingrb/compare/v0.1.2...v0.2.0
