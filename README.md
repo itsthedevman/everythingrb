@@ -42,6 +42,8 @@ I'm currently looking for opportunities where I can tackle meaningful problems a
     - [to_struct](#to_struct-1)
     - [to_deep_h](#to_deep_h)
     - [with_quotes / in_quotes](#with_quotes--in_quotes)
+  - [Symbol](#symbol)
+    - [with_quotes / in_quotes](#with_quotes--in_quotes-1)
 - [Requirements](#requirements)
 - [Contributing](#contributing)
 - [License](#license)
