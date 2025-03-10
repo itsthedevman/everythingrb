@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class TestWithQuotes < Minitest::Test
+class TestStringWithQuotes < Minitest::Test
   def test_it_wraps_in_quotes
     assert_equal("\"Hello World\"", "Hello World".with_quotes)
     assert_equal("\"Hello World\"", "Hello World".in_quotes)
