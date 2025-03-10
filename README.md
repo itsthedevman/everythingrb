@@ -319,6 +319,16 @@ Wraps the string in double quotes
 # => "\"Hello World\""
 ```
 
+### Symbol
+
+#### `with_quotes` / `in_quotes`
+Wraps the symbol in double quotes
+
+```ruby
+:hello_world.with_quotes
+# => :"\"hello_world\""
+```
+
 ## Contributing
 
 1. Fork it
