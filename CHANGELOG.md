@@ -23,6 +23,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [0.2.3] - 12025-03-09
+
+### Added
+
+- Added `Symbol#with_quotes` and `Symbol#in_quotes`
+
+
 ## [0.2.2] - 12025-03-03
 
 ### Added
