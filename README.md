@@ -4,7 +4,7 @@
 ![Ruby Version](https://img.shields.io/badge/ruby-3.3.7-ruby)
 [![Tests](https://github.com/itsthedevman/everythingrb/actions/workflows/main.yml/badge.svg)](https://github.com/everythingrb/sortsmith/actions/workflows/main.yml)
 
-Useful extensions to Ruby core classes that you never knew you needed until now.
+Super handy extensions to Ruby core classes that you never knew you needed until now. Write more expressive, readable, and maintainable code with less boilerplate.
 
 ## Looking for a Software Engineer?
 
@@ -14,36 +14,24 @@ I'm currently looking for opportunities where I can tackle meaningful problems a
 
 # Table of Contents
 
+- [Introduction](#introduction)
 - [Compatibility](#compatibility)
 - [Installation](#installation)
+- [Features](#features)
+  - [Data Structure Conversions](#data-structure-conversions)
+  - [Collection Processing](#collection-processing)
+  - [JSON & String Handling](#json--string-handling)
+  - [Object Freezing](#object-freezing)
+  - [Predicate Methods](#predicate-methods)
 - [Core Extensions](#core-extensions)
   - [Array](#array)
-    - [join_map](#join_map)
-    - [key_map](#key_map)
-    - [dig_map](#dig_map)
   - [Enumerable](#enumerable)
-    - [join_map](#join_map-1)
   - [Hash](#hash)
-    - [to_struct](#to_struct)
-    - [to_ostruct](#to_ostruct)
-    - [to_istruct](#to_istruct)
-    - [join_map](#join_map-2)
   - [Module](#module)
-    - [attr_predicate](#attr_predicate)
   - [OpenStruct](#openstruct)
-    - [each](#each)
-    - [map](#map)
-    - [filter_map](#filter_map)
-    - [join_map](#join_map-3)
   - [String](#string)
-    - [to_h / to_a](#to_h--to_a)
-    - [to_istruct](#to_istruct-1)
-    - [to_ostruct](#to_ostruct-1)
-    - [to_struct](#to_struct-1)
-    - [to_deep_h](#to_deep_h)
-    - [with_quotes / in_quotes](#with_quotes--in_quotes)
   - [Symbol](#symbol)
-    - [with_quotes / in_quotes](#with_quotes--in_quotes-1)
+- [Advanced Usage](#advanced-usage)
 - [Requirements](#requirements)
 - [Contributing](#contributing)
 - [License](#license)
@@ -51,6 +39,12 @@ I'm currently looking for opportunities where I can tackle meaningful problems a
 - [Credits](#credits)
 
 Also see: [API Documentation](https://itsthedevman.com/docs/everythingrb)
+
+## Introduction
+
+EverythingRB adds powerful, intuitive extensions to Ruby's core classes that help you write cleaner, more expressive code. It focuses on common patterns that typically require multiple method calls or temporary variables, turning them into single fluid operations.
+
+Whether you're transforming data, working with JSON, or building complex object structures, EverythingRB makes your code more readable and maintainable with minimal effort.
 
 ## Compatibility
 
@@ -76,6 +70,115 @@ Or install it yourself as:
 
 ```bash
 $ gem install everythingrb
+```
+
+## Features
+
+### Data Structure Conversions
+
+Easily convert between different Ruby data structures:
+
+```ruby
+# Convert any hash to an OpenStruct, Struct, or Data (immutable) object
+config = { server: { host: "example.com", port: 443 } }.to_ostruct
+config.server.host  # => "example.com"
+
+# Parse JSON directly to your preferred structure
+'{"user":{"name":"Alice"}}'.to_istruct.user.name  # => "Alice"
+'{"items":[1,2,3]}'.to_struct.items  # => [1, 2, 3]
+```
+
+### Collection Processing
+
+Process collections with elegant, chainable methods:
+
+```ruby
+# Extract specific data from arrays of hashes in one step
+users = [{ name: "Alice", roles: ["admin"] }, { name: "Bob", roles: ["user"] }]
+users.key_map(:name)  # => ["Alice", "Bob"]
+users.dig_map(:roles, 0)  # => ["admin", "user"]
+
+# Filter, map, and join in a single operation
+[1, 2, nil, 3, 4].join_map(" | ") { |n| "Item #{n}" if n&.odd? }
+# => "Item 1 | Item 3"
+```
+
+### JSON & String Handling
+
+Work with JSON and strings more naturally:
+
+```ruby
+# Parse JSON with symbolized keys
+'{"name": "Alice"}'.to_h  # => { name: "Alice" }
+
+# Recursively parse nested JSON strings
+nested = '{"user":"{\"profile\":\"{\\\"name\\\":\\\"Bob\\\"}\"}"}'
+nested.to_deep_h  # => { user: { profile: { name: "Bob" } } }
+
+# Format strings with quotes
+"hello".with_quotes  # => "\"hello\""
+```
+
+### Object Freezing
+
+Freeze nested structures with a single call:
+
+```ruby
+config = {
+  api: {
+    key: "secret",
+    endpoints: ["v1", "v2"]
+  }
+}.deep_freeze
+
+# Everything is frozen!
+config.frozen?  # => true
+config[:api].frozen?  # => true
+config[:api][:endpoints].frozen?  # => true
+config[:api][:endpoints][0].frozen?  # => true
+```
+
+### Predicate Methods
+
+Create boolean accessors with minimal code:
+
+```ruby
+class User
+  attr_accessor :admin, :verified
+  attr_predicate :admin, :verified
+end
+
+user = User.new
+user.admin = true
+user.admin?  # => true
+user.verified?  # => false
+
+# Works with Struct and Data objects too
+Person = Struct.new(:active)
+Person.attr_predicate(:active)
+
+person = Person.new(true)
+person.active?  # => true
+```
+
+**ActiveSupport Integration:** When ActiveSupport is loaded, predicate methods automatically use `present?` instead of just checking truthiness:
+
+```ruby
+# With ActiveSupport loaded
+class Product
+  attr_accessor :tags, :category
+  attr_predicate :tags, :category
+end
+
+product = Product.new
+product.tags = []
+product.tags?  # => false (empty array is not "present")
+
+product.tags = ["sale"]
+product.tags?  # => true (non-empty array is "present")
+
+product.category = ""
+product.category?  # => false (blank string is not "present")
 ```
 
 ## Core Extensions
@@ -330,6 +433,89 @@ Wraps the symbol in double quotes
 :hello_world.with_quotes
 # => :"\"hello_world\""
 ```
+
+## Advanced Usage
+
+See how EverythingRB transforms your code from verbose to elegant:
+
+### Extracting Data from Nested JSON
+
+**Before:**
+```ruby
+# Standard Ruby approach
+json_data = '[{"user":{"name":"Alice","role":"admin"}},{"user":{"name":"Bob","role":"guest"}}]'
+
+parsed_data = JSON.parse(json_data, symbolize_names: true)
+names = parsed_data.map { |item| item[:user][:name] }
+result = names.join(", ")
+# => "Alice, Bob"
+```
+
+**After:**
+```ruby
+# With EverythingRB
+json_data = '[{"user":{"name":"Alice","role":"admin"}},{"user":{"name":"Bob","role":"guest"}}]'
+result = json_data.to_a.dig_map(:user, :name).join(", ")
+# => "Alice, Bob"
+```
+
+### Freezing Nested Configurations
+
+**Before:**
+```ruby
+# Standard Ruby approach
+config_json = File.read("config.json")
+config = JSON.parse(config_json, symbolize_names: true)
+
+deep_freeze = lambda do |obj|
+  case obj
+  when Hash
+    obj.each_value { |v| deep_freeze.call(v) }
+    obj.freeze
+  when Array
+    obj.each { |v| deep_freeze.call(v) }
+    obj.freeze
+  else
+    obj.freeze
+  end
+end
+
+frozen_config = deep_freeze.call(config)
+```
+
+**After:**
+```ruby
+# With EverythingRB
+config_json = File.read("config.json")
+frozen_config = config_json.to_h.deep_freeze
+```
+
+### Filtering and Formatting Nested Collections
+
+**Before:**
+```ruby
+# Standard Ruby approach
+users_json = '[{"user":{"name":"Alice","admin":true,"active":true}},{"user":{"name":"Bob","admin":true,"active":false}}]'
+
+users = JSON.parse(users_json, symbolize_names: true)
+active_admins = users.map { |u| u[:user] }.select { |u| u[:admin] && u[:active] }
+admin_names = active_admins.map { |u| u[:name] }.join(", ")
+# => "Alice"
+```
+
+**After:**
+```ruby
+# With EverythingRB
+users_json = '[{"user":{"name":"Alice","admin":true,"active":true}},{"user":{"name":"Bob","admin":true,"active":false}}]'
+admin_names = users_json.to_a.key_map(:user).join_map(", ") do |user|
+  user[:name] if user[:admin] && user[:active]
+end
+# => "Alice"
+```
+
+## Requirements
+
+- Ruby 3.2 or higher
 
 ## Contributing
 
