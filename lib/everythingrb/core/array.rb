@@ -1,5 +1,21 @@
 # frozen_string_literal: true
 
+#
+# Extensions to Ruby's core Array class
+#
+# This module adds convenient mapping, joining, and freezing functionality
+# to all Arrays in your application.
+#
+# @example Using the extensions
+#   numbers = [1, 2, nil, 3]
+#
+#   # Filter out nils and format odd numbers
+#   numbers.join_map(", ") { |n| "odd: #{n}" if n&.odd? }
+#   # => "odd: 1, odd: 3"
+#
+#   users = [{name: "Alice", role: "admin"}, {name: "Bob", role: "user"}]
+#   users.key_map(:name)    # => ["Alice", "Bob"]
+#
 class Array
   #
   # Combines filter_map and join operations
@@ -40,11 +56,11 @@ class Array
   #
   # @param key [Symbol, String] The key to extract
   #
-  # @return [Array] Array of values
+  # @return [Array] Array of values extracted from each hash
   #
   # @example
-  #   [{name: 'Alice', age: 30}, {name: 'Bob', age: 25}].key_map(:name)
-  #   # => ['Alice', 'Bob']
+  #   [{name: "Alice", age: 30}, {name: "Bob", age: 25}].key_map(:name)
+  #   # => ["Alice", "Bob"]
   #
   def key_map(key)
     map { |v| v[key] }
@@ -59,10 +75,10 @@ class Array
   #
   # @example
   #   [
-  #     {user: {profile: {name: 'Alice'}}},
-  #     {user: {profile: {name: 'Bob'}}}
+  #     {user: {profile: {name: "Alice"}}},
+  #     {user: {profile: {name: "Bob"}}}
   #   ].dig_map(:user, :profile, :name)
-  #   # => ['Alice', 'Bob']
+  #   # => ["Alice", "Bob"]
   #
   def dig_map(*keys)
     map { |v| v.dig(*keys) }

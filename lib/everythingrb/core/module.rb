@@ -1,5 +1,21 @@
 # frozen_string_literal: true
 
+#
+# Extensions to Ruby's core Module class
+#
+# These additions provide a convenient way to create boolean-style accessor
+# methods for any class.
+#
+# @example Creating predicate methods
+#   class User
+#     attr_accessor :admin
+#     attr_predicate :admin
+#   end
+#
+#   user = User.new
+#   user.admin = true
+#   user.admin? # => true
+#
 class Module
   #
   # Creates predicate (boolean) methods that return true/false
