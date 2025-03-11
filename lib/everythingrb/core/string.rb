@@ -1,10 +1,26 @@
 # frozen_string_literal: true
 
+#
+# Extensions to Ruby's core String class
+#
+# These additions make working with JSON strings easy by providing methods for conversion
+# to various Ruby data structures. Plus some nice formatting helpers that saves tons of typing
+#
+# @example Converting JSON to different structures
+#   json = '{"user": {"name": "Alice", "admin": true}}'
+#   json.to_h                 # => {user: {name: "Alice", admin: true}}
+#   json.to_istruct.user.name # => "Alice"
+#   json.to_ostruct.user.name # => "Alice"
+#
 class String
   #
   # Converts JSON string to Hash, returning nil if it failed
   #
-  # @return [Hash, nil] Parsed JSON as hash
+  # @return [Hash, nil] Parsed JSON as hash or nil if invalid JSON
+  #
+  # @example
+  #   '{"name": "Alice"}'.to_h  # => {name: "Alice"}
+  #   "invalid json".to_h       # => nil
   #
   def to_h
     JSON.parse(self, symbolize_names: true)
@@ -18,7 +34,14 @@ class String
   # Deep parsing of nested JSON strings
   # Recursively attempts to parse string values as JSON
   #
-  # @return [Hash] Deeply parsed hash
+  # @return [Hash] Deeply parsed hash with all nested JSON strings converted
+  #
+  # @example
+  #   nested_json = '{
+  #     "user": "{\"name\":\"Alice\",\"roles\":[\"admin\"]}"
+  #   }'
+  #   nested_json.to_deep_h
+  #   # => {user: {name: "Alice", roles: ["admin"]}}
   #
   def to_deep_h
     recursive_convert = lambda do |object|
@@ -48,7 +71,11 @@ class String
   # Attempts to parse JSON and convert to Data struct.
   # Returns nil if string does not contain valid JSON
   #
-  # @return [nil, Data]
+  # @return [Data, nil] Immutable Data structure or nil if invalid JSON
+  #
+  # @example
+  #   '{"name": "Alice"}'.to_istruct      # => #<data name="Alice">
+  #   "not json".to_istruct               # => nil
   #
   def to_istruct
     to_h&.to_istruct
@@ -58,7 +85,12 @@ class String
   # Attempts to parse JSON and convert to OpenStruct.
   # Returns nil if string does not contain valid JSON
   #
-  # @return [nil, OpenStruct]
+  # @return [OpenStruct, nil] OpenStruct or nil if invalid JSON
+  #
+  # @example
+  #   '{"name": "Alice"}'.to_ostruct      # => #<OpenStruct name="Alice">
+  #   "not json".to_ostruct               # => nil
+  #
   def to_ostruct
     to_h&.to_ostruct
   end
@@ -67,16 +99,24 @@ class String
   # Attempts to parse JSON and convert to Struct.
   # Returns nil if string does not contain valid JSON
   #
-  # @return [nil, Struct]
+  # @return [Struct, nil] Struct or nil if invalid JSON
+  #
+  # @example
+  #   '{"name": "Alice"}'.to_struct       # => #<struct name="Alice">
+  #   "not json".to_struct                # => nil
   #
   def to_struct
     to_h&.to_struct
   end
 
   #
-  # Returns self wrapped in double quotes.
+  # Returns self wrapped in double quotes
   #
-  # @return [String]
+  # @return [String] The string with surrounding double quotes
+  #
+  # @example
+  #   "Hello World".with_quotes           # => "\"Hello World\""
+  #   "Quote \"me\"".with_quotes          # => "\"Quote \\\"me\\\"\""
   #
   def with_quotes
     %("#{self}")

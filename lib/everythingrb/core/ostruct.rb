@@ -1,11 +1,22 @@
 # frozen_string_literal: true
 
+#
+# Extensions to Ruby's OpenStruct class
+#
+# These additions make OpenStructs way more flexible with enumeration
+# methods and ActiveSupport integration.
+#
+# @example Using enumeration methods
+#   person = OpenStruct.new(name: "Alice", age: 30)
+#   person.map { |k, v| "#{k} is #{v}" } # => ["name is Alice", "age is 30"]
+#
 class OpenStruct
+  # ActiveSupport integrations
   if defined?(ActiveSupport)
     #
     # Checks if the OpenStruct has no attributes
     #
-    # @return [Boolean]
+    # @return [Boolean] true if the OpenStruct has no attributes
     #
     def blank?
       @table.blank?
@@ -14,7 +25,7 @@ class OpenStruct
     #
     # Checks if the OpenStruct has any attributes
     #
-    # @return [Boolean]
+    # @return [Boolean] true if the OpenStruct has attributes
     #
     def present?
       @table.present?
@@ -26,7 +37,15 @@ class OpenStruct
   #
   # Maps over OpenStruct entries and returns an array
   #
-  # @return [Enumerator, Array] Returns a new array, or enumerator if block is nil
+  # @yield [key, value] Block that transforms each key-value pair
+  # @yieldparam key [Symbol] The attribute name
+  # @yieldparam value [Object] The attribute value
+  #
+  # @return [Array, Enumerator] Results of mapping or an Enumerator if no block given
+  #
+  # @example
+  #   struct = OpenStruct.new(a: 1, b: 2)
+  #   struct.map { |key, value| [key, value * 2] } # => [[:a, 2], [:b, 4]]
   #
   def map(&)
     @table.map(&)
@@ -35,7 +54,15 @@ class OpenStruct
   #
   # Maps over OpenStruct entries and returns an array without nil values
   #
-  # @return [Enumerator, Array] Returns a new array, or enumerator if block is nil
+  # @yield [key, value] Block that transforms each key-value pair
+  # @yieldparam key [Symbol] The attribute name
+  # @yieldparam value [Object] The attribute value
+  #
+  # @return [Array, Enumerator] Non-nil results of mapping or an Enumerator if no block given
+  #
+  # @example
+  #   struct = OpenStruct.new(a: 1, b: nil, c: 2)
+  #   struct.filter_map { |key, value| value * 2 if value } # => [2, 4]
   #
   def filter_map(&block)
     return enum_for(:filter_map) unless block
@@ -48,16 +75,18 @@ class OpenStruct
   #
   # @param join_with [String] The delimiter to join elements with (defaults to empty string)
   #
-  # @yield [Object] Block that filters and transforms hash elements
+  # @yield [key, value] Block that filters and transforms OpenStruct entries
+  # @yieldparam key [Symbol] The attribute name
+  # @yieldparam value [Object] The attribute value
   #
-  # @return [String] Joined string of filtered and transformed elements
+  # @return [String] Joined string of filtered and transformed entries
   #
   # @example
   #   object = OpenStruct.new(a: 1, b: nil, c: 3)
   #   object.join_map(" ") { |k, v| "#{k}-#{v}" if v }
   #   # => "a-1 c-3"
   #
-  # @example
+  # @example Default behavior without block
   #   object = OpenStruct.new(a: 1, b: nil, c: 3)
   #   object.join_map(", ")
   #   # => "a, 1, b, c, 3"
@@ -69,7 +98,9 @@ class OpenStruct
   end
 
   #
-  # @return [self]
+  # Returns self (identity method for consistent interfaces)
+  #
+  # @return [self] Returns the OpenStruct
   #
   def to_ostruct
     self
