@@ -24,7 +24,7 @@ class Module
   #
   # Note: If ActiveSupport is loaded, this will check if the value is present? instead of truthy
   #
-  # @param *attributes [Array<Symbol, String>] Attribute names
+  # @param attributes [Array<Symbol, String>] Attribute names
   #
   # @return [nil]
   #
