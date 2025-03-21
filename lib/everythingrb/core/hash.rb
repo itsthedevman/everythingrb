@@ -17,6 +17,19 @@
 #
 class Hash
   #
+  # A minimal empty struct for Ruby 3.2+ compatibility
+  #
+  # Ruby 3.2 enforces stricter argument handling for Struct. This means trying to create
+  # a Struct from an empty Hash will result in an ArgumentError being raised.
+  # This is trying to keep a consistent experience with that version and newer versions.
+  #
+  # @return [Struct] A struct with a single nil-valued field
+  #
+  # @api private
+  #
+  EMPTY_STRUCT = Struct.new(:_).new(nil)
+
+  #
   # Combines filter_map and join operations
   #
   # @param join_with [String] The delimiter to join elements with (defaults to empty string)
@@ -79,6 +92,9 @@ class Hash
   #   struct.class # => Struct
   #
   def to_struct
+    # For Ruby 3.2, it raises if you attempt to create a Struct with no keys
+    return EMPTY_STRUCT if RUBY_VERSION.start_with?("3.2") && empty?
+
     recurse = lambda do |value|
       case value
       when Hash

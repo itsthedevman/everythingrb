@@ -62,4 +62,10 @@ class TestHashToStruct < Minitest::Test
     assert_kind_of(Struct, second)
     assert_equal(2, second.d)
   end
+
+  def test_it_handles_empty
+    output = {}.to_struct
+
+    assert_kind_of(Struct, output)
+  end
 end
