@@ -23,6 +23,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [0.2.4] - 12025-03-20
+
+### Changed
+
+- Improved documentation
+- Fixed an issue with `Hash#to_struct` on Ruby 3.2 would raise an exception if called on an empty Hash
+
 ## [0.2.3] - 12025-03-09
 
 ### Added
@@ -104,7 +111,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.2.3...HEAD
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.2.4...HEAD
+[0.2.3]: https://github.com/itsthedevman/everythingrb/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/itsthedevman/everythingrb/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/itsthedevman/everythingrb/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/itsthedevman/everythingrb/compare/v0.2.0...v0.2.1
