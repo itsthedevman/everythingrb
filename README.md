@@ -282,6 +282,14 @@ array.deep_freeze
 # => All elements and nested structures are now frozen
 ```
 
+#### `to_or_sentence` (with ActiveSupport)
+Joins an array into a sentence using "or" instead of "and"
+
+```ruby
+["red", "blue", "green"].to_or_sentence
+# => "red, blue, or green"
+```
+
 ### Enumerable
 
 #### `join_map`
