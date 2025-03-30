@@ -97,4 +97,85 @@ class Array
     each { |v| v.respond_to?(:deep_freeze) ? v.deep_freeze : v.freeze }
     freeze
   end
+
+  #
+  # Removes nil values from the beginning of an array
+  #
+  # @return [Array] Array with leading nil values removed
+  #
+  # @example
+  #   [nil, nil, 1, 2, nil, 3].compact_prefix
+  #   # => [1, 2, nil, 3]
+  #
+  def compact_prefix
+    drop_while(&:nil?)
+  end
+
+  #
+  # Removes nil values from the end of an array
+  #
+  # @return [Array] Array with trailing nil values removed
+  #
+  # @example
+  #   [1, 2, nil, 3, nil, nil].compact_suffix
+  #   # => [1, 2, nil, 3]
+  #
+  def compact_suffix
+    reverse.drop_while(&:nil?).reverse
+  end
+
+  #
+  # Removes nil values from both the beginning and end of an array
+  #
+  # @return [Array] Array with leading and trailing nil values removed
+  #
+  # @example
+  #   [nil, nil, 1, 2, nil, 3, nil, nil].trim_nils
+  #   # => [1, 2, nil, 3]
+  #
+  def trim_nils
+    compact_prefix.compact_suffix
+  end
+
+  # ActiveSupport integrations
+  if defined?(ActiveSupport)
+    #
+    # Removes blank values from the beginning of an array
+    #
+    # @return [Array] Array with leading blank values removed
+    #
+    # @example With ActiveSupport loaded
+    #   [nil, "", 1, 2, "", 3].compact_blank_prefix
+    #   # => [1, 2, "", 3]
+    #
+    def compact_blank_prefix
+      drop_while(&:blank?)
+    end
+
+    #
+    # Removes blank values from the end of an array
+    #
+    # @return [Array] Array with trailing blank values removed
+    #
+    # @example With ActiveSupport loaded
+    #   [1, 2, "", 3, nil, ""].compact_blank_suffix
+    #   # => [1, 2, "", 3]
+    #
+    def compact_blank_suffix
+      reverse.drop_while(&:blank?).reverse
+    end
+
+    #
+    # Removes blank values from both the beginning and end of an array
+    #
+    # @return [Array] Array with leading and trailing blank values removed
+    #
+    # @example With ActiveSupport loaded
+    #   [nil, "", 1, 2, "", 3, nil, ""].trim_blanks
+    #   # => [1, 2, "", 3]
+    #
+    def trim_blanks
+      compact_blank_prefix.compact_blank_suffix
+    end
+  end
 end

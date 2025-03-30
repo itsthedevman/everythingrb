@@ -23,6 +23,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [0.2.5] - 12025-03-29
+
+### Added
+
+- New array trimming methods that preserve internal structure:
+  - `compact_prefix` - Removes nil values from the beginning of an array
+  - `compact_suffix` - Removes nil values from the end of an array
+  - `trim_nils` - Removes nil values from both ends of an array
+  - ActiveSupport integration with blank-aware versions:
+    - `compact_blank_prefix` - Removes blank values from the beginning
+    - `compact_blank_suffix` - Removes blank values from the end
+    - `trim_blanks` - Removes blank values from both ends
+
 ## [0.2.4] - 12025-03-20
 
 ### Changed
@@ -111,8 +124,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.2.4...HEAD
-[0.2.3]: https://github.com/itsthedevman/everythingrb/compare/v0.2.3...v0.2.4
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.2.5...HEAD
+[0.2.5]: https://github.com/itsthedevman/everythingrb/compare/v0.2.4...v0.2.5
+[0.2.4]: https://github.com/itsthedevman/everythingrb/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/itsthedevman/everythingrb/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/itsthedevman/everythingrb/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/itsthedevman/everythingrb/compare/v0.2.0...v0.2.1

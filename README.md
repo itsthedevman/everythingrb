@@ -22,6 +22,7 @@ I'm currently looking for opportunities where I can tackle meaningful problems a
   - [Collection Processing](#collection-processing)
   - [JSON & String Handling](#json--string-handling)
   - [Object Freezing](#object-freezing)
+  - [Array Trimming](#array-trimming)
   - [Predicate Methods](#predicate-methods)
 - [Core Extensions](#core-extensions)
   - [Array](#array)
@@ -138,6 +139,22 @@ config[:api][:endpoints].frozen?  # => true
 config[:api][:endpoints][0].frozen?  # => true
 ```
 
+### Array Trimming
+
+Clean up array boundaries without losing internal structure:
+
+```ruby
+# Remove nil values from the beginning or end
+[nil, nil, 1, nil, 2, nil, nil].trim_nils  # => [1, nil, 2]
+
+# With ActiveSupport, remove any blank values (nil, "", etc.)
+[nil, "", 1, "", 2, nil, ""].trim_blanks  # => [1, "", 2]
+
+# Only trim from one end if needed
+[nil, nil, 1, 2, 3].compact_prefix  # => [1, 2, 3]
+[1, 2, 3, nil, nil].compact_suffix  # => [1, 2, 3]
+```
+
 ### Predicate Methods
 
 Create boolean accessors with minimal code:
@@ -226,6 +243,34 @@ data = [
 
 data.dig_map(:user, :profile, :name)
 # => ["Alice", "Bob"]
+```
+
+#### `compact_prefix` / `compact_suffix` / `trim_nils`
+Remove nil values from the beginning, end, or both ends of an array without touching interior nil values.
+
+```ruby
+[nil, nil, 1, nil, 2, nil, nil].compact_prefix
+# => [1, nil, 2, nil, nil]
+
+[1, nil, 2, nil, nil].compact_suffix
+# => [1, nil, 2]
+
+[nil, nil, 1, nil, 2, nil, nil].trim_nils
+# => [1, nil, 2]
+```
+
+#### `compact_blank_prefix` / `compact_blank_suffix` / `trim_blanks` (with ActiveSupport)
+Remove blank values (nil, empty strings, etc.) from the beginning, end, or both ends of an array.
+
+```ruby
+[nil, "", 1, "", 2, nil, ""].compact_blank_prefix
+# => [1, "", 2, nil, ""]
+
+[nil, "", 1, "", 2, nil, ""].compact_blank_suffix
+# => [nil, "", 1, "", 2]
+
+[nil, "", 1, "", 2, nil, ""].trim_blanks
+# => [1, "", 2]
 ```
 
 #### `deep_freeze`
