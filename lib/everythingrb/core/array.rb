@@ -177,5 +177,28 @@ class Array
     def trim_blanks
       compact_blank_prefix.compact_blank_suffix
     end
+
+    #
+    # Joins array elements into a sentence with "or" connector
+    #
+    # Similar to ActiveSupport's #to_sentence but uses "or" instead of "and"
+    # as the joining word between elements.
+    #
+    # @param options [Hash] Options to pass to #to_sentence
+    #
+    # @return [String] Array elements joined in sentence form with "or" connector
+    #
+    # @example Basic usage
+    #   ["red", "blue", "green"].to_or_sentence
+    #   # => "red, blue, or green"
+    #
+    # @example With only two elements
+    #   ["yes", "no"].to_or_sentence
+    #   # => "yes or no"
+    #
+    def to_or_sentence(options = {})
+      options = options.reverse_merge(last_word_connector: ", or ", two_words_connector: " or ")
+      to_sentence(options)
+    end
   end
 end

@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `Array#to_or_sentence`, creates a sentence with "or" connector between items
+
 ### Changed
 
 ### Removed
