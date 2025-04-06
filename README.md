@@ -311,6 +311,34 @@ Combines filtering, mapping and joining operations into one convenient method.
 
 ### Hash
 
+#### `transform_values` with `with_key`
+Extends Ruby's `transform_values` with the ability to access keys during transformation via a chainable `with_key` method.
+
+```ruby
+# Standard transform_values (Ruby built-in)
+{a: 1, b: 2, c: 3}.transform_values { |v| v * 2 }
+# => {a: 2, b: 4, c: 6}
+
+# Using with_key to access both key and value
+{a: 1, b: 2, c: 3}.transform_values.with_key { |k, v| "#{k}_#{v}" }
+# => {a: "a_1", b: "b_2", c: "c_3"}
+```
+
+#### `transform_values!` with `with_key`
+The destructive version that modifies the hash in place.
+
+```ruby
+# Standard transform_values! (Ruby built-in)
+hash = {a: 1, b: 2, c: 3}
+hash.transform_values! { |v| v * 2 }
+# => {a: 2, b: 4, c: 6}
+
+# Using with_key to access both key and value, modifying in place
+hash = {a: 1, b: 2, c: 3}
+hash.transform_values!.with_key { |k, v| "#{k}_#{v}" }
+# => {a: "a_1", b: "b_2", c: "c_3"}
+```
+
 #### `to_struct`
 Recursively converts a hash into a Struct, including nested hashes and arrays.
 
