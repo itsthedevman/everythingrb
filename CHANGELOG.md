@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added `Array#to_or_sentence`, creates a sentence with "or" connector between items
+- Added `#with_key` method to `Hash#transform_values` and `Hash#transform_values!`, grants access to both keys and values during transformations
 
 ### Changed
 
