@@ -288,6 +288,57 @@ class Hash
     og_transform_values!(&block)
   end
 
+  #
+  # Returns the first value where the key-value pair satisfies the given condition
+  #
+  # @yield [key, value] Block that determines whether to include the value
+  # @yieldparam key [Object] The current key
+  # @yieldparam value [Object] The current value
+  # @yieldreturn [Boolean] Whether to include this value
+  #
+  # @return [Object, nil] The first matching value or nil if none found
+  # @return [Enumerator] If no block is given
+  #
+  # @example Find first admin user by role
+  #   users = {
+  #     alice: {name: "Alice", role: "admin"},
+  #     bob: {name: "Bob", role: "user"},
+  #     charlie: {name: "Charlie", role: "admin"}
+  #   }
+  #   users.value_where { |k, v| v[:role] == "admin" } # => {name: "Alice", role: "admin"}
+  #
+  def value_where(&block)
+    return to_enum(:value_where) if block.nil?
+
+    find(&block).last
+  end
+
+  #
+  # Returns all values where the key-value pairs satisfy the given condition
+  #
+  # @yield [key, value] Block that determines whether to include the value
+  # @yieldparam key [Object] The current key
+  # @yieldparam value [Object] The current value
+  # @yieldreturn [Boolean] Whether to include this value
+  #
+  # @return [Array] All matching values
+  # @return [Enumerator] If no block is given
+  #
+  # @example Find all admin users by role
+  #   users = {
+  #     alice: {name: "Alice", role: "admin"},
+  #     bob: {name: "Bob", role: "user"},
+  #     charlie: {name: "Charlie", role: "admin"}
+  #   }
+  #   users.values_where { |k, v| v[:role] == "admin" }
+  #   # => [{name: "Alice", role: "admin"}, {name: "Charlie", role: "admin"}]
+  #
+  def values_where(&block)
+    return to_enum(:values_where) if block.nil?
+
+    select(&block).values
+  end
+
   private
 
   def transform_values_enumerator
