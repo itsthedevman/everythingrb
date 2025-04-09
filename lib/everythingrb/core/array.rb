@@ -93,6 +93,10 @@ class Array
   #   ["hello", { name: "Alice" }, [1, 2, 3]].deep_freeze
   #   # => All elements and nested structures are now frozen
   #
+  # @note CAUTION: Be careful when freezing collections that contain class objects
+  #   or singleton instances - this will freeze those classes/objects globally!
+  #   Only use deep_freeze on pure data structures you want to make immutable.
+  #
   def deep_freeze
     each { |v| v.respond_to?(:deep_freeze) ? v.deep_freeze : v.freeze }
     freeze

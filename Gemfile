@@ -17,5 +17,6 @@ gem "pry"
 
 group :development, :documentation do
   gem "yard"
+  gem "rdoc"
   gem "kramdown"
 end
