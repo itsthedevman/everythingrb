@@ -30,6 +30,32 @@ class Hash
   EMPTY_STRUCT = Struct.new(:_).new(nil)
 
   #
+  # Creates a new Hash that automatically initializes missing keys with nested hashes
+  #
+  # This method creates a hash where any missing key access will automatically
+  # create another nested hash with the same behavior, allowing for unlimited
+  # nesting depth without explicit initialization.
+  #
+  # @return [Hash] A hash that recursively creates nested hashes for missing keys
+  #
+  # @example Basic usage with two levels
+  #   users = Hash.new_nested_hash
+  #   users[:john][:role] = "admin"  # No need to initialize users[:john] first
+  #   users # => {john: {role: "admin"}}
+  #
+  # @example Deep nesting without initialization
+  #   stats = Hash.new_nested_hash
+  #   (stats[:server][:region][:us_east][:errors] = []) << "Some Error"
+  #   stats # => {server: {region: {us_east: {errors: ["Some Error"]}}}}
+  #
+  # @note While extremely convenient, be cautious with very deep structures
+  #   as this creates new hashes on demand for any key access
+  #
+  def self.new_nested_hash
+    new { |hash, key| hash[key] = new_nested_hash }
+  end
+
+  #
   # Combines filter_map and join operations
   #
   # @param join_with [String] The delimiter to join elements with (defaults to empty string)
