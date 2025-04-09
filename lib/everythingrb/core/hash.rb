@@ -93,6 +93,7 @@ class Hash
       when Array
         value.to_deep_h
       when String
+        # If the string is not valid JSON, #to_deep_h will return `nil`
         value.to_deep_h || value
       else
         value.respond_to?(:to_h) ? value.to_h : value
