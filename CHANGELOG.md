@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `Array#to_deep_h` and `Hash#to_deep_h`, recursively converts underlying values to hashes
 - Added `Enumerable#group_by_key`, group an array of hashes by their keys
 - Added `Hash#new_nested_hash`, creates a new Hash that automatically initializes the value to a hash
+- Added `Hash#value_where` and `Hash#values_where`, easily find values in a hash based on key-value conditions
 
 ### Changed
 
