@@ -15,4 +15,8 @@ class TestHashValuesWhere < Minitest::Test
       users.values_where { |k, v| v[:role] == "admin" }
     )
   end
+
+  def test_it_handles_finding_nothing
+    assert_equal([], {}.values_where { |k, v| k })
+  end
 end

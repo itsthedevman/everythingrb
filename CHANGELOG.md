@@ -23,6 +23,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [0.3.1] - 12025-04-09
+
+### Added
+
+### Changed
+
+- Fixed `Hash#value_where` error when nothing is found
+
+### Removed
+
 ## [0.3.0] - 12025-04-09
 
 ### Added
@@ -139,7 +149,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.3.0...HEAD
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/itsthedevman/everythingrb/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/itsthedevman/everythingrb/compare/v0.2.5...v0.3.0
 [0.2.5]: https://github.com/itsthedevman/everythingrb/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/itsthedevman/everythingrb/compare/v0.2.3...v0.2.4
