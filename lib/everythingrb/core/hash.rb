@@ -190,13 +190,19 @@ class Hash
   #   { user: { name: "Alice", roles: ["admin"] } }.deep_freeze
   #   # => Hash and all nested structures are now frozen
   #
+  # @note CAUTION: Be careful when freezing collections that contain class objects
+  #   or singleton instances - this will freeze those classes/objects globally!
+  #   Only use deep_freeze on pure data structures you want to make immutable.
+  #
   def deep_freeze
     each_value { |v| v.respond_to?(:deep_freeze) ? v.deep_freeze : v.freeze }
     freeze
   end
 
-  # Needed below
+  # Allows calling original method. See below
   alias_method :og_transform_values, :transform_values
+
+  # Allows calling original method. See below
   alias_method :og_transform_values!, :transform_values!
 
   #
