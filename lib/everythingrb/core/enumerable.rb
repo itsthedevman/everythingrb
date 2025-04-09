@@ -44,4 +44,49 @@ module Enumerable
       filter_map(&block).join(join_with)
     end
   end
+
+  #
+  # Groups elements by a given key or nested keys
+  #
+  # @param keys [Array<Symbol, String>] The key(s) to group by
+  #
+  # @yield [value] Optional block to transform the key value before grouping
+  # @yieldparam value [Object] The value at the specified key(s)
+  # @yieldreturn [Object] The transformed value to use as the group key
+  #
+  # @return [Hash] A hash where keys are the grouped values and values are arrays of elements
+  #
+  # @example Group by a single key
+  #   users = [
+  #     {name: "Alice", role: "admin"},
+  #     {name: "Bob", role: "user"},
+  #     {name: "Charlie", role: "admin"}
+  #   ]
+  #   users.group_by_key(:role)
+  #   # => {"admin"=>[{name: "Alice", role: "admin"}, {name: "Charlie", role: "admin"}],
+  #   #     "user"=>[{name: "Bob", role: "user"}]}
+  #
+  # @example Group by nested keys
+  #   data = [
+  #     {department: {name: "Sales"}, employee: "Alice"},
+  #     {department: {name: "IT"}, employee: "Bob"},
+  #     {department: {name: "Sales"}, employee: "Charlie"}
+  #   ]
+  #   data.group_by_key(:department, :name)
+  #   # => {"Sales"=>[{department: {name: "Sales"}, employee: "Alice"},
+  #   #                {department: {name: "Sales"}, employee: "Charlie"}],
+  #   #     "IT"=>[{department: {name: "IT"}, employee: "Bob"}]}
+  #
+  # @example With transformation block
+  #   users.group_by_key(:role) { |role| role.upcase }
+  #   # => {"ADMIN"=>[{name: "Alice", role: "admin"}, {name: "Charlie", role: "admin"}],
+  #   #     "USER"=>[{name: "Bob", role: "user"}]}
+  #
+  def group_by_key(*keys, &block)
+    group_by do |value|
+      result = value.respond_to?(:dig) ? value.dig(*keys) : nil
+      result = yield(result) if block
+      result
+    end
+  end
 end
