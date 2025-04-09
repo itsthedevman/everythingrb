@@ -201,4 +201,49 @@ class Array
       to_sentence(options)
     end
   end
+
+  #
+  # Recursively converts all elements that respond to #to_h
+  #
+  # Maps over the array and calls #to_deep_h on any Hash/String elements,
+  # #to_h on any objects that respond to it, and handles nested arrays.
+  #
+  # @return [Array] A new array with all convertible elements deeply converted
+  #
+  # @example Converting arrays with mixed object types
+  #   users = [
+  #     {name: "Alice", roles: ["admin"]},
+  #     OpenStruct.new(name: "Bob", active: true),
+  #     Data.define(:name).new(name: "Carol")
+  #   ]
+  #   users.to_deep_h
+  #   # => [
+  #   #      {name: "Alice", roles: ["admin"]},
+  #   #      {name: "Bob", active: true},
+  #   #      {name: "Carol"}
+  #   #    ]
+  #
+  # @example With nested arrays and JSON strings
+  #   data = [
+  #     {profile: '{"level":"expert"}'},
+  #     [OpenStruct.new(id: 1), OpenStruct.new(id: 2)]
+  #   ]
+  #   data.to_deep_h
+  #   # => [{profile: {level: "expert"}}, [{id: 1}, {id: 2}]]
+  #
+  def to_deep_h
+    map do |value|
+      case value
+      when Hash
+        value.to_deep_h
+      when Array
+        value.to_deep_h
+      when String
+        # If the string is not valid JSON, #to_deep_h will return `nil`
+        value.to_deep_h || value
+      else
+        value.respond_to?(:to_h) ? value.to_h : value
+      end
+    end
+  end
 end

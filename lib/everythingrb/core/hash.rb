@@ -55,6 +55,53 @@ class Hash
   end
 
   #
+  # Recursively converts all values that respond to #to_h
+  #
+  # Similar to #to_h but recursively traverses the Hash structure
+  # and calls #to_h on any object that responds to it. Useful for
+  # normalizing nested data structures and parsing nested JSON.
+  #
+  # @return [Hash] A deeply converted hash with all nested objects converted
+  #
+  # @example Converting nested Data objects
+  #   user = { name: "Alice", metadata: Data.define(:source).new(source: "API") }
+  #   user.to_deep_h  # => {name: "Alice", metadata: {source: "API"}}
+  #
+  # @example Parsing nested JSON strings
+  #   nested = { profile: '{"role":"admin"}' }
+  #   nested.to_deep_h  # => {profile: {role: "admin"}}
+  #
+  # @example Mixed nested structures
+  #   data = {
+  #     config: OpenStruct.new(api_key: "secret"),
+  #     users: [
+  #       Data.define(:name).new(name: "Bob"),
+  #       {role: "admin"}
+  #     ]
+  #   }
+  #   data.to_deep_h
+  #   # => {
+  #   #      config: {api_key: "secret"},
+  #   #      users: [{name: "Bob"}, {role: "admin"}]
+  #   #    }
+  #
+  def to_deep_h
+    transform_values do |value|
+      case value
+      when Hash
+        value.to_deep_h
+      when Array
+        value.to_deep_h
+      when String
+        # If the string is not valid JSON, #to_deep_h will return `nil`
+        value.to_deep_h || value
+      else
+        value.respond_to?(:to_h) ? value.to_h : value
+      end
+    end
+  end
+
+  #
   # Converts hash to an immutable Data structure
   #
   # @return [Data] An immutable Data object with the same structure
