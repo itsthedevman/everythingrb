@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `#with_key` method to `Hash#transform_values` and `Hash#transform_values!`, grants access to both keys and values during transformations
 - Added `Array#to_deep_h` and `Hash#to_deep_h`, recursively converts underlying values to hashes
 - Added `Enumerable#group_by_key`, group an array of hashes by their keys
+- Added `Hash#new_nested_hash`, creates a new Hash that automatically initializes the value to a hash
 
 ### Changed
 
