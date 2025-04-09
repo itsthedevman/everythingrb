@@ -57,9 +57,12 @@ users.dig_map(:roles, 0)  # => ["admin", "user"]
 # Filter, map, and join in a single operation
 [1, 2, nil, 3, 4].join_map(" | ") { |n| "Item #{n}" if n&.odd? }
 # => "Item 1 | Item 3"
+
+# With ActiveSupport loaded, join arrays in natural language with "or"
+["red", "blue", "green"].to_or_sentence  # => "red, blue, or green"
 ```
 
-**Extensions:** `join_map`, `key_map`, `dig_map`
+**Extensions:** `join_map`, `key_map`, `dig_map`, `to_or_sentence`, `group_by_key`
 
 ### Object Protection
 
@@ -79,6 +82,25 @@ config[:api][:endpoints][0].frozen?  # => true
 ```
 
 **Extensions:** `deep_freeze`
+
+### Hash Convenience
+
+Work with hashes more intuitively:
+
+```ruby
+# Create deeply nested structures without initialization
+stats = Hash.new_nested_hash
+stats[:server][:region][:us_east][:errors] << "Connection timeout"
+# No need to initialize each level first!
+
+# Transform values with access to keys
+users.transform_values.with_key { |k, v| "User #{k}: #{v[:name]}" }
+
+# Find values based on conditions
+users.values_where { |k, v| v[:role] == "admin" }
+```
+
+**Extensions:** `new_nested_hash`, `with_key`, `value_where`, `values_where`
 
 ### Array Cleaning
 

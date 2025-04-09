@@ -19,6 +19,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+## [0.3.0] - 12025-04-09
+
+### Added
+
 - Added `Array#to_or_sentence`, creates a sentence with "or" connector between items
 - Added `#with_key` method to `Hash#transform_values` and `Hash#transform_values!`, grants access to both keys and values during transformations
 - Added `Array#to_deep_h` and `Hash#to_deep_h`, recursively converts underlying values to hashes
@@ -131,7 +139,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.2.5...HEAD
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/itsthedevman/everythingrb/compare/v0.2.5...v0.3.0
 [0.2.5]: https://github.com/itsthedevman/everythingrb/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/itsthedevman/everythingrb/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/itsthedevman/everythingrb/compare/v0.2.2...v0.2.3
