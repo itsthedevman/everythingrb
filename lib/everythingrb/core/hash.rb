@@ -310,7 +310,7 @@ class Hash
   def value_where(&block)
     return to_enum(:value_where) if block.nil?
 
-    find(&block).last
+    find(&block)&.last
   end
 
   #
