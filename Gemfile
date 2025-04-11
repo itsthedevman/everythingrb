@@ -13,7 +13,9 @@ gem "standard", "~> 1.3"
 
 gem "activesupport", "~> 8.0"
 
+gem "irb"
 gem "pry"
+gem "benchmark-ips"
 
 group :development, :documentation do
   gem "yard"
