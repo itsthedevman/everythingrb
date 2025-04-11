@@ -339,6 +339,34 @@ class Hash
     select(&block).values
   end
 
+  def replace_key(old_key, new_key)
+    # Fun thing I learned. For small hashes, using #except is 1.5x faster than using dup and delete.
+    # But as the hash becomes larger, the performance improvements become diminished until they're roughly the same
+    # Neat!
+    hash = except(old_key)
+    hash[new_key] = self[old_key]
+    hash
+  end
+
+  def replace_key!(old_key, new_key)
+    self[new_key] = delete(old_key)
+    self
+  end
+
+  def replace_keys(**keys)
+    hash = except(*keys.keys)
+
+    keys.each do |old_key, new_key|
+      hash[new_key] = self[old_key]
+    end
+
+    hash
+  end
+
+  def replace_keys!(**keys)
+    self
+  end
+
   private
 
   def transform_values_enumerator
