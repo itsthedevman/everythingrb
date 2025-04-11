@@ -339,21 +339,142 @@ class Hash
     select(&block).values
   end
 
+  #
+  # Replaces a key in the hash while preserving the original order of elements
+  #
+  # @param old_key [Object] The key to replace
+  # @param new_key [Object] The new key to use
+  #
+  # @return [Hash] A new hash with the key replaced
+  #
+  # @example Replace a single key
+  #   {a: 1, b: 2, c: 3}.replace_key(:b, :middle)
+  #   # => {a: 1, middle: 2, c: 3}
+  #
   def replace_key(old_key, new_key)
+    replace_keys(old_key => new_key)
+  end
+
+  #
+  # Replaces a key in the hash in place while preserving the original order of elements
+  #
+  # @param old_key [Object] The key to replace
+  # @param new_key [Object] The new key to use
+  #
+  # @return [self] The modified hash
+  #
+  # @example Replace a key in place
+  #   hash = {a: 1, b: 2, c: 3}
+  #   hash.replace_key!(:b, :middle)
+  #   # => {a: 1, middle: 2, c: 3}
+  #
+  def replace_key!(old_key, new_key)
+    replace_keys!(old_key => new_key)
+  end
+
+  #
+  # Replaces multiple keys in the hash while preserving the original order of elements
+  #
+  # This method maintains the original order of all keys in the hash, replacing
+  # only the specified keys while keeping their positions unchanged.
+  #
+  # @param keys [Hash] A mapping of old_key => new_key pairs
+  #
+  # @return [Hash] A new hash with keys replaced
+  #
+  # @example Replace multiple keys
+  #   {a: 1, b: 2, c: 3, d: 4}.replace_keys(a: :first, c: :third)
+  #   # => {first: 1, b: 2, third: 3, d: 4}
+  #
+  def replace_keys(**keys)
+    # I tried multiple different ways to replace the key while preserving the order, this was the fastest
+    transform_keys do |key|
+      keys.key?(key) ? keys[key] : key
+    end
+  end
+
+  #
+  # Replaces multiple keys in the hash in place while preserving the original order of elements
+  #
+  # This method maintains the original order of all keys in the hash, replacing
+  # only the specified keys while keeping their positions unchanged.
+  #
+  # @param keys [Hash] A mapping of old_key => new_key pairs
+  #
+  # @return [self] The modified hash
+  #
+  # @example Replace multiple keys in place
+  #   hash = {a: 1, b: 2, c: 3, d: 4}
+  #   hash.replace_keys!(a: :first, c: :third)
+  #   # => {first: 1, b: 2, third: 3, d: 4}
+  #
+  def replace_keys!(**keys)
+    # I tried multiple different ways to replace the key while preserving the order, this was the fastest
+    transform_keys! do |key|
+      keys.key?(key) ? keys[key] : key
+    end
+  end
+
+  #
+  # Replaces a key in the hash without preserving element order (faster)
+  #
+  # This method is significantly faster than #replace_key but does not
+  # guarantee that the order of elements in the hash will be preserved.
+  #
+  # @param old_key [Object] The key to replace
+  # @param new_key [Object] The new key to use
+  #
+  # @return [Hash] A new hash with the key replaced
+  #
+  # @example Replace a single key without preserving order
+  #   {a: 1, b: 2, c: 3}.replace_key_unordered(:b, :middle)
+  #   # => {a: 1, c: 3, middle: 2}  # Order may differ
+  #
+  def replace_key_unordered(old_key, new_key)
     # Fun thing I learned. For small hashes, using #except is 1.5x faster than using dup and delete.
-    # But as the hash becomes larger, the performance improvements become diminished until they're roughly the same
+    # But as the hash becomes larger, the performance improvements become diminished until they're roughly the same.
     # Neat!
     hash = except(old_key)
     hash[new_key] = self[old_key]
     hash
   end
 
-  def replace_key!(old_key, new_key)
+  #
+  # Replaces a key in the hash in place without preserving element order (faster)
+  #
+  # This method is significantly faster than #replace_key! but does not
+  # guarantee that the order of elements in the hash will be preserved.
+  #
+  # @param old_key [Object] The key to replace
+  # @param new_key [Object] The new key to use
+  #
+  # @return [self] The modified hash
+  #
+  # @example Replace a key in place without preserving order
+  #   hash = {a: 1, b: 2, c: 3}
+  #   hash.replace_key_unordered!(:b, :middle)
+  #   # => {a: 1, c: 3, middle: 2}  # Order may differ
+  #
+  def replace_key_unordered!(old_key, new_key)
     self[new_key] = delete(old_key)
     self
   end
 
-  def replace_keys(**keys)
+  #
+  # Replaces multiple keys in the hash without preserving element order (faster)
+  #
+  # This method is significantly faster than #replace_keys but does not
+  # guarantee that the order of elements in the hash will be preserved.
+  #
+  # @param keys [Hash] A mapping of old_key => new_key pairs
+  #
+  # @return [Hash] A new hash with keys replaced
+  #
+  # @example Replace multiple keys without preserving order
+  #   {a: 1, b: 2, c: 3, d: 4}.replace_keys_unordered(a: :first, c: :third)
+  #   # => {b: 2, d: 4, first: 1, third: 3}  # Order may differ
+  #
+  def replace_keys_unordered(**keys)
     hash = except(*keys.keys)
 
     keys.each do |old_key, new_key|
@@ -363,7 +484,26 @@ class Hash
     hash
   end
 
-  def replace_keys!(**keys)
+  #
+  # Replaces multiple keys in the hash in place without preserving element order (faster)
+  #
+  # This method is significantly faster than #replace_keys! but does not
+  # guarantee that the order of elements in the hash will be preserved.
+  #
+  # @param keys [Hash] A mapping of old_key => new_key pairs
+  #
+  # @return [self] The modified hash
+  #
+  # @example Replace multiple keys in place without preserving order
+  #   hash = {a: 1, b: 2, c: 3, d: 4}
+  #   hash.replace_keys_unordered!(a: :first, c: :third)
+  #   # => {b: 2, d: 4, first: 1, third: 3}  # Order may differ
+  #
+  def replace_keys_unordered!(**keys)
+    keys.each do |old_key, new_key|
+      self[new_key] = delete(old_key)
+    end
+
     self
   end
 

@@ -20,11 +20,12 @@ class TestReplaceKeys < Minitest::Test
     assert_equal({key_one: 1, key_two: 2}, hash)
   end
 
-  # def test_it_can_change_the_type
-  #   hash = {key_1: 1, key_2: 2}
-  #   assert_equal({"key_one" => 1, key_2: 2}, hash.replace_key(:key_1, "key_one"))
+  def test_it_replaces_keys_in_order
+    hash = {a: 1, b: 2, c: 3}
+    new_hash = hash.replace_keys(a: :b, b: :c)
 
-  #   hash.replace_key!(:key_1, "key_one")
-  #   assert_equal({"key_one" => 1, key_2: 2}, hash)
-  # end
+    # Order matters {b: 1, c:2}
+    assert_equal([:b, :c], new_hash.keys)
+    assert_equal([1, 3], new_hash.values)
+  end
 end
