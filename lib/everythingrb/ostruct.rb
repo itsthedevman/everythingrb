@@ -3,12 +3,16 @@
 #
 # Extensions to Ruby's OpenStruct class
 #
-# These additions make OpenStructs way more flexible with enumeration
-# methods and ActiveSupport integration.
+# Provides:
+# - #map, #filter_map: Enumeration methods for OpenStruct entries
+# - #join_map: Combine filter_map and join operations
+# - #blank?, #present?: ActiveSupport integrations when available
 #
-# @example Using enumeration methods
+# @example
+#   require "everythingrb/ostruct"
+#
 #   person = OpenStruct.new(name: "Alice", age: 30)
-#   person.map { |k, v| "#{k} is #{v}" } # => ["name is Alice", "age is 30"]
+#   person.map { |k, v| "#{k}: #{v}" }  # => ["name: Alice", "age: 30"]
 #
 class OpenStruct
   # ActiveSupport integrations

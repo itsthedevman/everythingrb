@@ -3,12 +3,14 @@
 #
 # Extensions to Ruby's core Enumerable module
 #
-# These additions make working with any enumerable collection more expressive
-# by combining common operations into convenient methods.
+# Provides:
+# - #join_map: Combine filter_map and join operations
+# - #group_by_key: Group elements by a given key or nested keys
 #
-# @example Using join_map with a Range
-#   (1..5).join_map(" | ") { |n| "item-#{n}" if n.even? }
-#   # => "item-2 | item-4"
+# @example
+#   require "everythingrb/enumerable"
+#   (1..5).join_map(" | ") { |n| "item-#{n}" if n.even? }  # => "item-2 | item-4"
+#   users.group_by_key(:role)  # Groups users by their role
 #
 module Enumerable
   #

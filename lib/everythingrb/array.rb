@@ -3,18 +3,17 @@
 #
 # Extensions to Ruby's core Array class
 #
-# This module adds convenient mapping, joining, and freezing functionality
-# to all Arrays in your application.
+# Provides:
+# - #join_map: Combine filter_map and join operations in one step
+# - #key_map, #dig_map: Extract values from arrays of hashes
+# - #deep_freeze: Recursively freeze array and contents
+# - #compact_prefix, #compact_suffix, #trim_nils: Clean up array boundaries
+# - ActiveSupport integrations: #trim_blanks and more when ActiveSupport is loaded
 #
-# @example Using the extensions
-#   numbers = [1, 2, nil, 3]
-#
-#   # Filter out nils and format odd numbers
-#   numbers.join_map(", ") { |n| "odd: #{n}" if n&.odd? }
-#   # => "odd: 1, odd: 3"
-#
-#   users = [{name: "Alice", role: "admin"}, {name: "Bob", role: "user"}]
-#   users.key_map(:name)    # => ["Alice", "Bob"]
+# @example
+#   require "everythingrb/array"
+#   ["foo", nil, "bar"].join_map(", ") { |s| s&.upcase }  # => "FOO, BAR"
+#   [{name: "Alice"}, {name: "Bob"}].key_map(:name)  # => ["Alice", "Bob"]
 #
 class Array
   #

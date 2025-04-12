@@ -3,14 +3,17 @@
 #
 # Extensions to Ruby's core String class
 #
-# These additions make working with JSON strings easy by providing methods for conversion
-# to various Ruby data structures. Plus some nice formatting helpers that saves tons of typing
+# Provides:
+# - #to_h, #to_a: Convert JSON strings to Hash/Array with error handling
+# - #to_deep_h: Recursively parse nested JSON strings
+# - #to_ostruct, #to_istruct, #to_struct: Convert JSON to data structures
+# - #with_quotes, #in_quotes: Wrap strings in quotes
 #
-# @example Converting JSON to different structures
-#   json = '{"user": {"name": "Alice", "admin": true}}'
-#   json.to_h                 # => {user: {name: "Alice", admin: true}}
-#   json.to_istruct.user.name # => "Alice"
-#   json.to_ostruct.user.name # => "Alice"
+# @example
+#   require "everythingrb/string"
+#
+#   '{"user": {"name": "Alice"}}'.to_ostruct.user.name  # => "Alice"
+#   "Hello".with_quotes  # => "\"Hello\""
 #
 class String
   #

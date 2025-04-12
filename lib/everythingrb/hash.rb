@@ -3,17 +3,19 @@
 #
 # Extensions to Ruby's core Hash class
 #
-# These additions make working with hashes more convenient by adding
-# conversion methods to different data structures and string formatting helpers.
+# Provides:
+# - #to_struct, #to_ostruct, #to_istruct: Convert hashes to different structures
+# - #join_map: Combine filter_map and join operations
+# - #deep_freeze: Recursively freeze hash and contents
+# - #transform_values.with_key: Transform values with access to keys
+# - #value_where, #values_where: Find values based on conditions
+# - #rename_key, #rename_keys: Rename hash keys while preserving order
+# - ::new_nested_hash: Create automatically nesting hashes
 #
-# @example Converting to different structures
-#   user = { name: "Alice", roles: ["admin"] }
-#   user.to_struct    # => #<struct name="Alice", roles=["admin"]>
-#   user.to_ostruct   # => #<OpenStruct name="Alice", roles=["admin"]>
-#
-#   # Filtering and joining hash entries
-#   { a: 1, b: nil, c: 3 }.join_map(", ") { |k, v| "#{k}:#{v}" if v }
-#   # => "a:1, c:3"
+# @example
+#   require "everythingrb/hash"
+#   config = {server: {port: 443}}.to_ostruct
+#   config.server.port  # => 443
 #
 class Hash
   #

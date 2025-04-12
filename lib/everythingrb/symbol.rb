@@ -3,9 +3,12 @@
 #
 # Extensions to Ruby's core Symbol class
 #
-# These additions provide handy formatting helpers for symbols.
+# Provides:
+# - #with_quotes, #in_quotes: Wrap symbols in quotes
 #
 # @example
+#   require "everythingrb/symbol"
+#
 #   :hello_world.with_quotes  # => :"\"hello_world\""
 #
 class Symbol
