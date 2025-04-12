@@ -19,6 +19,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+## [0.4.0]
+
+### Added
+
 - Added new `Hash` methods for renaming keys:
   - `#rename_key` - Renames a key in the hash while preserving the original order of elements
   - `#rename_key!` - Same as `#rename_key` but modifies the hash in place
@@ -30,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `Struct#to_deep_h` - Recursively converts Struct objects and all nested values to hashes
   - `OpenStruct#to_deep_h` - Recursively converts OpenStruct objects and all nested values to hashes
   - `Data#to_deep_h` - Recursively converts Data objects and all nested values to hashes
+- Added `depth` parameter to `Hash.new_nested_hash` to control nesting behaviors
 
 ### Changed
 
@@ -161,7 +170,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.3.1...HEAD
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/itsthedevman/everythingrb/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/itsthedevman/everythingrb/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/itsthedevman/everythingrb/compare/v0.2.5...v0.3.0
 [0.2.5]: https://github.com/itsthedevman/everythingrb/compare/v0.2.4...v0.2.5
