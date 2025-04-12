@@ -29,6 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Reorganized internal file structure for better modularity with full backward compatibility
+- Updated documentation headers to each module file explaining available extensions
+
 ### Removed
 
 ## [0.3.1] - 12025-04-09
