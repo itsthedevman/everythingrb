@@ -19,6 +19,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added new `Hash` methods for renaming keys:
+  - `#rename_key` - Renames a key in the hash while preserving the original order of elements
+  - `#rename_key!` - Same as `#rename_key` but modifies the hash in place
+  - `#rename_keys` - Renames multiple keys in the hash while preserving the original order of elements
+  - `#rename_keys!` - Same as `#rename_keys` but modifies the hash in place
+  - `#rename_key_unordered` - Renames a key without preserving element order (faster operation)
+  - `#rename_key_unordered!` - Same as `#rename_key_unordered` but modifies the hash in place
+
 ### Changed
 
 ### Removed
@@ -74,7 +82,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added `Symbol#with_quotes` and `Symbol#in_quotes`
 
-
 ## [0.2.2] - 12025-03-03
 
 ### Added
@@ -93,7 +100,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Removed `Data` definition check for `to_istruct`
-
 
 ## [0.2.0] - 12025-02-17
 
@@ -118,7 +124,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Separated out tests that require `ActiveSupport` into their own test process. Files that end with `_active_support` will be tested separately with ActiveSupport loaded
-
 
 ## [0.1.1] - 12025-02-07
 
