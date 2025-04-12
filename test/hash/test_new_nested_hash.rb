@@ -19,4 +19,16 @@ class TestHashNewNestedHash < Minitest::Test
       stats
     )
   end
+
+  def test_it_allows_limiting_depth
+    hash = Hash.new_nested_hash(depth: 1)
+
+    hash[:user][:name] = "Alice"
+    (hash[:user][:roles] ||= []) << "admin"
+
+    assert_equal(
+      {user: {name: "Alice", roles: ["admin"]}},
+      hash
+    )
+  end
 end

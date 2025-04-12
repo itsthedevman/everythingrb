@@ -35,26 +35,49 @@ class Hash
   # Creates a new Hash that automatically initializes missing keys with nested hashes
   #
   # This method creates a hash where any missing key access will automatically
-  # create another nested hash with the same behavior, allowing for unlimited
-  # nesting depth without explicit initialization.
+  # create another nested hash with the same behavior. You can control the nesting
+  # depth with the depth parameter.
   #
-  # @return [Hash] A hash that recursively creates nested hashes for missing keys
+  # @param depth [Integer, nil] The maximum nesting depth for automatic hash creation
+  #   When nil (default), creates unlimited nesting depth
+  #   When 0, behaves like a regular hash (returns nil for missing keys)
+  #   When > 0, automatically creates hashes only up to the specified level
   #
-  # @example Basic usage with two levels
+  # @return [Hash] A hash that creates nested hashes for missing keys
+  #
+  # @example Unlimited nesting (default behavior)
   #   users = Hash.new_nested_hash
   #   users[:john][:role] = "admin"  # No need to initialize users[:john] first
   #   users # => {john: {role: "admin"}}
   #
   # @example Deep nesting without initialization
   #   stats = Hash.new_nested_hash
-  #   (stats[:server][:region][:us_east][:errors] = []) << "Some Error"
-  #   stats # => {server: {region: {us_east: {errors: ["Some Error"]}}}}
+  #   stats[:server][:region][:us_east][:errors] = ["Error"]
+  #   stats # => {server: {region: {us_east: {errors: ["Error"]}}}}
   #
-  # @note While extremely convenient, be cautious with very deep structures
-  #   as this creates new hashes on demand for any key access
+  # @example Limited nesting depth
+  #   hash = Hash.new_nested_hash(depth: 1)
+  #   hash[:user][:name] = "Alice"  # Works fine - only one level of auto-creation
   #
-  def self.new_nested_hash
-    new { |hash, key| hash[key] = new_nested_hash }
+  #   # This pattern works correctly with limited nesting:
+  #   (hash[:user][:roles] ||= []) << "admin"
+  #   hash # => {user: {name: "Alice", roles: ["admin"]}}
+  #
+  # @note While unlimited nesting is convenient, it can interfere with common Ruby
+  #   patterns like ||= when initializing values at deep depths. Use the depth
+  #   parameter to control this behavior.
+  #
+  def self.new_nested_hash(depth: nil)
+    new do |hash, key|
+      next if depth == 0
+
+      hash[key] =
+        if depth.nil?
+          new_nested_hash
+        else
+          new_nested_hash(depth: depth - 1)
+        end
+    end
   end
 
   #
