@@ -25,6 +25,51 @@ gem "everythingrb"
 gem install everythingrb
 ```
 
+## Usage
+
+There are two ways to use EverythingRB:
+
+### Load Everything (Default)
+
+The simplest approach - just require and go:
+
+```ruby
+require "everythingrb"
+
+# Now you have access to all extensions!
+users = [{name: "Alice"}, {name: "Bob"}]
+users.key_map(:name).join(", ")  # => "Alice, Bob"
+
+config = {server: {port: 443}}.to_ostruct
+config.server.port  # => 443
+```
+
+### Cherry-Pick Extensions
+
+If you only need specific extensions, you can load just what you want:
+
+```ruby
+require "everythingrb/prelude"  # Required base module
+require "everythingrb/array"    # Just Array extensions
+require "everythingrb/string"   # Just String extensions
+
+# Now you have access to only the extensions you loaded
+["a", "b"].join_map(" | ") { |s| s.upcase }  # => "A | B"
+'{"name": "Alice"}'.to_ostruct.name   # => "Alice"
+
+# But Hash extensions aren't loaded yet
+{}.to_ostruct  # => NoMethodError
+```
+
+Available modules:
+- `array`: Array extensions (join_map, key_map, etc.)
+- `enumerable`: Enumerable extensions (join_map, group_by_key)
+- `hash`: Hash extensions (to_ostruct, deep_freeze, etc.)
+- `module`: Extensions like attr_predicate
+- `ostruct`: OpenStruct extensions (map, join_map, etc.)
+- `string`: String extensions (to_h, to_ostruct, etc.)
+- `symbol`: Symbol extensions (with_quotes)
+
 ## What's Included
 
 EverythingRB extends Ruby's core classes with intuitive methods that simplify common patterns.
