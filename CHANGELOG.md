@@ -26,6 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `#rename_keys!` - Same as `#rename_keys` but modifies the hash in place
   - `#rename_key_unordered` - Renames a key without preserving element order (faster operation)
   - `#rename_key_unordered!` - Same as `#rename_key_unordered` but modifies the hash in place
+- Added `to_deep_h` to core Ruby classes for consistent deep hash conversion:
+  - `Struct#to_deep_h` - Recursively converts Struct objects and all nested values to hashes
+  - `OpenStruct#to_deep_h` - Recursively converts OpenStruct objects and all nested values to hashes
+  - `Data#to_deep_h` - Recursively converts Data objects and all nested values to hashes
 
 ### Changed
 

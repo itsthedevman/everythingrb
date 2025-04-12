@@ -63,11 +63,13 @@ require "everythingrb/string"   # Just String extensions
 
 Available modules:
 - `array`: Array extensions (join_map, key_map, etc.)
+- `data`: Data extensions (to_deep_h)
 - `enumerable`: Enumerable extensions (join_map, group_by_key)
 - `hash`: Hash extensions (to_ostruct, deep_freeze, etc.)
 - `module`: Extensions like attr_predicate
 - `ostruct`: OpenStruct extensions (map, join_map, etc.)
 - `string`: String extensions (to_h, to_ostruct, etc.)
+- `struct`: Struct extensions (to_deep_h)
 - `symbol`: Symbol extensions (with_quotes)
 
 ## What's Included
