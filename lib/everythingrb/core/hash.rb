@@ -340,97 +340,97 @@ class Hash
   end
 
   #
-  # Replaces a key in the hash while preserving the original order of elements
+  # Renames a key in the hash while preserving the original order of elements
   #
-  # @param old_key [Object] The key to replace
+  # @param old_key [Object] The key to rename
   # @param new_key [Object] The new key to use
   #
-  # @return [Hash] A new hash with the key replaced
+  # @return [Hash] A new hash with the key renamed
   #
-  # @example Replace a single key
-  #   {a: 1, b: 2, c: 3}.replace_key(:b, :middle)
+  # @example Renames a single key
+  #   {a: 1, b: 2, c: 3}.rename_key(:b, :middle)
   #   # => {a: 1, middle: 2, c: 3}
   #
-  def replace_key(old_key, new_key)
-    replace_keys(old_key => new_key)
+  def rename_key(old_key, new_key)
+    rename_keys(old_key => new_key)
   end
 
   #
-  # Replaces a key in the hash in place while preserving the original order of elements
+  # Renames a key in the hash in place while preserving the original order of elements
   #
-  # @param old_key [Object] The key to replace
+  # @param old_key [Object] The key to rename
   # @param new_key [Object] The new key to use
   #
   # @return [self] The modified hash
   #
-  # @example Replace a key in place
+  # @example Renames a key in place
   #   hash = {a: 1, b: 2, c: 3}
-  #   hash.replace_key!(:b, :middle)
+  #   hash.rename_key!(:b, :middle)
   #   # => {a: 1, middle: 2, c: 3}
   #
-  def replace_key!(old_key, new_key)
-    replace_keys!(old_key => new_key)
+  def rename_key!(old_key, new_key)
+    rename_keys!(old_key => new_key)
   end
 
   #
-  # Replaces multiple keys in the hash while preserving the original order of elements
+  # Renames multiple keys in the hash while preserving the original order of elements
   #
-  # This method maintains the original order of all keys in the hash, replacing
+  # This method maintains the original order of all keys in the hash, renaming
   # only the specified keys while keeping their positions unchanged.
   #
   # @param keys [Hash] A mapping of old_key => new_key pairs
   #
-  # @return [Hash] A new hash with keys replaced
+  # @return [Hash] A new hash with keys renamed
   #
-  # @example Replace multiple keys
-  #   {a: 1, b: 2, c: 3, d: 4}.replace_keys(a: :first, c: :third)
+  # @example Renames multiple keys
+  #   {a: 1, b: 2, c: 3, d: 4}.rename_keys(a: :first, c: :third)
   #   # => {first: 1, b: 2, third: 3, d: 4}
   #
-  def replace_keys(**keys)
-    # I tried multiple different ways to replace the key while preserving the order, this was the fastest
+  def rename_keys(**keys)
+    # I tried multiple different ways to rename the key while preserving the order, this was the fastest
     transform_keys do |key|
       keys.key?(key) ? keys[key] : key
     end
   end
 
   #
-  # Replaces multiple keys in the hash in place while preserving the original order of elements
+  # Renames multiple keys in the hash in place while preserving the original order of elements
   #
-  # This method maintains the original order of all keys in the hash, replacing
+  # This method maintains the original order of all keys in the hash, renaming
   # only the specified keys while keeping their positions unchanged.
   #
   # @param keys [Hash] A mapping of old_key => new_key pairs
   #
   # @return [self] The modified hash
   #
-  # @example Replace multiple keys in place
+  # @example Rename multiple keys in place
   #   hash = {a: 1, b: 2, c: 3, d: 4}
-  #   hash.replace_keys!(a: :first, c: :third)
+  #   hash.rename_keys!(a: :first, c: :third)
   #   # => {first: 1, b: 2, third: 3, d: 4}
   #
-  def replace_keys!(**keys)
-    # I tried multiple different ways to replace the key while preserving the order, this was the fastest
+  def rename_keys!(**keys)
+    # I tried multiple different ways to rename the key while preserving the order, this was the fastest
     transform_keys! do |key|
       keys.key?(key) ? keys[key] : key
     end
   end
 
   #
-  # Replaces a key in the hash without preserving element order (faster)
+  # Renames a key in the hash without preserving element order (faster)
   #
-  # This method is significantly faster than #replace_key but does not
+  # This method is significantly faster than #rename_key but does not
   # guarantee that the order of elements in the hash will be preserved.
   #
-  # @param old_key [Object] The key to replace
+  # @param old_key [Object] The key to rename
   # @param new_key [Object] The new key to use
   #
-  # @return [Hash] A new hash with the key replaced
+  # @return [Hash] A new hash with the key renamed
   #
-  # @example Replace a single key without preserving order
-  #   {a: 1, b: 2, c: 3}.replace_key_unordered(:b, :middle)
+  # @example Rename a single key without preserving order
+  #   {a: 1, b: 2, c: 3}.rename_key_unordered(:b, :middle)
   #   # => {a: 1, c: 3, middle: 2}  # Order may differ
   #
-  def replace_key_unordered(old_key, new_key)
+  def rename_key_unordered(old_key, new_key)
     # Fun thing I learned. For small hashes, using #except is 1.5x faster than using dup and delete.
     # But as the hash becomes larger, the performance improvements become diminished until they're roughly the same.
     # Neat!
@@ -440,22 +440,22 @@ class Hash
   end
 
   #
-  # Replaces a key in the hash in place without preserving element order (faster)
+  # Renames a key in the hash in place without preserving element order (faster)
   #
-  # This method is significantly faster than #replace_key! but does not
+  # This method is significantly faster than #rename_key! but does not
   # guarantee that the order of elements in the hash will be preserved.
   #
-  # @param old_key [Object] The key to replace
+  # @param old_key [Object] The key to rename
   # @param new_key [Object] The new key to use
   #
   # @return [self] The modified hash
   #
-  # @example Replace a key in place without preserving order
+  # @example Rename a key in place without preserving order
   #   hash = {a: 1, b: 2, c: 3}
-  #   hash.replace_key_unordered!(:b, :middle)
+  #   hash.rename_key_unordered!(:b, :middle)
   #   # => {a: 1, c: 3, middle: 2}  # Order may differ
   #
-  def replace_key_unordered!(old_key, new_key)
+  def rename_key_unordered!(old_key, new_key)
     self[new_key] = delete(old_key)
     self
   end
