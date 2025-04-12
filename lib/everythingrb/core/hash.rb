@@ -460,53 +460,6 @@ class Hash
     self
   end
 
-  #
-  # Replaces multiple keys in the hash without preserving element order (faster)
-  #
-  # This method is significantly faster than #replace_keys but does not
-  # guarantee that the order of elements in the hash will be preserved.
-  #
-  # @param keys [Hash] A mapping of old_key => new_key pairs
-  #
-  # @return [Hash] A new hash with keys replaced
-  #
-  # @example Replace multiple keys without preserving order
-  #   {a: 1, b: 2, c: 3, d: 4}.replace_keys_unordered(a: :first, c: :third)
-  #   # => {b: 2, d: 4, first: 1, third: 3}  # Order may differ
-  #
-  def replace_keys_unordered(**keys)
-    hash = except(*keys.keys)
-
-    keys.each do |old_key, new_key|
-      hash[new_key] = self[old_key]
-    end
-
-    hash
-  end
-
-  #
-  # Replaces multiple keys in the hash in place without preserving element order (faster)
-  #
-  # This method is significantly faster than #replace_keys! but does not
-  # guarantee that the order of elements in the hash will be preserved.
-  #
-  # @param keys [Hash] A mapping of old_key => new_key pairs
-  #
-  # @return [self] The modified hash
-  #
-  # @example Replace multiple keys in place without preserving order
-  #   hash = {a: 1, b: 2, c: 3, d: 4}
-  #   hash.replace_keys_unordered!(a: :first, c: :third)
-  #   # => {b: 2, d: 4, first: 1, third: 3}  # Order may differ
-  #
-  def replace_keys_unordered!(**keys)
-    keys.each do |old_key, new_key|
-      self[new_key] = delete(old_key)
-    end
-
-    self
-  end
-
   private
 
   def transform_values_enumerator
