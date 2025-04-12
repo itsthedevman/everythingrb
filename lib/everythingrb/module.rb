@@ -3,10 +3,12 @@
 #
 # Extensions to Ruby's core Module class
 #
-# These additions provide a convenient way to create boolean-style accessor
-# methods for any class.
+# Provides:
+# - #attr_predicate: Create boolean-style accessor methods
 #
-# @example Creating predicate methods
+# @example
+#   require "everythingrb/module"
+#
 #   class User
 #     attr_accessor :admin
 #     attr_predicate :admin
@@ -14,7 +16,7 @@
 #
 #   user = User.new
 #   user.admin = true
-#   user.admin? # => true
+#   user.admin?  # => true
 #
 class Module
   #
