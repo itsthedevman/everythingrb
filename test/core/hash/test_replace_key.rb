@@ -22,9 +22,9 @@ class TestReplaceKey < Minitest::Test
 
   def test_it_can_change_the_type
     hash = {key_1: 1, key_2: 2}
-    assert_equal({"key_one" => 1, key_2: 2}, hash.rename_key(:key_1, "key_one"))
+    assert_equal({"key_one" => 1, :key_2 => 2}, hash.rename_key(:key_1, "key_one"))
 
     hash.rename_key!(:key_1, "key_one")
-    assert_equal({"key_one" => 1, key_2: 2}, hash)
+    assert_equal({"key_one" => 1, :key_2 => 2}, hash)
   end
 end

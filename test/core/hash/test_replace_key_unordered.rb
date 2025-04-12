@@ -28,9 +28,9 @@ class TestReplaceKeyUnordered < Minitest::Test
 
   def test_it_can_change_the_type
     hash = {key_1: 1, key_2: 2}
-    assert_equal({key_2: 2, "key_one" => 1}, hash.rename_key_unordered(:key_1, "key_one"))
+    assert_equal({:key_2 => 2, "key_one" => 1}, hash.rename_key_unordered(:key_1, "key_one"))
 
     hash.rename_key_unordered!(:key_1, "key_one")
-    assert_equal({key_2: 2, "key_one" => 1}, hash)
+    assert_equal({:key_2 => 2, "key_one" => 1}, hash)
   end
 end
