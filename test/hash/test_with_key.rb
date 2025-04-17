@@ -20,13 +20,13 @@ class TestHashWithKey < Minitest::Test
   end
 
   def test_it_returns_new_hash
-    result = @hash.transform_values.with_key { |k, v| "#{k}#{v}" }
+    result = @hash.transform_values.with_key { |v, k| "#{k}#{v}" }
 
     assert_equal({key_1: "key_11", key_2: "key_22"}, result)
   end
 
   def test_it_modifies_in_memory
-    @hash.transform_values!.with_key { |k, v| "#{k}#{v}" }
+    @hash.transform_values!.with_key { |v, k| "#{k}#{v}" }
 
     assert_equal({key_1: "key_11", key_2: "key_22"}, @hash)
   end

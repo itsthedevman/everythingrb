@@ -274,7 +274,7 @@ class Hash
   #   # => {a: 2, b: 4}
   #
   # @example Using with_key to access keys during transformation
-  #   {a: 1, b: 2}.transform_values.with_key { |k, v| "#{k}_#{v}" }
+  #   {a: 1, b: 2}.transform_values.with_key { |v, k| "#{k}_#{v}" }
   #   # => {a: "a_1", b: "b_2"}
   #
   def transform_values(&block)
@@ -304,7 +304,7 @@ class Hash
   #
   # @example Using with_key to access keys during in-place transformation
   #   hash = {a: 1, b: 2}
-  #   hash.transform_values!.with_key { |k, v| "#{k}_#{v}" }
+  #   hash.transform_values!.with_key { |v, k| "#{k}_#{v}" }
   #   # => {a: "a_1", b: "b_2"}
   #
   def transform_values!(&block)
@@ -496,7 +496,7 @@ class Hash
       raise ArgumentError, "Missing block for Hash#transform_values.with_key" if block.nil?
 
       original_hash.each_pair.with_object({}) do |(key, value), output|
-        output[key] = block.call(key, value)
+        output[key] = block.call(value, key)
       end
     end
 
@@ -512,7 +512,7 @@ class Hash
       raise ArgumentError, "Missing block for Hash#transform_values!.with_key" if block.nil?
 
       original_hash.each_pair do |key, value|
-        original_hash[key] = block.call(key, value)
+        original_hash[key] = block.call(value, key)
       end
 
       original_hash
