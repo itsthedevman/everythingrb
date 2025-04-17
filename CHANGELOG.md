@@ -17,13 +17,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+**BREAKING:**
+
+The parameter order in `Hash#transform_values.with_key` has been changed to yield `|value, key|` instead of `|key, value|` to maintain consistency with Ruby's standard enumeration methods like `each_with_index`.
+
+**Before:**
+```ruby
+hash.transform_values.with_key { |key, value| "#{key}: #{value}" }
+```
+
+**After:**
+```ruby
+hash.transform_values.with_key { |value, key| "#{key}: #{value}" }
+```
+
+This change aligns our method signatures with Ruby's conventions and matches our other methods like `join_map(with_index: true)` which yields `|value, index|`.
+
 ### Added
 
 ### Changed
+- Changed parameter order in `Hash#transform_values.with_key` to yield `|value, key|` instead of `|key, value|` for consistency with Ruby conventions.
 
 ### Removed
 
-## [0.4.0]
+
+## [0.4.0] - 12025-04-11
 
 ### Added
 
