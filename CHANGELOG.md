@@ -35,6 +35,8 @@ This change aligns our method signatures with Ruby's conventions and matches our
 
 ### Added
 
+- Added `Hash#transform` and `Hash#transform!` for transforming a hash's keys and values at the same time.
+
 ### Changed
 - Changed parameter order in `Hash#transform_values.with_key` to yield `|value, key|` instead of `|key, value|` for consistency with Ruby conventions.
 
