@@ -8,6 +8,7 @@
 # - #join_map: Combine filter_map and join operations
 # - #deep_freeze: Recursively freeze hash and contents
 # - #transform_values.with_key: Transform values with access to keys
+# - #transform, #transform!: Transform keys and values
 # - #value_where, #values_where: Find values based on conditions
 # - #rename_key, #rename_keys: Rename hash keys while preserving order
 # - ::new_nested_hash: Create automatically nesting hashes
@@ -311,6 +312,49 @@ class Hash
     return transform_values_bang_enumerator if block.nil?
 
     og_transform_values!(&block)
+  end
+
+  #
+  # Transforms keys and values to create a new hash
+  #
+  # @yield [key, value] Block that returns a new key-value pair
+  # @yieldparam key [Object] The original key
+  # @yieldparam value [Object] The original value
+  # @yieldreturn [Array] Two-element array containing the new key and value
+  #
+  # @return [Hash] A new hash with transformed keys and values
+  # @return [Enumerator] If no block is given
+  #
+  # @example Transform both keys and values
+  #   {a: 1, b: 2}.transform { |k, v| ["#{k}_key", v * 2] }
+  #   # => {a_key: 2, b_key: 4}
+  #
+  def transform(&block)
+    return to_enum(:transform) if block.nil?
+
+    to_h(&block)
+  end
+
+  #
+  # Transforms keys and values in place
+  #
+  # @yield [key, value] Block that returns a new key-value pair
+  # @yieldparam key [Object] The original key
+  # @yieldparam value [Object] The original value
+  # @yieldreturn [Array] Two-element array containing the new key and value
+  #
+  # @return [self] The transformed hash
+  # @return [Enumerator] If no block is given
+  #
+  # @example Transform both keys and values in place
+  #   hash = {a: 1, b: 2}
+  #   hash.transform! { |k, v| ["#{k}_key", v * 2] }
+  #   # => {a_key: 2, b_key: 4}
+  #
+  def transform!(&block)
+    return to_enum(:transform!) if block.nil?
+
+    replace(transform(&block))
   end
 
   #
