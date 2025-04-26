@@ -258,60 +258,193 @@ class Hash
   alias_method :og_transform_values!, :transform_values!
 
   #
-  # Transforms hash values while allowing access to keys via the chainable with_key method
+  # Returns a new hash with all values transformed by the block
   #
-  # This method either performs a standard transform_values operation if a block is given,
-  # or returns an enumerator with a with_key method that passes both the key and value
-  # to the block.
+  # Enhances Ruby's standard transform_values with key access capability.
   #
-  # @yield [value] Block to transform each value (standard behavior)
+  # @param with_key [Boolean] Whether to yield both value and key to the block
+  #
+  # @yield [value, key] Block that transforms each value
   # @yieldparam value [Object] The value to transform
+  # @yieldparam key [Object] The corresponding key (only if with_key: true)
   # @yieldreturn [Object] The transformed value
   #
-  # @return [Hash, Enumerator] Result hash or Enumerator with with_key method
+  # @return [Hash] A new hash with transformed values
+  # @return [Enumerator] If no block is given
   #
-  # @example Standard transform_values
+  # @example Standard usage
   #   {a: 1, b: 2}.transform_values { |v| v * 2 }
   #   # => {a: 2, b: 4}
   #
-  # @example Using with_key to access keys during transformation
-  #   {a: 1, b: 2}.transform_values.with_key { |v, k| "#{k}_#{v}" }
-  #   # => {a: "a_1", b: "b_2"}
+  # @example With key access
+  #   {a: 1, b: 2}.transform_values(with_key: true) { |v, k| "#{k}:#{v}" }
+  #   # => {a: "a:1", b: "b:2"}
   #
-  def transform_values(&block)
-    return transform_values_enumerator if block.nil?
+  def transform_values(with_key: false, &block)
+    return to_enum(:transform_values, with_key:) if block.nil?
 
-    og_transform_values(&block)
+    if with_key
+      each_pair.with_object({}) do |(key, value), output|
+        output[key] = block.call(value, key)
+      end
+    else
+      og_transform_values(&block)
+    end
   end
 
   #
-  # Transforms hash values in place while allowing access to keys via the chainable with_key method
+  # Transforms all values in the hash in place
   #
-  # This method either performs a standard transform_values! operation if a block is given,
-  # or returns an enumerator with a with_key method that passes both the key and value
-  # to the block, updating the hash in place.
+  # Enhances Ruby's standard transform_values! with key access capability.
   #
-  # @yield [value] Block to transform each value (standard behavior)
+  # @param with_key [Boolean] Whether to yield both value and key to the block
+  #
+  # @yield [value, key] Block that transforms each value
   # @yieldparam value [Object] The value to transform
+  # @yieldparam key [Object] The corresponding key (only if with_key: true)
   # @yieldreturn [Object] The transformed value
   #
-  # @return [self, Enumerator]
-  #   Original hash with transformed values or Enumerator with with_key method
+  # @return [self] The transformed hash
+  # @return [Enumerator] If no block is given
   #
-  # @example Standard transform_values!
+  # @example Standard usage
   #   hash = {a: 1, b: 2}
   #   hash.transform_values! { |v| v * 2 }
   #   # => {a: 2, b: 4}
+  #   # hash is now {a: 2, b: 4}
   #
-  # @example Using with_key to access keys during in-place transformation
+  # @example With key access
   #   hash = {a: 1, b: 2}
-  #   hash.transform_values!.with_key { |v, k| "#{k}_#{v}" }
-  #   # => {a: "a_1", b: "b_2"}
+  #   hash.transform_values!(with_key: true) { |v, k| "#{k}:#{v}" }
+  #   # => {a: "a:1", b: "b:2"}
+  #   # hash is now {a: "a:1", b: "b:2"}
   #
-  def transform_values!(&block)
-    return transform_values_bang_enumerator if block.nil?
+  def transform_values!(with_key: false, &block)
+    return to_enum(:transform_values!, with_key:) if block.nil?
 
-    og_transform_values!(&block)
+    if with_key
+      each_pair do |key, value|
+        self[key] = block.call(value, key)
+      end
+    else
+      og_transform_values!(&block)
+    end
+  end
+
+  # ActiveSupport integrations
+  if defined?(ActiveSupport)
+    # Allows calling original method. See below
+    alias_method :og_deep_transform_values, :deep_transform_values
+
+    # Allows calling original method. See below
+    alias_method :og_deep_transform_values!, :deep_transform_values!
+
+    #
+    # Recursively transforms all values in the hash and nested structures
+    #
+    # Walks through the hash and all nested hashes/arrays and yields each non-hash and
+    # non-array value to the block, replacing it with the block's return value.
+    #
+    # @param with_key [Boolean] Whether to yield both value and key to the block
+    #
+    # @yield [value, key] Block that transforms each value
+    # @yieldparam value [Object] The value to transform
+    # @yieldparam key [Object] The corresponding key (only if with_key: true)
+    # @yieldreturn [Object] The transformed value
+    #
+    # @return [Hash] A new hash with all values recursively transformed
+    # @return [Enumerator] If no block is given
+    #
+    # @example Basic usage
+    #   hash = {a: 1, b: {c: 2, d: [3, 4]}}
+    #   hash.deep_transform_values { |v| v * 2 }
+    #   # => {a: 2, b: {c: 4, d: [6, 8]}}
+    #
+    # @example With key access
+    #   hash = {a: 1, b: {c: 2}}
+    #   hash.deep_transform_values(with_key: true) { |v, k| "#{k}:#{v}" }
+    #   # => {a: "a:1", b: {c: "c:2"}}
+    #
+    def deep_transform_values(with_key: false, &block)
+      return to_enum(:deep_transform_values, with_key:) if block.nil?
+
+      if with_key
+        _deep_transform_values_with_key(self, nil, &block)
+      else
+        og_deep_transform_values(&block)
+      end
+    end
+
+    #
+    # Recursively transforms all values in the hash and nested structures in place
+    #
+    # Same as #deep_transform_values but modifies the hash in place.
+    #
+    # @param with_key [Boolean] Whether to yield both value and key to the block
+    #
+    # @yield [value, key] Block that transforms each value
+    # @yieldparam value [Object] The value to transform
+    # @yieldparam key [Object] The corresponding key (only if with_key: true)
+    # @yieldreturn [Object] The transformed value
+    #
+    # @return [self] The transformed hash
+    # @return [Enumerator] If no block is given
+    #
+    # @example Basic usage
+    #   hash = {a: 1, b: {c: 2, d: [3, 4]}}
+    #   hash.deep_transform_values! { |v| v * 2 }
+    #   # => {a: 2, b: {c: 4, d: [6, 8]}}
+    #   # hash is now {a: 2, b: {c: 4, d: [6, 8]}}
+    #
+    # @example With key access
+    #   hash = {a: 1, b: {c: 2}}
+    #   hash.deep_transform_values!(with_key: true) { |v, k| "#{k}:#{v}" }
+    #   # => {a: "a:1", b: {c: "c:2"}}
+    #   # hash is now {a: "a:1", b: {c: "c:2"}}
+    #
+    def deep_transform_values!(with_key: false, &block)
+      return to_enum(:deep_transform_values!, with_key:) if block.nil?
+
+      if with_key
+        _deep_transform_values_with_key!(self, nil, &block)
+      else
+        og_deep_transform_values!(&block)
+      end
+    end
+
+    private
+
+    # https://github.com/rails/rails/blob/main/activesupport/lib/active_support/core_ext/hash/deep_transform_values.rb#L25
+    def _deep_transform_values_with_key(object, key, &block)
+      case object
+      when Hash
+        object.transform_values(with_key: true) do |value, key|
+          _deep_transform_values_with_key(value, key, &block)
+        end
+      when Array
+        object.map do |value|
+          _deep_transform_values_with_key(value, nil, &block)
+        end
+      else
+        block.call(object, key)
+      end
+    end
+
+    # https://github.com/rails/rails/blob/main/activesupport/lib/active_support/core_ext/hash/deep_transform_values.rb#L36
+    def _deep_transform_values_with_key!(object, key, &block)
+      case object
+      when Hash
+        object.transform_values!(with_key: true) do |value, key|
+          _deep_transform_values_with_key!(value, key, &block)
+        end
+      when Array
+        object.map! do |value|
+          _deep_transform_values_with_key!(value, nil, &block)
+        end
+      else
+        block.call(object, key)
+      end
+    end
   end
 
   #
@@ -527,41 +660,5 @@ class Hash
   def rename_key_unordered!(old_key, new_key)
     self[new_key] = delete(old_key)
     self
-  end
-
-  private
-
-  def transform_values_enumerator
-    original_hash = self
-    enum = to_enum(:transform_values)
-
-    # Add the with_key method directly to the enum
-    enum.define_singleton_method(:with_key) do |&block|
-      raise ArgumentError, "Missing block for Hash#transform_values.with_key" if block.nil?
-
-      original_hash.each_pair.with_object({}) do |(key, value), output|
-        output[key] = block.call(value, key)
-      end
-    end
-
-    enum
-  end
-
-  def transform_values_bang_enumerator
-    original_hash = self
-    enum = to_enum(:transform_values!)
-
-    # Add the with_key method directly to the enum
-    enum.define_singleton_method(:with_key) do |&block|
-      raise ArgumentError, "Missing block for Hash#transform_values!.with_key" if block.nil?
-
-      original_hash.each_pair do |key, value|
-        original_hash[key] = block.call(value, key)
-      end
-
-      original_hash
-    end
-
-    enum
   end
 end

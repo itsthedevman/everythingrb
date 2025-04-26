@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class TestHashWithKey < Minitest::Test
+class TestHashTransformValuesWithKey < Minitest::Test
   def setup
     @hash = {key_1: 1, key_2: 2}
   end
@@ -20,14 +20,28 @@ class TestHashWithKey < Minitest::Test
   end
 
   def test_it_returns_new_hash
-    result = @hash.transform_values.with_key { |v, k| "#{k}#{v}" }
+    result = @hash.transform_values(with_key: true) { |v, k| "#{k}#{v}" }
 
     assert_equal({key_1: "key_11", key_2: "key_22"}, result)
   end
 
   def test_it_modifies_in_memory
-    @hash.transform_values!.with_key { |v, k| "#{k}#{v}" }
+    @hash.transform_values!(with_key: true) { |v, k| "#{k}#{v}" }
 
     assert_equal({key_1: "key_11", key_2: "key_22"}, @hash)
+  end
+
+  def test_it_returns_enum
+    enum = @hash.transform_values(with_key: true)
+    transformed = enum.map { |v, k| "#{k}:#{v}" }
+
+    assert_equal(["key_1:1", "key_2:2"], transformed)
+  end
+
+  def test_it_returns_enum_for_bang
+    enum = @hash.transform_values!(with_key: true)
+    transformed = enum.map { |v, k| "#{k}:#{v}" }
+
+    assert_equal(["key_1:1", "key_2:2"], transformed)
   end
 end
