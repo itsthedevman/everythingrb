@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 -->
 
+## [0.6.1] - 12025-04-26
+
+### Changed
+
+- Fixed invalid use of `private` in `Hash` when ActiveSupport is enabled. This unintentionally caused other public methods to be private
+
 ## [0.6.0] - 12025-04-26
 
 ### BREAKING CHANGES:
