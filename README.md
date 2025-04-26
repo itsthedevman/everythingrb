@@ -141,7 +141,7 @@ stats[:server][:region][:us_east][:errors] << "Connection timeout"
 # No need to initialize each level first!
 
 # Transform values with access to keys
-users.transform_values.with_key { |k, v| "User #{k}: #{v[:name]}" }
+users.transform_values(with_key: true) { |v, k| "User #{k}: #{v[:name]}" }
 
 # Find values based on conditions
 users.values_where { |k, v| v[:role] == "admin" }
