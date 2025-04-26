@@ -15,13 +15,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 -->
 
-## [Unreleased]
+## [0.6.0] - 12025-04-26
 
-### Added
+### BREAKING CHANGES:
 
-### Changed
+- **Replaced method-based `with_key` approach with direct parameter**:
+  The chainable `.with_key` method approach has been replaced with a more straightforward parameter-based approach.
 
-### Removed
+  **Before:**
+  ```ruby
+  hash.transform_values.with_key { |value, key| "#{key}:#{value}" }
+  hash.transform_values!.with_key { |value, key| "#{key}:#{value}" }
+  ```
+
+  **After:**
+  ```ruby
+  hash.transform_values(with_key: true) { |value, key| "#{key}:#{value}" }
+  hash.transform_values!(with_key: true) { |value, key| "#{key}:#{value}" }
+  ```
+
+### Added:
+
+- Added ActiveSupport integration for deep transforms with key access:
+  - `Hash#deep_transform_values(with_key: true)`
+  - `Hash#deep_transform_values!(with_key: true)`
 
 ## [0.5.0] - 12025-04-17
 
