@@ -7,8 +7,9 @@
 Super handy extensions to Ruby core classes that make your code more expressive, readable, and fun to write.
 
 ```ruby
-# Instead of this:
 users = [{ name: "Alice", role: "admin" }, { name: "Bob", role: "user" }]
+
+# Instead of this:
 admin_names = users.select { |u| u[:role] == "admin" }.map { |u| u[:name] }.join(", ")
 
 # Write this:
