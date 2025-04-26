@@ -412,8 +412,6 @@ class Hash
       end
     end
 
-    private
-
     # https://github.com/rails/rails/blob/main/activesupport/lib/active_support/core_ext/hash/deep_transform_values.rb#L25
     def _deep_transform_values_with_key(object, key, &block)
       case object
@@ -430,6 +428,8 @@ class Hash
       end
     end
 
+    private :_deep_transform_values_with_key
+
     # https://github.com/rails/rails/blob/main/activesupport/lib/active_support/core_ext/hash/deep_transform_values.rb#L36
     def _deep_transform_values_with_key!(object, key, &block)
       case object
@@ -445,6 +445,8 @@ class Hash
         block.call(object, key)
       end
     end
+
+    private :_deep_transform_values_with_key!
   end
 
   #

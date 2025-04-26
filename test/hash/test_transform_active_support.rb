@@ -2,6 +2,7 @@
 
 require "test_helper"
 
+# Ensure that the 'private' ActiveSupport methods don't break the other methods
 class HashTransform < Minitest::Test
   def test_it_returns_enum_with_no_block
     assert_kind_of(Enumerator, {}.transform)
