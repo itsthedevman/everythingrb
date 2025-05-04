@@ -8,6 +8,11 @@ class TestInspectQuotable < Minitest::Test
     assert_equal("\"[1, 2, 3]\"", [1, 2, 3].with_quotes)
   end
 
+  def test_it_quotes_boolean
+    assert_equal("\"true\"", true.in_quotes)
+    assert_equal("\"false\"", false.in_quotes)
+  end
+
   def test_it_quotes_hash
     assert_equal("\"{:a=>1}\"", {a: 1}.in_quotes)
   end
@@ -16,22 +21,23 @@ class TestInspectQuotable < Minitest::Test
     assert_equal("\"nil\"", nil.in_quotes)
   end
 
-  def test_it_quotes_boolean
-    assert_equal("\"true\"", true.in_quotes)
-    assert_equal("\"false\"", false.in_quotes)
-  end
-
-  def test_it_quotes_regexp
-    assert_equal("\"/test/i\"", /test/i.in_quotes)
-  end
-
   def test_it_quotes_numeric
     assert_equal("\"42\"", 42.in_quotes)
     assert_equal("\"3.14\"", 3.14.in_quotes)
   end
 
+  def test_it_quotes_structs
+    assert_equal("\"#<struct foo=\"bar\">\"", Struct.new(:foo).new("bar").in_quotes)
+    assert_equal("\"#<OpenStruct foo=\"bar\">\"", OpenStruct.new(foo: "bar").in_quotes)
+    assert_equal("\"#<data foo=\"bar\">\"", Data.define(:foo).new(foo: "bar").in_quotes)
+  end
+
   def test_it_quotes_range
     assert_equal("\"1..5\"", (1..5).in_quotes)
+  end
+
+  def test_it_quotes_regexp
+    assert_equal("\"/test/i\"", /test/i.in_quotes)
   end
 end
 
