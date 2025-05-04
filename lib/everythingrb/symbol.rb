@@ -18,12 +18,12 @@ class Symbol
   # @return [Symbol] The symbol with surrounding double quotes
   #
   # @example
-  #   :hello_world.with_quotes  # => :"\"hello_world\""
+  #   :hello_world.in_quotes  # => :"\"hello_world\""
   #   :hello_world.in_quotes    # => :"\"hello_world\""
   #
-  def with_quotes
+  def in_quotes
     :"\"#{self}\""
   end
 
-  alias_method :in_quotes, :with_quotes
+  alias_method :with_quotes, :in_quotes
 end

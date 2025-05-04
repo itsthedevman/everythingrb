@@ -5,8 +5,11 @@
 #
 # Provides:
 # - #to_deep_h: Recursively convert to hash with all nested objects
+# - #in_quotes, #with_quotes: Wrap object in quotes
 #
 class Data
+  include Everythingrb::InspectQuotable
+
   #
   # Recursively converts the Data object and all nested objects to hashes
   #

@@ -1,11 +1,18 @@
 # frozen_string_literal: true
 
 require_relative "array"
+require_relative "boolean"
 require_relative "data"
+require_relative "date"
 require_relative "enumerable"
 require_relative "hash"
 require_relative "module"
+require_relative "nil"
+require_relative "numeric"
 require_relative "ostruct"
+require_relative "range"
+require_relative "regexp"
 require_relative "string"
 require_relative "struct"
 require_relative "symbol"
+require_relative "time"

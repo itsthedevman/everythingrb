@@ -8,6 +8,7 @@
 # - #join_map: Combine filter_map and join operations
 # - #blank?, #present?: ActiveSupport integrations when available
 # - #to_deep_h: Recursively convert to hash with all nested objects
+# - #in_quotes, #with_quotes: Wrap struct in quotes
 #
 # @example
 #   require "everythingrb/ostruct"
@@ -16,6 +17,8 @@
 #   person.map { |k, v| "#{k}: #{v}" }  # => ["name: Alice", "age: 30"]
 #
 class OpenStruct
+  include Everythingrb::InspectQuotable
+
   # ActiveSupport integrations
   if defined?(ActiveSupport)
     #

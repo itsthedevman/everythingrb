@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 #
-# Makes objects quotable with double quotes around their string representation
+# Extensions for making objects quotable with double quotes
 #
-# The Quotable module adds the ability to quote any object's string
-# representation by wrapping it in double quotes. This is useful for
+# These modules add the ability to quote objects by wrapping
+# their string representations in double quotes. This is useful for
 # generating error messages, debug output, or formatted logs where
 # you want to clearly distinguish between different value types.
 #
@@ -25,18 +25,53 @@
 #   # => "Expected \"42\" but got \"nil\""
 #
 module Everythingrb
-  module Quotable
+  #
+  # Adds quotable functionality using inspect representation
+  #
+  # Provides methods for wrapping an object's inspection
+  # representation in double quotes for debugging and error messages.
+  #
+  # @example
+  #   [1, 2, 3].in_quotes  # => "\"[1, 2, 3]\""
+  #
+  module InspectQuotable
     #
-    # Returns the object's string representation wrapped in double quotes
+    # Returns the object's inspection representation wrapped in double quotes
     #
     # @return [String] The object's inspect representation surrounded by double quotes
     #
     # @example
-    #   1.in_quotes      # => "\"1\""
-    #   nil.in_quotes    # => "\"nil\""
+    #   [1, 2, 3].in_quotes      # => "\"[1, 2, 3]\""
+    #   {a: 1}.in_quotes         # => "\"{:a=>1}\""
     #
     def in_quotes
       %("#{inspect}")
+    end
+
+    alias_method :with_quotes, :in_quotes
+  end
+
+  #
+  # Adds quotable functionality using to_s representation
+  #
+  # Provides methods for wrapping an object's string
+  # representation in double quotes for cleaner output.
+  #
+  # @example
+  #   Time.now.in_quotes  # => "\"2025-05-03 12:34:56 -0400\""
+  #
+  module StringQuotable
+    #
+    # Returns the object's string representation wrapped in double quotes
+    #
+    # @return [String] The object's to_s representation surrounded by double quotes
+    #
+    # @example
+    #   Date.today.in_quotes      # => "\"2025-05-03\""
+    #   Time.now.in_quotes        # => "\"2025-05-03 12:34:56 -0400\""
+    #
+    def in_quotes
+      %("#{self}")
     end
 
     alias_method :with_quotes, :in_quotes
