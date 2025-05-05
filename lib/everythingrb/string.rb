@@ -16,6 +16,8 @@
 #   "Hello".with_quotes  # => "\"Hello\""
 #
 class String
+  include Everythingrb::StringQuotable
+
   #
   # Converts JSON string to Hash, returning nil if it failed
   #
@@ -111,19 +113,4 @@ class String
   def to_struct
     to_h&.to_struct
   end
-
-  #
-  # Returns self wrapped in double quotes
-  #
-  # @return [String] The string with surrounding double quotes
-  #
-  # @example
-  #   "Hello World".with_quotes           # => "\"Hello World\""
-  #   "Quote \"me\"".with_quotes          # => "\"Quote \\\"me\\\"\""
-  #
-  def with_quotes
-    %("#{self}")
-  end
-
-  alias_method :in_quotes, :with_quotes
 end

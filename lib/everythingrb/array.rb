@@ -16,6 +16,8 @@
 #   [{name: "Alice"}, {name: "Bob"}].key_map(:name)  # => ["Alice", "Bob"]
 #
 class Array
+  include Everythingrb::InspectQuotable
+
   #
   # Combines filter_map and join operations
   #

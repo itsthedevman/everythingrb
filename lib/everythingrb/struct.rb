@@ -5,6 +5,7 @@
 #
 # Provides:
 # - #to_deep_h: Recursively convert to hash with all nested objects
+# - #in_quotes, #with_quotes: Wrap struct in quotes
 #
 # @example
 #   require "everythingrb/struct"
@@ -14,6 +15,8 @@
 #   person.to_deep_h  # => {name: "Alice", profile: {roles: ["admin"]}}
 #
 class Struct
+  include Everythingrb::InspectQuotable
+
   #
   # Recursively converts the Struct and all nested objects to hashes
   #

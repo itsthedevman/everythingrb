@@ -27,4 +27,5 @@ require "json"
 module Everythingrb
 end
 
+require_relative "extensions"
 require_relative "version"

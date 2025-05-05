@@ -19,6 +19,8 @@
 #   config.server.port  # => 443
 #
 class Hash
+  include Everythingrb::InspectQuotable
+
   #
   # A minimal empty struct for Ruby 3.2+ compatibility
   #
