@@ -28,6 +28,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `Regexp`
   - `Time`, `Date`, and `DateTime`
   - `Data` and `Struct` classes
+- Added new Hash methods for filtering based on values only:
+  - `Hash#select_values` - Returns a new hash with entries where the block returns true for the value
+  - `Hash#select_values!` - Same as `select_values` but modifies the hash in place
+  - `Hash#reject_values` - Returns a new hash with entries where the block returns false for the value
+  - `Hash#reject_values!` - Same as `reject_values` but modifies the hash in place
+  - Added `filter_values` and `filter_values!` as aliases for `select_values` and `select_values!` respectively
 
 ### Changed
 
