@@ -253,10 +253,10 @@ class Hash
     freeze
   end
 
-  # Allows calling original method. See below
+  # @!visibility private
   alias_method :og_transform_values, :transform_values
 
-  # Allows calling original method. See below
+  # @!visibility private
   alias_method :og_transform_values!, :transform_values!
 
   #
@@ -335,10 +335,10 @@ class Hash
 
   # ActiveSupport integrations
   if defined?(ActiveSupport)
-    # Allows calling original method. See below
+    # @!visibility private
     alias_method :og_deep_transform_values, :deep_transform_values
 
-    # Allows calling original method. See below
+    # @!visibility private
     alias_method :og_deep_transform_values!, :deep_transform_values!
 
     #
