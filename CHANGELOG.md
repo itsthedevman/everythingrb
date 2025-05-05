@@ -15,6 +15,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 -->
 
+## [Unreleased]
+
+### Added
+
+- Created `Everythingrb::InspectQuotable` and `Everythingrb::StringQuotable` modules for consistent quote functionality
+- Extended quotable functionality to many more Ruby core classes:
+  - `TrueClass` and `FalseClass` (boolean values)
+  - `NilClass`
+  - `Numeric`
+  - `Range`
+  - `Regexp`
+  - `Time`, `Date`, and `DateTime`
+  - `Data` and `Struct` classes
+
+### Changed
+
+- Refactored existing quotable implementations to use the new modules
+- Standardized method order to prefer `in_quotes` as the primary method with `with_quotes` as an alias
+
+### Removed
+
 ## [0.6.1] - 12025-04-26
 
 ### Changed
