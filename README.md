@@ -64,14 +64,22 @@ require "everythingrb/string"   # Just String extensions
 
 Available modules:
 - `array`: Array extensions (join_map, key_map, etc.)
-- `data`: Data extensions (to_deep_h)
+- `boolean`: Boolean extensions (in_quotes, with_quotes)
+- `data`: Data extensions (to_deep_h, in_quotes)
+- `date`: Date and DateTime extensions (in_quotes)
 - `enumerable`: Enumerable extensions (join_map, group_by_key)
 - `hash`: Hash extensions (to_ostruct, deep_freeze, etc.)
+- `kernel`: Kernel extensions (morph alias for then)
 - `module`: Extensions like attr_predicate
+- `nil`: NilClass extensions (in_quotes)
+- `numeric`: Numeric extensions (in_quotes)
 - `ostruct`: OpenStruct extensions (map, join_map, etc.)
+- `range`: Range extensions (in_quotes)
+- `regexp`: Regexp extensions (in_quotes)
 - `string`: String extensions (to_h, to_ostruct, etc.)
-- `struct`: Struct extensions (to_deep_h)
+- `struct`: Struct extensions (to_deep_h, in_quotes)
 - `symbol`: Symbol extensions (with_quotes)
+- `time`: Time extensions (in_quotes)
 
 ## What's Included
 
@@ -88,6 +96,10 @@ config.server.host  # => "example.com"
 
 # Parse JSON directly to your preferred structure
 '{"user":{"name":"Alice"}}'.to_istruct.user.name  # => "Alice"
+
+# Deep conversion to plain hashes
+data = OpenStruct.new(user: Data.define(:name).new(name: "Bob"))
+data.to_deep_h  # => {user: {name: "Bob"}}
 ```
 
 **Extensions:** `to_struct`, `to_ostruct`, `to_istruct`, `to_h`, `to_deep_h`
@@ -105,6 +117,10 @@ users.dig_map(:roles, 0)  # => ["admin", "user"]
 # Filter, map, and join in a single operation
 [1, 2, nil, 3, 4].join_map(" | ") { |n| "Item #{n}" if n&.odd? }
 # => "Item 1 | Item 3"
+
+# Group elements by key or nested keys
+users.group_by_key(:roles, 0)
+# => {"admin" => [{name: "Alice", roles: ["admin"]}], "user" => [{name: "Bob", roles: ["user"]}]}
 
 # With ActiveSupport loaded, join arrays in natural language with "or"
 ["red", "blue", "green"].to_or_sentence  # => "red, blue, or green"
@@ -145,10 +161,20 @@ stats[:server][:region][:us_east][:errors] << "Connection timeout"
 users.transform_values(with_key: true) { |v, k| "User #{k}: #{v[:name]}" }
 
 # Find values based on conditions
-users.values_where { |k, v| v[:role] == "admin" }
+users.value_where { |_k, v| v[:role] == "admin" }  # Returns first admin
+users.values_where { |_k, v| v[:role] == "admin" } # Returns all admins
+
+# Rename keys while preserving order
+config = {api_key: "secret", timeout: 30}
+config.rename_keys(api_key: :key, timeout: :request_timeout)
+# => {key: "secret", request_timeout: 30}
+
+# Filter hash by values
+{a: 1, b: nil, c: 2}.select_values { |v| v.is_a?(Integer) && v > 1 }
+# => {c: 2}
 ```
 
-**Extensions:** `new_nested_hash`, `with_key`, `value_where`, `values_where`
+**Extensions:** `new_nested_hash`, `with_key`, `value_where`, `values_where`, `rename_key(s)`, `select_values`, `reject_values`
 
 ### Array Cleaning
 
@@ -163,6 +189,36 @@ Clean up array boundaries while preserving internal structure:
 ```
 
 **Extensions:** `trim_nils`, `compact_prefix`, `compact_suffix`, `trim_blanks` (with ActiveSupport)
+
+### String Formatting
+
+Add quotation marks to any value with a consistent interface - useful for user messages, formatting, and more:
+
+```ruby
+# Wrap any value in quotes - works on ALL types!
+"hello".in_quotes      # => "\"hello\""
+42.in_quotes           # => "\"42\""
+nil.in_quotes          # => "\"nil\""
+:symbol.in_quotes      # => "\"symbol\""
+[1, 2].in_quotes       # => "\"[1, 2]\""
+Time.now.in_quotes     # => "\"2025-05-04 12:34:56 +0000\""
+
+# Perfect for user-facing messages with mixed types
+puts "You selected #{selection.in_quotes}"
+puts "Item #{id.in_quotes} was added to category #{category.in_quotes}"
+
+# Great for formatting responses
+response = "Command #{command.in_quotes} completed successfully"
+
+# Ideal for error messages and logging
+log.info "Received values: #{values.join_map(", ", &:in_quotes)}"
+raise "Expected #{expected.in_quotes} but got #{actual.in_quotes}"
+
+# CLI argument descriptions
+puts "Valid modes are: #{MODES.join_map(", ", &:in_quotes)}"
+```
+
+**Extensions:** `in_quotes`, `with_quotes` (alias)
 
 ### Boolean Methods
 
@@ -187,6 +243,20 @@ person.active? # => false
 ```
 
 **Extensions:** `attr_predicate`
+
+### Value Transformation
+
+Chain transformations with a more descriptive syntax:
+
+```ruby
+# Instead of this:
+result = value.then { |v| transform_it(v) }
+
+# Write this:
+result = value.morph { |v| transform_it(v) }
+```
+
+**Extensions:** `morph` (alias for `then`/`yield_self`)
 
 ## Full Documentation
 
