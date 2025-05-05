@@ -14,7 +14,13 @@ class TestInspectQuotable < Minitest::Test
   end
 
   def test_it_quotes_hash
-    assert_equal("\"{:a=>1}\"", {a: 1}.in_quotes)
+    quoted_hash = {a: 1}.in_quotes
+
+    if RUBY_VERSION >= "3.4.0"
+      assert_equal("\"{a: 1}\"", quoted_hash)
+    else
+      assert_equal("\"{:a=>1}\"", quoted_hash)
+    end
   end
 
   def test_it_quotes_nil
