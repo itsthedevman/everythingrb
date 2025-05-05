@@ -34,6 +34,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `Hash#reject_values` - Returns a new hash with entries where the block returns false for the value
   - `Hash#reject_values!` - Same as `reject_values` but modifies the hash in place
   - Added `filter_values` and `filter_values!` as aliases for `select_values` and `select_values!` respectively
+- Added `Kernel#morph` as an alias for `then` (and `yield_self`) that better communicates transformation intent:
+  ```ruby
+  # Instead of this:
+  value.then { |v| transform_somehow(v) }
+
+  # You can write this:
+  value.morph { |v| transform_somehow(v) }
+  ```
 
 ### Changed
 
