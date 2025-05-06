@@ -29,14 +29,17 @@ module Everythingrb
   # Adds quotable functionality using inspect representation
   #
   # Provides methods for wrapping an object's inspection
-  # representation in double quotes for debugging and error messages.
+  # representation in double quotes.
   #
   # @example
   #   [1, 2, 3].in_quotes  # => "\"[1, 2, 3]\""
   #
   module InspectQuotable
     #
-    # Returns the object's inspection representation wrapped in double quotes
+    # Adds quotable functionality using inspect representation
+    #
+    # Provides methods for wrapping an object's inspection
+    # representation in double quotes.
     #
     # @return [String] The object's inspect representation surrounded by double quotes
     #
@@ -55,7 +58,7 @@ module Everythingrb
   # Adds quotable functionality using to_s representation
   #
   # Provides methods for wrapping an object's string
-  # representation in double quotes for cleaner output.
+  # representation in double quotes.
   #
   # @example
   #   Time.now.in_quotes  # => "\"2025-05-03 12:34:56 -0400\""

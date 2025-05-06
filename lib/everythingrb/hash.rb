@@ -48,6 +48,10 @@ class Hash
   #
   # @return [Hash] A hash that creates nested hashes for missing keys
   #
+  # @note This implementation is not thread-safe for concurrent modifications of deeply
+  #   nested structures. If you need thread safety, consider using a mutex when modifying
+  #   the deeper levels of the hash.
+  #
   # @example Unlimited nesting (default behavior)
   #   users = Hash.new_nested_hash
   #   users[:john][:role] = "admin"  # No need to initialize users[:john] first
@@ -115,7 +119,7 @@ class Hash
   # and calls #to_h on any object that responds to it. Useful for
   # normalizing nested data structures and parsing nested JSON.
   #
-  # @return [Hash] A deeply converted hash with all nested objects converted
+  # @return [Hash] A deeply converted hash with all nested objects
   #
   # @example Converting nested Data objects
   #   user = { name: "Alice", metadata: Data.define(:source).new(source: "API") }
@@ -247,6 +251,11 @@ class Hash
   # @note CAUTION: Be careful when freezing collections that contain class objects
   #   or singleton instances - this will freeze those classes/objects globally!
   #   Only use deep_freeze on pure data structures you want to make immutable.
+  #
+  # @example What NOT to do
+  #   # Don't freeze collections containing class references:
+  #   # This would freeze the actual classes!
+  #   { string: String, hash: Hash, my_class: MyClass}.deep_freeze
   #
   def deep_freeze
     each_value { |v| v.respond_to?(:deep_freeze) ? v.deep_freeze : v.freeze }

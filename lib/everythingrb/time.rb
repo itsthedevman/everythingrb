@@ -9,7 +9,10 @@
 # @example
 #   require "everythingrb/time"
 #
-#   Time.new(2025, 5, 3).in_quotes
+#   Time.new(2025, 5, 3).in_quotes  # => "\"2025-05-03 00:00:00 +0000\""
+#
+#   # Useful in formatted output:
+#   "Event created at #{Time.now.in_quotes}"
 #
 class Time
   include Everythingrb::StringQuotable

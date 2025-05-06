@@ -11,6 +11,9 @@
 #
 #   /\d+/.in_quotes  # => "\"/\\d+/\""
 #
+#   # Useful in debugging output:
+#   puts "Pattern used: #{pattern.in_quotes}"
+#
 class Regexp
   include Everythingrb::InspectQuotable
 end

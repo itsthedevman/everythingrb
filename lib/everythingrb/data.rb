@@ -13,6 +13,10 @@ class Data
   #
   # Recursively converts the Data object and all nested objects to hashes
   #
+  # This method traverses the entire Data structure, converting not just
+  # the top-level Data object but also nested Data objects, Structs, OpenStructs,
+  # and any other objects that implement `to_h`.
+  #
   # @return [Hash] A deeply converted hash of the Data object
   #
   # @example

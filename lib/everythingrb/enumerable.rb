@@ -4,8 +4,8 @@
 # Extensions to Ruby's core Enumerable module
 #
 # Provides:
-# - #join_map: Combine filter_map and join operations
-# - #group_by_key: Group elements by a given key or nested keys
+# - #join_map: Combine filter_map and join operations into one step
+# - #group_by_key: Group elements by key or nested keys, simplifying collection organization
 #
 # @example
 #   require "everythingrb/enumerable"
@@ -24,6 +24,7 @@ module Enumerable
   # @yieldparam index [Integer] The index of the current element (only if with_index: true)
   #
   # @return [String] Joined string of filtered and transformed elements
+  # @return [Enumerator] If no block is given
   #
   # @example Without index
   #   [1, 2, nil, 3].join_map(" ") { |n| n&.to_s if n&.odd? }
@@ -57,6 +58,7 @@ module Enumerable
   # @yieldreturn [Object] The transformed value to use as the group key
   #
   # @return [Hash] A hash where keys are the grouped values and values are arrays of elements
+  # @return [Enumerator] If no block is given
   #
   # @example Group by a single key
   #   users = [
