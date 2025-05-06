@@ -40,6 +40,10 @@ class String
   # Recursively attempts to parse string values as JSON
   #
   # @return [Hash] Deeply parsed hash with all nested JSON strings converted
+  # @return [nil] If the string is not valid JSON at the top level
+  #
+  # @note If nested JSON strings fail to parse, they remain as strings
+  #   rather than causing the entire operation to fail
   #
   # @example
   #   nested_json = '{

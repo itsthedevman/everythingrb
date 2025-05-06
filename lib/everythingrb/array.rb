@@ -75,10 +75,11 @@ class Array
   # @return [Array] Array of nested values
   #
   # @example
-  #   [
+  #   users = [
   #     {user: {profile: {name: "Alice"}}},
   #     {user: {profile: {name: "Bob"}}}
-  #   ].dig_map(:user, :profile, :name)
+  #   ]
+  #   users.dig_map(:user, :profile, :name)
   #   # => ["Alice", "Bob"]
   #
   def dig_map(*keys)
@@ -97,6 +98,10 @@ class Array
   # @note CAUTION: Be careful when freezing collections that contain class objects
   #   or singleton instances - this will freeze those classes/objects globally!
   #   Only use deep_freeze on pure data structures you want to make immutable.
+  #
+  # @example What NOT to do
+  #   # Don't freeze collections containing class references:
+  #   [String, Hash, MyClass].deep_freeze  # This would freeze the actual classes!
   #
   def deep_freeze
     each { |v| v.respond_to?(:deep_freeze) ? v.deep_freeze : v.freeze }

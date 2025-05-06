@@ -7,7 +7,7 @@
 # - #in_quotes, #with_quotes: Wrap nil's string representation in quotes
 #
 # @example
-#   require "everythingrb/extensions/nil_class"
+#   require "everythingrb/nil"
 #   nil.in_quotes  # => "\"nil\""
 #
 class NilClass

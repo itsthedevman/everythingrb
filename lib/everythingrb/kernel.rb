@@ -9,7 +9,11 @@
 # @example
 #   require "everythingrb/kernel"
 #
-#   version.get_info.morph { |v| "#{v.major}.#{v.minor}" }
+#   # Instead of:
+#   config.fetch(:key).then { |v| process(v) }
+#
+#   # More expressive with morph:
+#   config.fetch(:key).morph { |v| process(v) }
 #
 module Kernel
   #

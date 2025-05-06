@@ -20,6 +20,10 @@ class Struct
   #
   # Recursively converts the Struct and all nested objects to hashes
   #
+  # This method traverses the entire Struct structure, converting not just
+  # the top-level Struct but also nested Structs, OpenStructs, Data objects,
+  # and any other objects that implement `to_h`.
+  #
   # @return [Hash] A deeply converted hash of the Struct
   #
   # @example

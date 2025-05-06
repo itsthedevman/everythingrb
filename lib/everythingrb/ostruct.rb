@@ -26,6 +26,8 @@ class OpenStruct
     #
     # @return [Boolean] true if the OpenStruct has no attributes
     #
+    # @note Only available when ActiveSupport is loaded
+    #
     def blank?
       @table.blank?
     end
@@ -33,7 +35,9 @@ class OpenStruct
     #
     # Checks if the OpenStruct has any attributes
     #
-    # @return [Boolean] true if the OpenStruct has attributes
+    # @return [Boolean] true if the OpenStruct has any attributes
+    #
+    # @note Only available when ActiveSupport is loaded
     #
     def present?
       @table.present?
@@ -116,6 +120,9 @@ class OpenStruct
 
   #
   # Recursively converts the OpenStruct and all nested objects to hashes
+  #
+  # This method will convert the OpenStruct and all nested OpenStructs,
+  # Structs, Data objects, and other convertible objects to plain hashes.
   #
   # @return [Hash] A deeply converted hash of the OpenStruct
   #
