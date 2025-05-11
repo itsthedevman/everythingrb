@@ -11,6 +11,9 @@
 # - #value_where, #values_where: Find values based on conditions
 # - #rename_key, #rename_keys: Rename hash keys while preserving order
 # - ::new_nested_hash: Create automatically nesting hashes
+# - #merge_if, #merge_if!: Conditionally merge based on key-value pairs
+# - #merge_if_values, #merge_if_values!: Conditionally merge based on values
+# - #merge_compact, #merge_compact!: Merge only non-nil values
 #
 # @example
 #   require "everythingrb/hash"

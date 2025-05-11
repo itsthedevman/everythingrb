@@ -4,17 +4,32 @@
 ![Ruby Version](https://img.shields.io/badge/ruby-3.3.7-ruby)
 [![Tests](https://github.com/itsthedevman/everythingrb/actions/workflows/main.yml/badge.svg)](https://github.com/everythingrb/sortsmith/actions/workflows/main.yml)
 
-Super handy extensions to Ruby core classes that make your code more expressive, readable, and fun to write.
+Super handy extensions to Ruby core classes that make your code more expressive, readable, and fun to write. Stop writing boilerplate and start writing code that *actually matters*!
+
+## Express Your Intent, Not Your Logic
+
+We've all been there - writing the same tedious patterns over and over:
 
 ```ruby
+# BEFORE
 users = [{ name: "Alice", role: "admin" }, { name: "Bob", role: "user" }]
-
-# Instead of this:
-admin_names = users.select { |u| u[:role] == "admin" }.map { |u| u[:name] }.join(", ")
-
-# Write this:
-users.join_map(", ") { |u| u[:name] if u[:role] == "admin" }
+admin_users = users.select { |u| u[:role] == "admin" }
+admin_names = admin_users.map { |u| u[:name] }
+result = admin_names.join(", ")
+# => "Alice"
 ```
+
+With EverythingRB, you can write code that actually says what you mean:
+
+```ruby
+# AFTER
+users.join_map(", ") { |u| u[:name] if u[:role] == "admin" }
+# => "Alice"
+```
+
+*Methods used: [`join_map`](https://itsthedevman.com/docs/everythingrb/Array.html#join_map-instance_method)*
+
+Because life's too short to write all that boilerplate!
 
 ## Installation
 
@@ -47,7 +62,7 @@ config.server.port  # => 443
 
 ### Cherry-Pick Extensions
 
-If you only need specific extensions, you can load just what you want:
+If you only need specific extensions (or you're a minimalist at heart):
 
 ```ruby
 require "everythingrb/prelude"  # Required base module
@@ -68,7 +83,7 @@ Available modules:
 - `data`: Data extensions (to_deep_h, in_quotes)
 - `date`: Date and DateTime extensions (in_quotes)
 - `enumerable`: Enumerable extensions (join_map, group_by_key)
-- `hash`: Hash extensions (to_ostruct, deep_freeze, etc.)
+- `hash`: Hash extensions (to_ostruct, transform_values(with_key: true), etc.)
 - `kernel`: Kernel extensions (morph alias for then)
 - `module`: Extensions like attr_predicate
 - `nil`: NilClass extensions (in_quotes)
@@ -76,126 +91,412 @@ Available modules:
 - `ostruct`: OpenStruct extensions (map, join_map, etc.)
 - `range`: Range extensions (in_quotes)
 - `regexp`: Regexp extensions (in_quotes)
-- `string`: String extensions (to_h, to_ostruct, etc.)
+- `string`: String extensions (to_h, to_ostruct, to_camelcase, etc.)
 - `struct`: Struct extensions (to_deep_h, in_quotes)
 - `symbol`: Symbol extensions (with_quotes)
 - `time`: Time extensions (in_quotes)
 
 ## What's Included
 
-EverythingRB extends Ruby's core classes with intuitive methods that simplify common patterns.
-
 ### Data Structure Conversions
+
+Stop writing complicated parsers and nested transformations:
+
+```ruby
+# BEFORE
+json_string = '{"user":{"name":"Alice","roles":["admin"]}}'
+parsed = JSON.parse(json_string)
+result = OpenStruct.new(
+  user: OpenStruct.new(
+    name: parsed["user"]["name"],
+    roles: parsed["user"]["roles"]
+  )
+)
+result.user.name  # => "Alice"
+```
+
+With EverythingRB, it's one elegant step:
+
+```ruby
+# AFTER
+'{"user":{"name":"Alice","roles":["admin"]}}'.to_ostruct.user.name  # => "Alice"
+```
+
+*Methods used: [`to_ostruct`](https://itsthedevman.com/docs/everythingrb/String.html#to_ostruct-instance_method)*
 
 Convert between data structures with ease:
 
 ```ruby
-# Convert hashes to more convenient structures
-config = { server: { host: "example.com", port: 443 } }.to_ostruct
+# BEFORE
+config_hash = { server: { host: "example.com", port: 443 } }
+ServerConfig = Struct.new(:host, :port)
+Config = Struct.new(:server)
+config = Config.new(ServerConfig.new(config_hash[:server][:host], config_hash[:server][:port]))
+```
+
+```ruby
+# AFTER
+config = { server: { host: "example.com", port: 443 } }.to_struct
 config.server.host  # => "example.com"
+```
 
-# Parse JSON directly to your preferred structure
-'{"user":{"name":"Alice"}}'.to_istruct.user.name  # => "Alice"
+*Methods used: [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method)*
 
-# Deep conversion to plain hashes
+Deep conversion to plain hashes is just as easy:
+
+```ruby
+# BEFORE
+data = OpenStruct.new(user: Data.define(:name).new(name: "Bob"))
+result = {
+  user: {
+    name: data.user.name
+  }
+}
+```
+
+```ruby
+# AFTER
 data = OpenStruct.new(user: Data.define(:name).new(name: "Bob"))
 data.to_deep_h  # => {user: {name: "Bob"}}
 ```
 
-**Extensions:** `to_struct`, `to_ostruct`, `to_istruct`, `to_h`, `to_deep_h`
+*Methods used: [`to_deep_h`](https://itsthedevman.com/docs/everythingrb/OpenStruct.html#to_deep_h-instance_method)*
+
+**Extensions:** [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method), [`to_ostruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_ostruct-instance_method), [`to_istruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_istruct-instance_method), [`to_h`](https://itsthedevman.com/docs/everythingrb/String.html#to_h-instance_method), [`to_deep_h`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_deep_h-instance_method)
 
 ### Collection Processing
 
-Extract and transform data elegantly:
+Extract and transform data with elegant, expressive code:
 
 ```ruby
-# Extract data from arrays of hashes in one step
+# BEFORE
 users = [{ name: "Alice", roles: ["admin"] }, { name: "Bob", roles: ["user"] }]
-users.key_map(:name)  # => ["Alice", "Bob"]
-users.dig_map(:roles, 0)  # => ["admin", "user"]
+names = users.map { |user| user[:name] }
+# => ["Alice", "Bob"]
+```
 
-# Filter, map, and join in a single operation
+```ruby
+# AFTER
+users.key_map(:name)  # => ["Alice", "Bob"]
+```
+
+*Methods used: [`key_map`](https://itsthedevman.com/docs/everythingrb/Array.html#key_map-instance_method)*
+
+Simplify nested data extraction:
+
+```ruby
+# BEFORE
+users = [
+  {user: {profile: {name: "Alice"}}},
+  {user: {profile: {name: "Bob"}}}
+]
+names = users.map { |u| u.dig(:user, :profile, :name) }
+# => ["Alice", "Bob"]
+```
+
+```ruby
+# AFTER
+users.dig_map(:user, :profile, :name)  # => ["Alice", "Bob"]
+```
+
+*Methods used: [`dig_map`](https://itsthedevman.com/docs/everythingrb/Array.html#dig_map-instance_method)*
+
+Combine filter, map, and join operations in one step:
+
+```ruby
+# BEFORE
+data = [1, 2, nil, 3, 4]
+result = data.compact.filter_map { |n| "Item #{n}" if n.odd? }.join(" | ")
+# => "Item 1 | Item 3"
+```
+
+```ruby
+# AFTER
 [1, 2, nil, 3, 4].join_map(" | ") { |n| "Item #{n}" if n&.odd? }
 # => "Item 1 | Item 3"
+```
 
-# Group elements by key or nested keys
-users.group_by_key(:roles, 0)
-# => {"admin" => [{name: "Alice", roles: ["admin"]}], "user" => [{name: "Bob", roles: ["user"]}]}
+*Methods used: [`join_map`](https://itsthedevman.com/docs/everythingrb/Array.html#join_map-instance_method)*
 
-# With ActiveSupport loaded, join arrays in natural language with "or"
+Group elements with natural syntax:
+
+```ruby
+# BEFORE
+users = [
+  {name: "Alice", department: {name: "Engineering"}},
+  {name: "Bob", department: {name: "Sales"}},
+  {name: "Charlie", department: {name: "Engineering"}}
+]
+users.group_by { |user| user[:department][:name] }
+# => {"Engineering"=>[{name: "Alice",...}, {name: "Charlie",...}], "Sales"=>[{name: "Bob",...}]}
+```
+
+```ruby
+# AFTER
+users.group_by_key(:department, :name)
+# => {"Engineering"=>[{name: "Alice",...}, {name: "Charlie",...}], "Sales"=>[{name: "Bob",...}]}
+```
+
+*Methods used: [`group_by_key`](https://itsthedevman.com/docs/everythingrb/Enumerable.html#group_by_key-instance_method)*
+
+Create natural language lists:
+
+```ruby
+# BEFORE
+options = ["red", "blue", "green"]
+# The default to_sentence uses "and"
+options.to_sentence  # => "red, blue, and green"
+
+# Need "or" instead? Time for string surgery
+if options.size <= 2
+  options.to_sentence(words_connector: " or ")
+else
+  # Replace the last "and" with "or" - careful with i18n!
+  options.to_sentence.sub(/,?\s+and\s+/, ", or ")
+end
+# => "red, blue, or green"
+```
+
+```ruby
+# AFTER
 ["red", "blue", "green"].to_or_sentence  # => "red, blue, or green"
 ```
 
-**Extensions:** `join_map`, `key_map`, `dig_map`, `to_or_sentence`, `group_by_key`
+*Methods used: [`to_or_sentence`](https://itsthedevman.com/docs/everythingrb/Array.html#to_or_sentence-instance_method)*
 
-### Object Protection
-
-Prevent unwanted modifications with a single call:
-
-```ruby
-config = {
-  api: {
-    key: "secret",
-    endpoints: ["v1", "v2"]
-  }
-}.deep_freeze
-
-# Everything is frozen!
-config.frozen?  # => true
-config[:api][:endpoints][0].frozen?  # => true
-```
-
-**Extensions:** `deep_freeze`
+**Extensions:** [`join_map`](https://itsthedevman.com/docs/everythingrb/Array.html#join_map-instance_method), [`key_map`](https://itsthedevman.com/docs/everythingrb/Array.html#key_map-instance_method), [`dig_map`](https://itsthedevman.com/docs/everythingrb/Array.html#dig_map-instance_method), [`to_or_sentence`](https://itsthedevman.com/docs/everythingrb/Array.html#to_or_sentence-instance_method), [`group_by_key`](https://itsthedevman.com/docs/everythingrb/Enumerable.html#group_by_key-instance_method)
 
 ### Hash Convenience
 
 Work with hashes more intuitively:
 
 ```ruby
-# Create deeply nested structures without initialization
-stats = Hash.new_nested_hash
+# BEFORE
+stats = {}
+stats[:server] ||= {}
+stats[:server][:region] ||= {}
+stats[:server][:region][:us_east] ||= {}
+stats[:server][:region][:us_east][:errors] ||= []
 stats[:server][:region][:us_east][:errors] << "Connection timeout"
+```
+
+```ruby
+# AFTER
+stats = Hash.new_nested_hash(depth: 3)
+(stats[:server][:region][:us_east][:errors] ||= []) << "Connection timeout"
 # No need to initialize each level first!
+```
 
-# Transform values with access to keys
+*Methods used: [`new_nested_hash`](https://itsthedevman.com/docs/everythingrb/Hash.html#new_nested_hash-class_method)*
+
+Transform values with access to their keys:
+
+```ruby
+# BEFORE
+users = {alice: {name: "Alice"}, bob: {name: "Bob"}}
+result = {}
+users.each do |key, value|
+  result[key] = "User #{key}: #{value[:name]}"
+end
+# => {alice: "User alice: Alice", bob: "User bob: Bob"}
+```
+
+```ruby
+# AFTER
 users.transform_values(with_key: true) { |v, k| "User #{k}: #{v[:name]}" }
+# => {alice: "User alice: Alice", bob: "User bob: Bob"}
+```
 
-# Find values based on conditions
-users.value_where { |_k, v| v[:role] == "admin" }  # Returns first admin
-users.values_where { |_k, v| v[:role] == "admin" } # Returns all admins
+*Methods used: [`transform_values(with_key: true)`](https://itsthedevman.com/docs/everythingrb/Hash.html#transform_values-instance_method)*
 
-# Rename keys while preserving order
+Find values based on conditions:
+
+```ruby
+# BEFORE
+users = {
+  alice: {name: "Alice", role: "admin"},
+  bob: {name: "Bob", role: "user"},
+  charlie: {name: "Charlie", role: "admin"}
+}
+admins = users.select { |_k, v| v[:role] == "admin" }.values
+# => [{name: "Alice", role: "admin"}, {name: "Charlie", role: "admin"}]
+```
+
+```ruby
+# AFTER
+users.values_where { |_k, v| v[:role] == "admin" }
+# => [{name: "Alice", role: "admin"}, {name: "Charlie", role: "admin"}]
+```
+
+*Methods used: [`values_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#values_where-instance_method)*
+
+Just want the first match? Even simpler:
+
+```ruby
+# BEFORE
+users.find { |_k, v| v[:role] == "admin" }&.last
+# => {name: "Alice", role: "admin"}
+```
+
+```ruby
+# AFTER
+users.value_where { |_k, v| v[:role] == "admin" }
+# => {name: "Alice", role: "admin"}
+```
+
+*Methods used: [`value_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#value_where-instance_method)*
+
+Rename keys while preserving order:
+
+```ruby
+# BEFORE
+config = {api_key: "secret", timeout: 30}
+new_config = config.each_with_object({}) do |(key, value), hash|
+  new_key =
+    case key
+    when :api_key
+      :key
+    when :timeout
+      :request_timeout
+    else
+      key
+    end
+
+  hash[new_key] = value
+end
+# => {key: "secret", request_timeout: 30}
+```
+
+```ruby
+# AFTER
 config = {api_key: "secret", timeout: 30}
 config.rename_keys(api_key: :key, timeout: :request_timeout)
 # => {key: "secret", request_timeout: 30}
+```
 
-# Filter hash by values
+*Methods used: [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method)*
+
+Filter hash by values:
+
+```ruby
+# BEFORE
+result = {a: 1, b: nil, c: 2}.select { |_k, v| v.is_a?(Integer) && v > 1 }
+# => {c: 2}
+```
+
+```ruby
+# AFTER
 {a: 1, b: nil, c: 2}.select_values { |v| v.is_a?(Integer) && v > 1 }
 # => {c: 2}
 ```
 
-**Extensions:** `new_nested_hash`, `with_key`, `value_where`, `values_where`, `rename_key(s)`, `select_values`, `reject_values`
+*Methods used: [`select_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#select_values-instance_method)*
+
+Conditionally merge hashes with clear intent:
+
+```ruby
+# BEFORE
+user_params = {name: "Alice", role: "user"}
+filtered = {verified: true, admin: true}.select { |k, v| v == true && k == :verified }
+user_params.merge(filtered)
+# => {name: "Alice", role: "user", verified: true}
+```
+
+```ruby
+# AFTER
+user_params = {name: "Alice", role: "user"}
+user_params.merge_if(verified: true, admin: true) { |k, v| v == true && k == :verified }
+# => {name: "Alice", role: "user", verified: true}
+```
+
+*Methods used: [`merge_if`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if-instance_method)*
+
+The nil-filtering pattern we've all written dozens of times:
+
+```ruby
+# BEFORE
+params = {sort: "created_at"}
+filtered = {filter: "active", search: nil}.compact
+params.merge(filtered)
+# => {sort: "created_at", filter: "active"}
+```
+
+```ruby
+# AFTER
+params = {sort: "created_at"}
+params.merge_compact(filter: "active", search: nil)
+# => {sort: "created_at", filter: "active"}
+```
+
+*Methods used: [`merge_compact`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_compact-instance_method)*
+
+**Extensions:** [`new_nested_hash`](https://itsthedevman.com/docs/everythingrb/Hash.html#new_nested_hash-class_method), [`transform_values(with_key: true)`](https://itsthedevman.com/docs/everythingrb/Hash.html#transform_values-instance_method), [`value_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#value_where-instance_method), [`values_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#values_where-instance_method), [`rename_key`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_key-instance_method), [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method), [`select_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#select_values-instance_method), [`reject_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#reject_values-instance_method), [`merge_if`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if-instance_method), [`merge_if!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if%21-instance_method), [`merge_if_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values-instance_method), [`merge_if_values!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values%21-instance_method), [`merge_compact`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_compact-instance_method), [`merge_compact!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_compact%21-instance_method)
 
 ### Array Cleaning
 
 Clean up array boundaries while preserving internal structure:
 
 ```ruby
-# Remove nil values from the beginning/end
-[nil, nil, 1, nil, 2, nil, nil].trim_nils  # => [1, nil, 2]
+# BEFORE
+data = [nil, nil, 1, nil, 2, nil, nil]
+data.drop_while(&:nil?).reverse.drop_while(&:nil?).reverse
+# => [1, nil, 2]
+```
 
-# With ActiveSupport, remove blank values
+```ruby
+# AFTER
+[nil, nil, 1, nil, 2, nil, nil].trim_nils  # => [1, nil, 2]
+```
+
+*Methods used: [`trim_nils`](https://itsthedevman.com/docs/everythingrb/Array.html#trim_nils-instance_method)*
+
+With ActiveSupport, remove blank values too:
+
+```ruby
+# BEFORE
+data = [nil, "", 1, "", 2, nil, ""]
+data.drop_while(&:blank?).reverse.drop_while(&:blank?).reverse
+# => [1, "", 2]
+```
+
+```ruby
+# AFTER
 [nil, "", 1, "", 2, nil, ""].trim_blanks  # => [1, "", 2]
 ```
 
-**Extensions:** `trim_nils`, `compact_prefix`, `compact_suffix`, `trim_blanks` (with ActiveSupport)
+*Methods used: [`trim_blanks`](https://itsthedevman.com/docs/everythingrb/Array.html#trim_blanks-instance_method)*
+
+**Extensions:** [`trim_nils`](https://itsthedevman.com/docs/everythingrb/Array.html#trim_nils-instance_method), [`compact_prefix`](https://itsthedevman.com/docs/everythingrb/Array.html#compact_prefix-instance_method), [`compact_suffix`](https://itsthedevman.com/docs/everythingrb/Array.html#compact_suffix-instance_method), [`trim_blanks`](https://itsthedevman.com/docs/everythingrb/Array.html#trim_blanks-instance_method) (with ActiveSupport)
 
 ### String Formatting
 
-Add quotation marks to any value with a consistent interface - useful for user messages, formatting, and more:
+Format strings and other values consistently:
 
 ```ruby
-# Wrap any value in quotes - works on ALL types!
+# BEFORE
+def format_value(value)
+  case value
+  when String
+    "\"#{value}\""
+  when Symbol
+    "\"#{value}\""
+  when Numeric
+    "\"#{value}\""
+  when NilClass
+    "\"nil\""
+  when Array, Hash
+    "\"#{value.inspect}\""
+  else
+    "\"#{value}\""
+  end
+end
+
+selection = nil
+message = "You selected #{format_value(selection)}"
+```
+
+```ruby
+# AFTER
 "hello".in_quotes      # => "\"hello\""
 42.in_quotes           # => "\"42\""
 nil.in_quotes          # => "\"nil\""
@@ -203,28 +504,61 @@ nil.in_quotes          # => "\"nil\""
 [1, 2].in_quotes       # => "\"[1, 2]\""
 Time.now.in_quotes     # => "\"2025-05-04 12:34:56 +0000\""
 
-# Perfect for user-facing messages with mixed types
-puts "You selected #{selection.in_quotes}"
-puts "Item #{id.in_quotes} was added to category #{category.in_quotes}"
-
-# Great for formatting responses
-response = "Command #{command.in_quotes} completed successfully"
-
-# Ideal for error messages and logging
-log.info "Received values: #{values.join_map(", ", &:in_quotes)}"
-raise "Expected #{expected.in_quotes} but got #{actual.in_quotes}"
-
-# CLI argument descriptions
-puts "Valid modes are: #{MODES.join_map(", ", &:in_quotes)}"
+message = "You selected #{selection.in_quotes}"
 ```
 
-**Extensions:** `in_quotes`, `with_quotes` (alias)
+*Methods used: [`in_quotes`](https://itsthedevman.com/docs/everythingrb/Everythingrb/InspectQuotable.html#in_quotes-instance_method), [`with_quotes`](https://itsthedevman.com/docs/everythingrb/Everythingrb/InspectQuotable.html#with_quotes-instance_method)*
+
+Convert strings to camelCase with ease:
+
+```ruby
+# BEFORE
+name = "user_profile_settings"
+pascal_case = name.gsub(/[-_\s]+([a-z])/i) { $1.upcase }.gsub(/[-_\s]/, '')
+pascal_case[0].upcase!
+pascal_case
+# => "UserProfileSettings"
+
+camel_case = name.gsub(/[-_\s]+([a-z])/i) { $1.upcase }.gsub(/[-_\s]/, '')
+camel_case[0].downcase!
+camel_case
+# => "userProfileSettings"
+```
+
+```ruby
+# AFTER
+"user_profile_settings".to_camelcase       # => "UserProfileSettings"
+"user_profile_settings".to_camelcase(:lower)  # => "userProfileSettings"
+
+# Handles all kinds of input consistently
+"please-WAIT while_loading...".to_camelcase  # => "PleaseWaitWhileLoading"
+```
+
+*Methods used: [`to_camelcase`](https://itsthedevman.com/docs/everythingrb/String.html#to_camelcase-instance_method)*
+
+**Extensions:** [`in_quotes`](https://itsthedevman.com/docs/everythingrb/Everythingrb/InspectQuotable.html#in_quotes-instance_method), [`with_quotes`](https://itsthedevman.com/docs/everythingrb/Everythingrb/InspectQuotable.html#with_quotes-instance_method) (alias), [`to_camelcase`](https://itsthedevman.com/docs/everythingrb/String.html#to_camelcase-instance_method)
 
 ### Boolean Methods
 
 Create predicate methods with minimal code:
 
 ```ruby
+# BEFORE
+class User
+  attr_accessor :admin
+
+  def admin?
+    !!@admin
+  end
+end
+
+user = User.new
+user.admin = true
+user.admin?  # => true
+```
+
+```ruby
+# AFTER
 class User
   attr_accessor :admin
   attr_predicate :admin
@@ -233,8 +567,21 @@ end
 user = User.new
 user.admin = true
 user.admin?  # => true
+```
 
-# Works with Data objects too!
+*Methods used: [`attr_predicate`](https://itsthedevman.com/docs/everythingrb/Module.html#attr_predicate-instance_method)*
+
+Works with Data objects too:
+
+```ruby
+# BEFORE
+Person = Data.define(:active) do
+  def active?
+    !!active
+  end
+end
+
+# AFTER
 Person = Data.define(:active)
 Person.attr_predicate(:active)
 
@@ -242,21 +589,27 @@ person = Person.new(active: false)
 person.active? # => false
 ```
 
-**Extensions:** `attr_predicate`
+*Methods used: [`attr_predicate`](https://itsthedevman.com/docs/everythingrb/Module.html#attr_predicate-instance_method)*
+
+**Extensions:** [`attr_predicate`](https://itsthedevman.com/docs/everythingrb/Module.html#attr_predicate-instance_method)
 
 ### Value Transformation
 
 Chain transformations with a more descriptive syntax:
 
 ```ruby
-# Instead of this:
+# BEFORE
 result = value.then { |v| transform_it(v) }
+```
 
-# Write this:
+```ruby
+# AFTER
 result = value.morph { |v| transform_it(v) }
 ```
 
-**Extensions:** `morph` (alias for `then`/`yield_self`)
+*Methods used: [`morph`](https://itsthedevman.com/docs/everythingrb/Kernel.html#morph-instance_method)*
+
+**Extensions:** [`morph`](https://itsthedevman.com/docs/everythingrb/Kernel.html#morph-instance_method) (alias for `then`/`yield_self`)
 
 ## Full Documentation
 

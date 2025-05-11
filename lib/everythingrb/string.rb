@@ -8,12 +8,14 @@
 # - #to_deep_h: Recursively parse nested JSON strings
 # - #to_ostruct, #to_istruct, #to_struct: Convert JSON to data structures
 # - #with_quotes, #in_quotes: Wrap strings in quotes
+# - #to_camelcase: Convert strings to camelCase or PascalCase
 #
 # @example
 #   require "everythingrb/string"
 #
 #   '{"user": {"name": "Alice"}}'.to_ostruct.user.name  # => "Alice"
 #   "Hello".with_quotes  # => "\"Hello\""
+#   "hello_world".to_camelcase  # => "HelloWorld"
 #
 class String
   include Everythingrb::StringQuotable
