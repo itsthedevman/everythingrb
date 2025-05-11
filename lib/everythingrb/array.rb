@@ -6,7 +6,6 @@
 # Provides:
 # - #join_map: Combine filter_map and join operations in one step
 # - #key_map, #dig_map: Extract values from arrays of hashes
-# - #deep_freeze: Recursively freeze array and contents
 # - #compact_prefix, #compact_suffix, #trim_nils: Clean up array boundaries
 # - ActiveSupport integrations: #trim_blanks and more when ActiveSupport is loaded
 #
@@ -84,28 +83,6 @@ class Array
   #
   def dig_map(*keys)
     map { |v| v.dig(*keys) }
-  end
-
-  #
-  # Recursively freezes self and all of its contents
-  #
-  # @return [self] Returns the frozen array
-  #
-  # @example Freeze an array with nested structures
-  #   ["hello", { name: "Alice" }, [1, 2, 3]].deep_freeze
-  #   # => All elements and nested structures are now frozen
-  #
-  # @note CAUTION: Be careful when freezing collections that contain class objects
-  #   or singleton instances - this will freeze those classes/objects globally!
-  #   Only use deep_freeze on pure data structures you want to make immutable.
-  #
-  # @example What NOT to do
-  #   # Don't freeze collections containing class references:
-  #   [String, Hash, MyClass].deep_freeze  # This would freeze the actual classes!
-  #
-  def deep_freeze
-    each { |v| v.respond_to?(:deep_freeze) ? v.deep_freeze : v.freeze }
-    freeze
   end
 
   #
