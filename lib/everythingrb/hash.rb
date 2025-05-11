@@ -770,4 +770,141 @@ class Hash
 
     reject! { |_k, v| block.call(v) }
   end
+
+  #
+  # Conditionally merges key-value pairs from another hash based on a block
+  #
+  # @param other [Hash] The hash to merge from
+  #
+  # @yield [key, value] Block that determines whether to include each key-value pair
+  # @yieldparam key [Object] The key from the other hash
+  # @yieldparam value [Object] The value from the other hash
+  # @yieldreturn [Boolean] Whether to include this key-value pair
+  #
+  # @return [Hash] A new hash with conditionally merged key-value pairs
+  #
+  # @example Merge only even-numbered keys
+  #   {a: 1, b: 2}.merge_if(c: 3, d: 4) { |key, _| key.to_s.ord.even? }
+  #   # => {a: 1, b: 2, d: 4}
+  #
+  # @example Merge only positive values
+  #   {a: 1, b: 2}.merge_if(c: 3, d: -4) { |_, value| value > 0 }
+  #   # => {a: 1, b: 2, c: 3}
+  #
+  def merge_if(other = {}, &block)
+    other = other.select(&block) unless block.nil?
+
+    merge(other)
+  end
+
+  #
+  # Conditionally merges key-value pairs from another hash in place
+  #
+  # @param other [Hash] The hash to merge from
+  #
+  # @yield [key, value] Block that determines whether to include each key-value pair
+  # @yieldparam key [Object] The key from the other hash
+  # @yieldparam value [Object] The value from the other hash
+  # @yieldreturn [Boolean] Whether to include this key-value pair
+  #
+  # @return [self] The modified hash
+  #
+  # @example Merge only even-numbered keys in place
+  #   hash = {a: 1, b: 2}
+  #   hash.merge_if!(c: 3, d: 4) { |key, _| key.to_s.ord.even? }
+  #   # => {a: 1, b: 2, d: 4}
+  #
+  def merge_if!(other = {}, &block)
+    other = other.select(&block) unless block.nil?
+
+    merge!(other)
+  end
+
+  #
+  # Conditionally merges key-value pairs based only on values
+  #
+  # @param other [Hash] The hash to merge from
+  #
+  # @yield [value] Block that determines whether to include each value
+  # @yieldparam value [Object] The value from the other hash
+  # @yieldreturn [Boolean] Whether to include this value
+  #
+  # @return [Hash] A new hash with conditionally merged values
+  #
+  # @example Merge only string values
+  #   {a: 1, b: "old"}.merge_if_values(c: "new", d: 2) { |v| v.is_a?(String) }
+  #   # => {a: 1, b: "old", c: "new"}
+  #
+  def merge_if_values(other = {}, &block)
+    merge_if(other) { |k, v| block.call(v) }
+  end
+
+  #
+  # Conditionally merges key-value pairs based only on values, in place
+  #
+  # @param other [Hash] The hash to merge from
+  #
+  # @yield [value] Block that determines whether to include each value
+  # @yieldparam value [Object] The value from the other hash
+  # @yieldreturn [Boolean] Whether to include this value
+  #
+  # @return [self] The modified hash
+  #
+  # @example Merge only numeric values in place
+  #   hash = {a: 1, b: "text"}
+  #   hash.merge_if_values!(c: "ignore", d: 2) { |v| v.is_a?(Numeric) }
+  #   # => {a: 1, b: "text", d: 2}
+  #
+  def merge_if_values!(other = {}, &block)
+    merge_if!(other) { |k, v| block.call(v) }
+  end
+
+  #
+  # Merges only non-nil values from another hash
+  #
+  # This is a convenience method for the common pattern of merging
+  # only values that are not nil.
+  #
+  # @param other [Hash] The hash to merge from
+  #
+  # @return [Hash] A new hash with non-nil values merged
+  #
+  # @example Merge only non-nil values (common when building parameters)
+  #   user_id = 42
+  #   email = nil
+  #   name = "Alice"
+  #
+  #   {}.merge_compact(
+  #     id: user_id,
+  #     email: email,
+  #     name: name
+  #   )
+  #   # => {id: 42, name: "Alice"}
+  #
+  def merge_compact(other = {})
+    merge_if_values(other, &:itself)
+  end
+
+  #
+  # Merges only non-nil values from another hash, in place
+  #
+  # This is a convenience method for the common pattern of merging
+  # only values that are not nil.
+  #
+  # @param other [Hash] The hash to merge from
+  #
+  # @return [self] The modified hash
+  #
+  # @example Merge only non-nil values in place
+  #   params = {format: "json"}
+  #   params.merge_compact!(
+  #     page: 1,
+  #     per_page: nil,
+  #     sort: "created_at"
+  #   )
+  #   # => {format: "json", page: 1, sort: "created_at"}
+  #
+  def merge_compact!(other = {})
+    merge_if_values!(other, &:itself)
+  end
 end

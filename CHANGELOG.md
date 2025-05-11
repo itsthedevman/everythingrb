@@ -19,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added conditional hash merging methods:
+  - `Hash#merge_if` and `Hash#merge_if!` - Merge key-value pairs based on a condition
+  - `Hash#merge_if_values` and `Hash#merge_if_values!` - Merge based on values only
+  - `Hash#merge_compact` and `Hash#merge_compact!` - Merge only non-nil values
+
 ### Changed
 
 ### Removed
