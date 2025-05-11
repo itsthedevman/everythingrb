@@ -117,4 +117,44 @@ class String
   def to_struct
     to_h&.to_struct
   end
+
+  #
+  # Converts a string to camelCase or PascalCase
+  #
+  # Handles strings with spaces, hyphens, underscores, and special characters.
+  # - Hyphens and underscores are treated like spaces
+  # - Special characters and symbols are removed
+  # - Capitalizing each word (except the first if set)
+  #
+  # @param first_letter [Symbol] Whether the first letter should be uppercase (:upper)
+  #   or lowercase (:lower)
+  #
+  # @return [String] The camelCased string
+  #
+  # @example Convert a string to PascalCase (default)
+  #   "welcome to the jungle!".to_camelcase     # => "WelcomeToTheJungle"
+  #
+  # @example Convert a string to camelCase (lowercase first)
+  #   "welcome to the jungle!".to_camelcase(:lower)     # => "welcomeToTheJungle"
+  #
+  # @example With mixed formatting
+  #   "please-WAIT while_loading...".to_camelcase    # => "PleaseWaitWhileLoading"
+  #
+  # @see String#capitalize
+  # @see String#downcase
+  #
+  def to_camelcase(first_letter = :upper)
+    gsub(/[-_]/, " ") # Treat dash/underscore as new words so they are capitalized
+      .gsub(/[^a-zA-Z0-9\s]/, "") # Remove any special characters
+      .split(/\s+/) # Split by word (removes extra whitespace)
+      .map # Don't use `join_map(with_index: true)`, this is faster
+      .with_index do |word, index| # Convert the words
+        if index == 0 && first_letter == :lower
+          word.downcase
+        else
+          word.capitalize
+        end
+      end
+      .join # And join it back together
+  end
 end
