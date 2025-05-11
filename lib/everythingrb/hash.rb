@@ -6,7 +6,6 @@
 # Provides:
 # - #to_struct, #to_ostruct, #to_istruct: Convert hashes to different structures
 # - #join_map: Combine filter_map and join operations
-# - #deep_freeze: Recursively freeze hash and contents
 # - #transform_values.with_key: Transform values with access to keys
 # - #transform, #transform!: Transform keys and values
 # - #value_where, #values_where: Find values based on conditions
@@ -237,29 +236,6 @@ class Hash
     end
 
     OpenStruct.new(**transform_values { |value| recurse.call(value) })
-  end
-
-  #
-  # Recursively freezes self and all of its values
-  #
-  # @return [self] Returns the frozen hash
-  #
-  # @example
-  #   { user: { name: "Alice", roles: ["admin"] } }.deep_freeze
-  #   # => Hash and all nested structures are now frozen
-  #
-  # @note CAUTION: Be careful when freezing collections that contain class objects
-  #   or singleton instances - this will freeze those classes/objects globally!
-  #   Only use deep_freeze on pure data structures you want to make immutable.
-  #
-  # @example What NOT to do
-  #   # Don't freeze collections containing class references:
-  #   # This would freeze the actual classes!
-  #   { string: String, hash: Hash, my_class: MyClass}.deep_freeze
-  #
-  def deep_freeze
-    each_value { |v| v.respond_to?(:deep_freeze) ? v.deep_freeze : v.freeze }
-    freeze
   end
 
   # @!visibility private
