@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+- Removed potentially dangerous `Array#deep_freeze` and `Hash#deep_freeze` methods to prevent accidental freezing of classes and singleton objects. This creates a safer API for the 1.0.0 milestone.
+
 ## [0.7.0] - 12025-05-04
 
 ### Added
