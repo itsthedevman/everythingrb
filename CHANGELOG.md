@@ -19,6 +19,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+## [0.8.0] - 12025-05-11
+
+### Added
+
 - Added conditional hash merging methods:
   - `Hash#merge_if` and `Hash#merge_if!` - Merge key-value pairs based on a condition
   - `Hash#merge_if_values` and `Hash#merge_if_values!` - Merge based on values only
@@ -27,6 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Supports both lowercase first letter (`:lower`) and uppercase first letter (`:upper`), which is default
 
 ### Changed
+
+- Updated documentation
 
 ### Removed
 
@@ -273,7 +283,8 @@ This change aligns our method signatures with Ruby's conventions and matches our
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.7.0...HEAD
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/itsthedevman/everythingrb/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/itsthedevman/everythingrb/compare/v0.6.1...v0.7.0
 [0.6.1]: https://github.com/itsthedevman/everythingrb/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/itsthedevman/everythingrb/compare/v0.5.0...v0.6.0

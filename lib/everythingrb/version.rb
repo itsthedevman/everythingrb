@@ -7,5 +7,5 @@
 #
 module Everythingrb
   # Current version of the everythingrb gem
-  VERSION = "0.7.0"
+  VERSION = "0.8.0"
 end
