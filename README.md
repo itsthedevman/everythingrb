@@ -45,7 +45,9 @@ gem install everythingrb
 
 There are two ways to use EverythingRB:
 
-### Load Everything (Default)
+### Standard Ruby Projects
+
+#### Load Everything (Default)
 
 The simplest approach - just require and go:
 
@@ -60,7 +62,7 @@ config = {server: {port: 443}}.to_ostruct
 config.server.port  # => 443
 ```
 
-### Cherry-Pick Extensions
+#### Cherry-Pick Extensions
 
 If you only need specific extensions (or you're a minimalist at heart):
 
@@ -95,6 +97,21 @@ Available modules:
 - `struct`: Struct extensions (to_deep_h, in_quotes)
 - `symbol`: Symbol extensions (with_quotes)
 - `time`: Time extensions (in_quotes)
+
+### Rails Applications
+
+EverythingRB works out of the box with Rails! Just add it to your Gemfile and you're all set.
+
+If you only want specific extensions, configure them in an initializer:
+
+```ruby
+# In config/initializers/everythingrb.rb
+Rails.application.configure do
+  config.everythingrb.extensions = [:array, :string, :hash]
+end
+```
+
+By default (when `config.everythingrb.extensions` is not set), all extensions are loaded. Setting this to an empty array would effectively disable the gem.
 
 ## What's Included
 
