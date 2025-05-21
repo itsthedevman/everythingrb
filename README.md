@@ -12,11 +12,15 @@ We've all been there - writing the same tedious patterns over and over:
 
 ```ruby
 # BEFORE
-users = [{ name: "Alice", role: "admin" }, { name: "Bob", role: "user" }]
+users = [
+  { name: "Alice", role: "admin" },
+  { name: "Bob", role: "user" },
+  { name: "Charlie", role: "admin" }
+]
 admin_users = users.select { |u| u[:role] == "admin" }
 admin_names = admin_users.map { |u| u[:name] }
 result = admin_names.join(", ")
-# => "Alice"
+# => "Alice, Charlie"
 ```
 
 With EverythingRB, you can write code that actually says what you mean:
@@ -24,7 +28,7 @@ With EverythingRB, you can write code that actually says what you mean:
 ```ruby
 # AFTER
 users.join_map(", ") { |u| u[:name] if u[:role] == "admin" }
-# => "Alice"
+# => "Alice, Charlie"
 ```
 
 *Methods used: [`join_map`](https://itsthedevman.com/docs/everythingrb/Array.html#join_map-instance_method)*
