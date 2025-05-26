@@ -33,4 +33,14 @@ class TestReplaceKeys < Minitest::Test
     hash.rename_keys!(key_1: "key_one", key_2: "key_two")
     assert_equal({"key_one" => 1, "key_two" => 2}, hash)
   end
+
+  def test_it_does_not_add_non_existent_key
+    hash = {baz: true}
+
+    result = hash.rename_keys(foo: :bar)
+    assert_equal({baz: true}, result)
+
+    hash.rename_keys!(foo: :bar)
+    assert_equal({baz: true}, hash)
+  end
 end

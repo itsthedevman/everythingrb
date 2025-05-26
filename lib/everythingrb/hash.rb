@@ -629,6 +629,10 @@ class Hash
     # But as the hash becomes larger, the performance improvements become diminished until they're roughly the same.
     # Neat!
     hash = except(old_key)
+
+    # Only modify the hash if the old key exists
+    return hash unless key?(old_key)
+
     hash[new_key] = self[old_key]
     hash
   end
@@ -650,6 +654,9 @@ class Hash
   #   # => {a: 1, c: 3, middle: 2}  # Order may differ
   #
   def rename_key_unordered!(old_key, new_key)
+    # Only modify the hash if the old key exists
+    return self unless key?(old_key)
+
     self[new_key] = delete(old_key)
     self
   end
