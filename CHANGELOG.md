@@ -15,6 +15,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 -->
 
+## [0.8.3] - 12025-05-31
+
+### Added
+
+### Changed
+
+- **Deprecated Hash value filtering methods** - `Hash#select_values`, `Hash#reject_values`, `Hash#select_values!` and `Hash#reject_values!` are now deprecated and will be removed in v0.9.0. These methods largely duplicate existing Ruby/ActiveSupport functionality:
+  - `hash.reject_values(&:blank?)` → use `hash.compact_blank` instead
+  - `hash.select_values { |v| condition }` → use `hash.select { |k, v| condition }`
+  - `hash.reject_values { |v| condition }` → use `hash.reject { |k, v| condition }`
+
+  See [Issue #61](https://github.com/itsthedevman/everythingrb/issues/61) for full details.
+
+### Removed
+
 ## [0.8.2] - 12025-05-25
 
 ### Added
@@ -301,7 +316,8 @@ This change aligns our method signatures with Ruby's conventions and matches our
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.8.2...HEAD
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.8.3...HEAD
+[0.8.3]: https://github.com/itsthedevman/everythingrb/compare/v0.8.2...v0.8.3
 [0.8.2]: https://github.com/itsthedevman/everythingrb/compare/v0.8.1...v0.8.2
 [0.8.1]: https://github.com/itsthedevman/everythingrb/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/itsthedevman/everythingrb/compare/v0.7.0...v0.8.0
