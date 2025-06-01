@@ -25,6 +25,15 @@ require "json"
 #   users.key_map(:name).join(", ")  # => "Alice, Bob"
 #
 module Everythingrb
+  def self.deprecator
+    @deprecator ||= if defined?(ActiveSupport)
+      ActiveSupport::Deprecation.new(VERSION, "everythingrb")
+    else
+      proxy = Data.define
+      proxy.define_method(:warn) { |message| puts "DEPRECATION WARNING: #{message}" }
+      proxy.new
+    end
+  end
 end
 
 require_relative "extensions"
