@@ -24,6 +24,8 @@ module Everythingrb
       # I learned that, whereas ActiveSupport is defined at this point, the core_ext files are
       # required later down the line.
       ActiveSupport.on_load(:active_record) do
+        require_relative "everythingrb/prelude"
+
         extensions = Rails.configuration.everythingrb.extensions
 
         if extensions.is_a?(Array)
