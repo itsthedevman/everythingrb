@@ -664,22 +664,13 @@ class Hash
   #
   # Selects hash entries based only on their values
   #
-  # @yield [value] Block that determines whether to include the entry
-  # @yieldparam value [Object] The current value
-  # @yieldreturn [Boolean] Whether to include this entry
-  #
-  # @return [Hash] A new hash including only entries where the block returned truthy
-  # @return [Enumerator] If no block is given
-  #
-  # @example Filter to include only present values (with ActiveSupport)
-  #   {name: "Alice", bio: nil, role: ""}.select_values(&:present?)
-  #   # => {name: "Alice"}
-  #
-  # @example Filter using more complex logic
-  #   {id: 1, count: 0, items: [1, 2, 3]}.select_values { |v| v.is_a?(Array) || v > 0 }
-  #   # => {id: 1, items: [1, 2, 3]}
+  # @deprecated Hash#select_values will be removed in 0.9.0. Please use `select { |k, v| condition }` instead.
   #
   def select_values(&block)
+    Everythingrb.deprecator.warn(
+      "Hash#select_values will be removed in 0.9.0. Please use `select { |k, v| condition }` instead."
+    )
+
     return to_enum(:select_values) if block.nil?
 
     select { |_k, v| block.call(v) }
@@ -690,20 +681,13 @@ class Hash
   #
   # Selects hash entries based only on their values, modifying the hash in place
   #
-  # @yield [value] Block that determines whether to keep the entry
-  # @yieldparam value [Object] The current value
-  # @yieldreturn [Boolean] Whether to keep this entry
-  #
-  # @return [self, nil] The modified hash, or nil if no changes were made
-  # @return [Enumerator] If no block is given
-  #
-  # @example Remove entries with empty values (with ActiveSupport)
-  #   hash = {name: "Alice", bio: nil, role: ""}
-  #   hash.select_values!(&:present?)
-  #   # => {name: "Alice"}
-  #   # hash is now {name: "Alice"}
+  # @deprecated Hash#select_values! will be removed in 0.9.0. Please use `select! { |k, v| condition }` instead.
   #
   def select_values!(&block)
+    Everythingrb.deprecator.warn(
+      "Hash#select_values! will be removed in 0.9.0. Please use `select! { |k, v| condition }` instead."
+    )
+
     return to_enum(:select_values!) if block.nil?
 
     select! { |_k, v| block.call(v) }
@@ -714,22 +698,13 @@ class Hash
   #
   # Rejects hash entries based only on their values
   #
-  # @yield [value] Block that determines whether to exclude the entry
-  # @yieldparam value [Object] The current value
-  # @yieldreturn [Boolean] Whether to exclude this entry
-  #
-  # @return [Hash] A new hash excluding entries where the block returned truthy
-  # @return [Enumerator] If no block is given
-  #
-  # @example Remove blank values (with ActiveSupport)
-  #   {name: "Alice", bio: nil, role: ""}.reject_values(&:blank?)
-  #   # => {name: "Alice"}
-  #
-  # @example Remove specific types of values
-  #   {id: 1, count: 0, items: [1, 2, 3]}.reject_values { |v| v.is_a?(Integer) && v == 0 }
-  #   # => {id: 1, items: [1, 2, 3]}
+  # @deprecated Hash#reject_values will be removed in 0.9.0. Please use `reject { |k, v| condition }` instead.
   #
   def reject_values(&block)
+    Everythingrb.deprecator.warn(
+      "Hash#reject_values will be removed in 0.9.0. Please use `reject { |k, v| condition }` instead."
+    )
+
     return to_enum(:reject_values) if block.nil?
 
     reject { |_k, v| block.call(v) }
@@ -738,20 +713,13 @@ class Hash
   #
   # Rejects hash entries based only on their values, modifying the hash in place
   #
-  # @yield [value] Block that determines whether to remove the entry
-  # @yieldparam value [Object] The current value
-  # @yieldreturn [Boolean] Whether to remove this entry
-  #
-  # @return [self, nil] The modified hash, or nil if no changes were made
-  # @return [Enumerator] If no block is given
-  #
-  # @example Remove blank values in place (with ActiveSupport)
-  #   hash = {name: "Alice", bio: nil, role: ""}
-  #   hash.reject_values!(&:blank?)
-  #   # => {name: "Alice"}
-  #   # hash is now {name: "Alice"}
+  # @deprecated Hash#reject_values! will be removed in 0.9.0. Please use `reject! { |k, v| condition }` instead.
   #
   def reject_values!(&block)
+    Everythingrb.deprecator.warn(
+      "Hash#reject_values! will be removed in 0.9.0. Please use `reject! { |k, v| condition }` instead."
+    )
+
     return to_enum(:reject_values!) if block.nil?
 
     reject! { |_k, v| block.call(v) }
