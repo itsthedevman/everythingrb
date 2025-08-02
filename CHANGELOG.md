@@ -15,6 +15,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 -->
 
+## [Unreleased]
+
+### Added
+
+### Changed
+
+### Removed
+
+- **Removed deprecated Hash value filtering methods** - `Hash#select_values`, `Hash#select_values!`, `Hash#reject_values`, `Hash#reject_values!`, and `Hash#filter_values`, `Hash#filter_values!` have been removed as planned. These methods were deprecated in v0.8.3. Use the standard Ruby alternatives instead:
+  - `hash.select_values { |v| condition }` → `hash.select { |k, v| condition }`
+  - `hash.reject_values { |v| condition }` → `hash.reject { |k, v| condition }`
+  - For blank filtering: `hash.reject_values(&:blank?)` → `hash.compact_blank` (with ActiveSupport)
+
 ## [0.8.3] - 12025-05-31
 
 ### Added
@@ -22,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **Deprecated Hash value filtering methods** - `Hash#select_values`, `Hash#reject_values`, `Hash#select_values!` and `Hash#reject_values!` are now deprecated and will be removed in v0.9.0. These methods largely duplicate existing Ruby/ActiveSupport functionality:
+
   - `hash.reject_values(&:blank?)` → use `hash.compact_blank` instead
   - `hash.select_values { |v| condition }` → use `hash.select { |k, v| condition }`
   - `hash.reject_values { |v| condition }` → use `hash.reject { |k, v| condition }`
@@ -95,6 +109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `Hash#reject_values!` - Same as `reject_values` but modifies the hash in place
   - Added `filter_values` and `filter_values!` as aliases for `select_values` and `select_values!` respectively
 - Added `Kernel#morph` as an alias for `then` (and `yield_self`) that better communicates transformation intent:
+
   ```ruby
   # Instead of this:
   value.then { |v| transform_somehow(v) }
@@ -124,12 +139,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   The chainable `.with_key` method approach has been replaced with a more straightforward parameter-based approach.
 
   **Before:**
+
   ```ruby
   hash.transform_values.with_key { |value, key| "#{key}:#{value}" }
   hash.transform_values!.with_key { |value, key| "#{key}:#{value}" }
   ```
 
   **After:**
+
   ```ruby
   hash.transform_values(with_key: true) { |value, key| "#{key}:#{value}" }
   hash.transform_values!(with_key: true) { |value, key| "#{key}:#{value}" }
@@ -148,11 +165,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 The parameter order in `Hash#transform_values.with_key` has been changed to yield `|value, key|` instead of `|key, value|` to maintain consistency with Ruby's standard enumeration methods like `each_with_index`.
 
 **Before:**
+
 ```ruby
 hash.transform_values.with_key { |key, value| "#{key}: #{value}" }
 ```
 
 **After:**
+
 ```ruby
 hash.transform_values.with_key { |value, key| "#{key}: #{value}" }
 ```
@@ -164,10 +183,10 @@ This change aligns our method signatures with Ruby's conventions and matches our
 - Added `Hash#transform` and `Hash#transform!` for transforming a hash's keys and values at the same time.
 
 ### Changed
+
 - Changed parameter order in `Hash#transform_values.with_key` to yield `|value, key|` instead of `|key, value|` for consistency with Ruby conventions.
 
 ### Removed
-
 
 ## [0.4.0] - 12025-04-11
 
