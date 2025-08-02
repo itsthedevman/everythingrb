@@ -4,7 +4,7 @@
 ![Ruby Version](https://img.shields.io/badge/ruby-3.3.7-ruby)
 [![Tests](https://github.com/itsthedevman/everythingrb/actions/workflows/main.yml/badge.svg)](https://github.com/everythingrb/sortsmith/actions/workflows/main.yml)
 
-Super handy extensions to Ruby core classes that make your code more expressive, readable, and fun to write. Stop writing boilerplate and start writing code that *actually matters*!
+Super handy extensions to Ruby core classes that make your code more expressive, readable, and fun to write. Stop writing boilerplate and start writing code that _actually matters_!
 
 ## Express Your Intent, Not Your Logic
 
@@ -31,7 +31,7 @@ users.join_map(", ") { |u| u[:name] if u[:role] == "admin" }
 # => "Alice, Charlie"
 ```
 
-*Methods used: [`join_map`](https://itsthedevman.com/docs/everythingrb/Array.html#join_map-instance_method)*
+_Methods used: [`join_map`](https://itsthedevman.com/docs/everythingrb/Array.html#join_map-instance_method)_
 
 Because life's too short to write all that boilerplate!
 
@@ -84,6 +84,7 @@ require "everythingrb/string"   # Just String extensions
 ```
 
 Available modules:
+
 - `array`: Array extensions (join_map, key_map, etc.)
 - `boolean`: Boolean extensions (in_quotes, with_quotes)
 - `data`: Data extensions (to_deep_h, in_quotes)
@@ -143,7 +144,7 @@ With EverythingRB, it's one elegant step:
 '{"user":{"name":"Alice","roles":["admin"]}}'.to_ostruct.user.name  # => "Alice"
 ```
 
-*Methods used: [`to_ostruct`](https://itsthedevman.com/docs/everythingrb/String.html#to_ostruct-instance_method)*
+_Methods used: [`to_ostruct`](https://itsthedevman.com/docs/everythingrb/String.html#to_ostruct-instance_method)_
 
 Convert between data structures with ease:
 
@@ -161,7 +162,7 @@ config = { server: { host: "example.com", port: 443 } }.to_struct
 config.server.host  # => "example.com"
 ```
 
-*Methods used: [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method)*
+_Methods used: [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method)_
 
 Deep conversion to plain hashes is just as easy:
 
@@ -181,7 +182,7 @@ data = OpenStruct.new(user: Data.define(:name).new(name: "Bob"))
 data.to_deep_h  # => {user: {name: "Bob"}}
 ```
 
-*Methods used: [`to_deep_h`](https://itsthedevman.com/docs/everythingrb/OpenStruct.html#to_deep_h-instance_method)*
+_Methods used: [`to_deep_h`](https://itsthedevman.com/docs/everythingrb/OpenStruct.html#to_deep_h-instance_method)_
 
 **Extensions:** [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method), [`to_ostruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_ostruct-instance_method), [`to_istruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_istruct-instance_method), [`to_h`](https://itsthedevman.com/docs/everythingrb/String.html#to_h-instance_method), [`to_deep_h`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_deep_h-instance_method)
 
@@ -201,7 +202,7 @@ names = users.map { |user| user[:name] }
 users.key_map(:name)  # => ["Alice", "Bob"]
 ```
 
-*Methods used: [`key_map`](https://itsthedevman.com/docs/everythingrb/Array.html#key_map-instance_method)*
+_Methods used: [`key_map`](https://itsthedevman.com/docs/everythingrb/Array.html#key_map-instance_method)_
 
 Simplify nested data extraction:
 
@@ -220,7 +221,7 @@ names = users.map { |u| u.dig(:user, :profile, :name) }
 users.dig_map(:user, :profile, :name)  # => ["Alice", "Bob"]
 ```
 
-*Methods used: [`dig_map`](https://itsthedevman.com/docs/everythingrb/Array.html#dig_map-instance_method)*
+_Methods used: [`dig_map`](https://itsthedevman.com/docs/everythingrb/Array.html#dig_map-instance_method)_
 
 Combine filter, map, and join operations in one step:
 
@@ -237,7 +238,7 @@ result = data.compact.filter_map { |n| "Item #{n}" if n.odd? }.join(" | ")
 # => "Item 1 | Item 3"
 ```
 
-*Methods used: [`join_map`](https://itsthedevman.com/docs/everythingrb/Array.html#join_map-instance_method)*
+_Methods used: [`join_map`](https://itsthedevman.com/docs/everythingrb/Array.html#join_map-instance_method)_
 
 Group elements with natural syntax:
 
@@ -258,7 +259,7 @@ users.group_by_key(:department, :name)
 # => {"Engineering"=>[{name: "Alice",...}, {name: "Charlie",...}], "Sales"=>[{name: "Bob",...}]}
 ```
 
-*Methods used: [`group_by_key`](https://itsthedevman.com/docs/everythingrb/Enumerable.html#group_by_key-instance_method)*
+_Methods used: [`group_by_key`](https://itsthedevman.com/docs/everythingrb/Enumerable.html#group_by_key-instance_method)_
 
 Create natural language lists:
 
@@ -283,7 +284,7 @@ end
 ["red", "blue", "green"].to_or_sentence  # => "red, blue, or green"
 ```
 
-*Methods used: [`to_or_sentence`](https://itsthedevman.com/docs/everythingrb/Array.html#to_or_sentence-instance_method)*
+_Methods used: [`to_or_sentence`](https://itsthedevman.com/docs/everythingrb/Array.html#to_or_sentence-instance_method)_
 
 **Extensions:** [`join_map`](https://itsthedevman.com/docs/everythingrb/Array.html#join_map-instance_method), [`key_map`](https://itsthedevman.com/docs/everythingrb/Array.html#key_map-instance_method), [`dig_map`](https://itsthedevman.com/docs/everythingrb/Array.html#dig_map-instance_method), [`to_or_sentence`](https://itsthedevman.com/docs/everythingrb/Array.html#to_or_sentence-instance_method), [`group_by_key`](https://itsthedevman.com/docs/everythingrb/Enumerable.html#group_by_key-instance_method)
 
@@ -308,7 +309,7 @@ stats = Hash.new_nested_hash(depth: 3)
 # No need to initialize each level first!
 ```
 
-*Methods used: [`new_nested_hash`](https://itsthedevman.com/docs/everythingrb/Hash.html#new_nested_hash-class_method)*
+_Methods used: [`new_nested_hash`](https://itsthedevman.com/docs/everythingrb/Hash.html#new_nested_hash-class_method)_
 
 Transform values with access to their keys:
 
@@ -328,7 +329,7 @@ users.transform_values(with_key: true) { |v, k| "User #{k}: #{v[:name]}" }
 # => {alice: "User alice: Alice", bob: "User bob: Bob"}
 ```
 
-*Methods used: [`transform_values(with_key: true)`](https://itsthedevman.com/docs/everythingrb/Hash.html#transform_values-instance_method)*
+_Methods used: [`transform_values(with_key: true)`](https://itsthedevman.com/docs/everythingrb/Hash.html#transform_values-instance_method)_
 
 Find values based on conditions:
 
@@ -349,7 +350,7 @@ users.values_where { |_k, v| v[:role] == "admin" }
 # => [{name: "Alice", role: "admin"}, {name: "Charlie", role: "admin"}]
 ```
 
-*Methods used: [`values_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#values_where-instance_method)*
+_Methods used: [`values_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#values_where-instance_method)_
 
 Just want the first match? Even simpler:
 
@@ -365,7 +366,7 @@ users.value_where { |_k, v| v[:role] == "admin" }
 # => {name: "Alice", role: "admin"}
 ```
 
-*Methods used: [`value_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#value_where-instance_method)*
+_Methods used: [`value_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#value_where-instance_method)_
 
 Rename keys while preserving order:
 
@@ -395,7 +396,7 @@ config.rename_keys(api_key: :key, timeout: :request_timeout)
 # => {key: "secret", request_timeout: 30}
 ```
 
-*Methods used: [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method)*
+_Methods used: [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method)_
 
 Filter hash by values:
 
@@ -411,7 +412,7 @@ result = {a: 1, b: nil, c: 2}.select { |_k, v| v.is_a?(Integer) && v > 1 }
 # => {c: 2}
 ```
 
-*Methods used: [`select_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#select_values-instance_method)*
+_Methods used: [`select_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#select_values-instance_method)_
 
 Conditionally merge hashes with clear intent:
 
@@ -430,7 +431,7 @@ user_params.merge_if(verified: true, admin: true) { |k, v| v == true && k == :ve
 # => {name: "Alice", role: "user", verified: true}
 ```
 
-*Methods used: [`merge_if`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if-instance_method)*
+_Methods used: [`merge_if`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if-instance_method)_
 
 The nil-filtering pattern we've all written dozens of times:
 
@@ -445,13 +446,33 @@ params.merge(filtered)
 ```ruby
 # AFTER
 params = {sort: "created_at"}
-params.merge_compact(filter: "active", search: nil)
+params.compact_merge(filter: "active", search: nil)
 # => {sort: "created_at", filter: "active"}
 ```
 
-*Methods used: [`merge_compact`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_compact-instance_method)*
+_Methods used: [`compact_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge-instance_method)_
 
-**Extensions:** [`new_nested_hash`](https://itsthedevman.com/docs/everythingrb/Hash.html#new_nested_hash-class_method), [`transform_values(with_key: true)`](https://itsthedevman.com/docs/everythingrb/Hash.html#transform_values-instance_method), [`value_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#value_where-instance_method), [`values_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#values_where-instance_method), [`rename_key`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_key-instance_method), [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method), [`select_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#select_values-instance_method), [`reject_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#reject_values-instance_method), [`merge_if`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if-instance_method), [`merge_if!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if%21-instance_method), [`merge_if_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values-instance_method), [`merge_if_values!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values%21-instance_method), [`merge_compact`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_compact-instance_method), [`merge_compact!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_compact%21-instance_method)
+Filter out blank values too when ActiveSupport is loaded:
+
+```ruby
+# BEFORE
+config = {api_key: "secret", timeout: 30}
+user_settings = {timeout: "", retries: nil, debug: true, tags: []}
+clean_settings = user_settings.reject { |k, v| v.blank? }
+config.merge(clean_settings)
+# => {api_key: "secret", timeout: 30, debug: true}
+```
+
+```ruby
+# AFTER
+config = {api_key: "secret", timeout: 30}
+config.compact_blank_merge(timeout: "", retries: nil, debug: true, tags: [])
+# => {api_key: "secret", timeout: 30, debug: true}
+```
+
+_Methods used: [`compact_blank_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge-instance_method)_
+
+**Extensions:** [`new_nested_hash`](https://itsthedevman.com/docs/everythingrb/Hash.html#new_nested_hash-class_method), [`transform_values(with_key: true)`](https://itsthedevman.com/docs/everythingrb/Hash.html#transform_values-instance_method), [`value_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#value_where-instance_method), [`values_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#values_where-instance_method), [`rename_key`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_key-instance_method), [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method), [`select_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#select_values-instance_method), [`reject_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#reject_values-instance_method), [`merge_if`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if-instance_method), [`merge_if!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if%21-instance_method), [`merge_if_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values-instance_method), [`merge_if_values!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values%21-instance_method), [`compact_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge-instance_method), [`compact_merge!`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge%21-instance_method), [`compact_blank_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge-instance_method), [`compact_blank_merge!`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge%21-instance_method)
 
 ### Array Cleaning
 
@@ -469,7 +490,7 @@ data.drop_while(&:nil?).reverse.drop_while(&:nil?).reverse
 [nil, nil, 1, nil, 2, nil, nil].trim_nils  # => [1, nil, 2]
 ```
 
-*Methods used: [`trim_nils`](https://itsthedevman.com/docs/everythingrb/Array.html#trim_nils-instance_method)*
+_Methods used: [`trim_nils`](https://itsthedevman.com/docs/everythingrb/Array.html#trim_nils-instance_method)_
 
 With ActiveSupport, remove blank values too:
 
@@ -485,7 +506,7 @@ data.drop_while(&:blank?).reverse.drop_while(&:blank?).reverse
 [nil, "", 1, "", 2, nil, ""].trim_blanks  # => [1, "", 2]
 ```
 
-*Methods used: [`trim_blanks`](https://itsthedevman.com/docs/everythingrb/Array.html#trim_blanks-instance_method)*
+_Methods used: [`trim_blanks`](https://itsthedevman.com/docs/everythingrb/Array.html#trim_blanks-instance_method)_
 
 **Extensions:** [`trim_nils`](https://itsthedevman.com/docs/everythingrb/Array.html#trim_nils-instance_method), [`compact_prefix`](https://itsthedevman.com/docs/everythingrb/Array.html#compact_prefix-instance_method), [`compact_suffix`](https://itsthedevman.com/docs/everythingrb/Array.html#compact_suffix-instance_method), [`trim_blanks`](https://itsthedevman.com/docs/everythingrb/Array.html#trim_blanks-instance_method) (with ActiveSupport)
 
@@ -528,7 +549,7 @@ Time.now.in_quotes     # => "\"2025-05-04 12:34:56 +0000\""
 message = "You selected #{selection.in_quotes}"
 ```
 
-*Methods used: [`in_quotes`](https://itsthedevman.com/docs/everythingrb/Everythingrb/InspectQuotable.html#in_quotes-instance_method), [`with_quotes`](https://itsthedevman.com/docs/everythingrb/Everythingrb/InspectQuotable.html#with_quotes-instance_method)*
+_Methods used: [`in_quotes`](https://itsthedevman.com/docs/everythingrb/Everythingrb/InspectQuotable.html#in_quotes-instance_method), [`with_quotes`](https://itsthedevman.com/docs/everythingrb/Everythingrb/InspectQuotable.html#with_quotes-instance_method)_
 
 Convert strings to camelCase with ease:
 
@@ -555,7 +576,7 @@ camel_case
 "please-WAIT while_loading...".to_camelcase  # => "PleaseWaitWhileLoading"
 ```
 
-*Methods used: [`to_camelcase`](https://itsthedevman.com/docs/everythingrb/String.html#to_camelcase-instance_method)*
+_Methods used: [`to_camelcase`](https://itsthedevman.com/docs/everythingrb/String.html#to_camelcase-instance_method)_
 
 **Extensions:** [`in_quotes`](https://itsthedevman.com/docs/everythingrb/Everythingrb/InspectQuotable.html#in_quotes-instance_method), [`with_quotes`](https://itsthedevman.com/docs/everythingrb/Everythingrb/InspectQuotable.html#with_quotes-instance_method) (alias), [`to_camelcase`](https://itsthedevman.com/docs/everythingrb/String.html#to_camelcase-instance_method)
 
@@ -590,7 +611,7 @@ user.admin = true
 user.admin?  # => true
 ```
 
-*Methods used: [`attr_predicate`](https://itsthedevman.com/docs/everythingrb/Module.html#attr_predicate-instance_method)*
+_Methods used: [`attr_predicate`](https://itsthedevman.com/docs/everythingrb/Module.html#attr_predicate-instance_method)_
 
 Works with Data objects too:
 
@@ -610,7 +631,7 @@ person = Person.new(active: false)
 person.active? # => false
 ```
 
-*Methods used: [`attr_predicate`](https://itsthedevman.com/docs/everythingrb/Module.html#attr_predicate-instance_method)*
+_Methods used: [`attr_predicate`](https://itsthedevman.com/docs/everythingrb/Module.html#attr_predicate-instance_method)_
 
 **Extensions:** [`attr_predicate`](https://itsthedevman.com/docs/everythingrb/Module.html#attr_predicate-instance_method)
 
@@ -628,7 +649,7 @@ result = value.then { |v| transform_it(v) }
 result = value.morph { |v| transform_it(v) }
 ```
 
-*Methods used: [`morph`](https://itsthedevman.com/docs/everythingrb/Kernel.html#morph-instance_method)*
+_Methods used: [`morph`](https://itsthedevman.com/docs/everythingrb/Kernel.html#morph-instance_method)_
 
 **Extensions:** [`morph`](https://itsthedevman.com/docs/everythingrb/Kernel.html#morph-instance_method) (alias for `then`/`yield_self`)
 

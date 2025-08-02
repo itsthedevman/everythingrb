@@ -19,10 +19,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Added `Hash#compact_blank_merge` and `Hash#compact_blank_merge!`** - Merge only present (non-blank) values when ActiveSupport is loaded. Filters out nil, empty strings, empty arrays, false, and other blank values according to ActiveSupport's definition.
+
 ### Changed
+
+- **BREAKING: Renamed `Hash#merge_compact` to `Hash#compact_merge`** - Updated method naming for consistency with other operation-first methods like `compact_prefix`, `trim_nils`, etc. The old method names will be removed in this version.
+- **BREAKING: Renamed `Hash#merge_compact!` to `Hash#compact_merge!`** - In-place version follows the same naming convention.
 
 ### Removed
 
+- **BREAKING: Removed `Hash#merge_compact` and `Hash#merge_compact!`** - These methods have been renamed to `Hash#compact_merge` and `Hash#compact_merge!` respectively for naming consistency.
 - **Removed deprecated Hash value filtering methods** - `Hash#select_values`, `Hash#select_values!`, `Hash#reject_values`, `Hash#reject_values!`, and `Hash#filter_values`, `Hash#filter_values!` have been removed as planned. These methods were deprecated in v0.8.3. Use the standard Ruby alternatives instead:
   - `hash.select_values { |v| condition }` → `hash.select { |k, v| condition }`
   - `hash.reject_values { |v| condition }` → `hash.reject { |k, v| condition }`
