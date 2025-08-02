@@ -14,6 +14,7 @@
 # - #merge_if, #merge_if!: Conditionally merge based on key-value pairs
 # - #merge_if_values, #merge_if_values!: Conditionally merge based on values
 # - #compact_merge, #compact_merge!: Merge only non-nil values
+# - #compact_blank_merge, #compact_blank_merge!: Merge only present values (ActiveSupport)
 #
 # @example
 #   require "everythingrb/hash"

@@ -452,7 +452,27 @@ params.compact_merge(filter: "active", search: nil)
 
 _Methods used: [`compact_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge-instance_method)_
 
-**Extensions:** [`new_nested_hash`](https://itsthedevman.com/docs/everythingrb/Hash.html#new_nested_hash-class_method), [`transform_values(with_key: true)`](https://itsthedevman.com/docs/everythingrb/Hash.html#transform_values-instance_method), [`value_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#value_where-instance_method), [`values_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#values_where-instance_method), [`rename_key`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_key-instance_method), [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method), [`select_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#select_values-instance_method), [`reject_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#reject_values-instance_method), [`merge_if`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if-instance_method), [`merge_if!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if%21-instance_method), [`merge_if_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values-instance_method), [`merge_if_values!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values%21-instance_method), [`compact_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge-instance_method), [`compact_merge!`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge%21-instance_method)
+Filter out blank values too when ActiveSupport is loaded:
+
+```ruby
+# BEFORE
+config = {api_key: "secret", timeout: 30}
+user_settings = {timeout: "", retries: nil, debug: true, tags: []}
+clean_settings = user_settings.reject { |k, v| v.blank? }
+config.merge(clean_settings)
+# => {api_key: "secret", timeout: 30, debug: true}
+```
+
+```ruby
+# AFTER
+config = {api_key: "secret", timeout: 30}
+config.compact_blank_merge(timeout: "", retries: nil, debug: true, tags: [])
+# => {api_key: "secret", timeout: 30, debug: true}
+```
+
+_Methods used: [`compact_blank_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge-instance_method)_
+
+**Extensions:** [`new_nested_hash`](https://itsthedevman.com/docs/everythingrb/Hash.html#new_nested_hash-class_method), [`transform_values(with_key: true)`](https://itsthedevman.com/docs/everythingrb/Hash.html#transform_values-instance_method), [`value_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#value_where-instance_method), [`values_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#values_where-instance_method), [`rename_key`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_key-instance_method), [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method), [`select_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#select_values-instance_method), [`reject_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#reject_values-instance_method), [`merge_if`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if-instance_method), [`merge_if!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if%21-instance_method), [`merge_if_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values-instance_method), [`merge_if_values!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values%21-instance_method), [`compact_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge-instance_method), [`compact_merge!`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge%21-instance_method), [`compact_blank_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge-instance_method), [`compact_blank_merge!`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge%21-instance_method)
 
 ### Array Cleaning
 
