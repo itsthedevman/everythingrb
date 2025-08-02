@@ -21,9 +21,7 @@ module Everythingrb
     config.everythingrb.extensions = nil # Default to loading all
 
     initializer "everythingrb.initialize" do
-      # I learned that, whereas ActiveSupport is defined at this point, the core_ext files are
-      # required later down the line.
-      ActiveSupport.on_load(:active_record) do
+      ActiveSupport.on_load(:after_initialize) do
         require_relative "everythingrb/prelude"
 
         extensions = Rails.configuration.everythingrb.extensions
