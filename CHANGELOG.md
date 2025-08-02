@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **Added `Hash#compact_blank_merge` and `Hash#compact_blank_merge!`** - Merge only present (non-blank) values when ActiveSupport is loaded. Filters out nil, empty strings, empty arrays, false, and other blank values according to ActiveSupport's definition.
+- Added `with_index` parameter to `Hash#join_map` for API consistency with `Array#join_map`.
 
 ### Changed
 
