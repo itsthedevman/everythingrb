@@ -13,7 +13,7 @@
 # - ::new_nested_hash: Create automatically nesting hashes
 # - #merge_if, #merge_if!: Conditionally merge based on key-value pairs
 # - #merge_if_values, #merge_if_values!: Conditionally merge based on values
-# - #merge_compact, #merge_compact!: Merge only non-nil values
+# - #compact_merge, #compact_merge!: Merge only non-nil values
 #
 # @example
 #   require "everythingrb/hash"
@@ -764,14 +764,14 @@ class Hash
   #   email = nil
   #   name = "Alice"
   #
-  #   {}.merge_compact(
+  #   {}.compact_merge(
   #     id: user_id,
   #     email: email,
   #     name: name
   #   )
   #   # => {id: 42, name: "Alice"}
   #
-  def merge_compact(other = {})
+  def compact_merge(other = {})
     merge_if_values(other, &:itself)
   end
 
@@ -787,14 +787,14 @@ class Hash
   #
   # @example Merge only non-nil values in place
   #   params = {format: "json"}
-  #   params.merge_compact!(
+  #   params.compact_merge!(
   #     page: 1,
   #     per_page: nil,
   #     sort: "created_at"
   #   )
   #   # => {format: "json", page: 1, sort: "created_at"}
   #
-  def merge_compact!(other = {})
+  def compact_merge!(other = {})
     merge_if_values!(other, &:itself)
   end
 end
