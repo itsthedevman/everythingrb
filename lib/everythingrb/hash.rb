@@ -797,4 +797,66 @@ class Hash
   def compact_merge!(other = {})
     merge_if_values!(other) { |i| i.itself }
   end
+
+  # ActiveSupport integrations
+  if defined?(ActiveSupport)
+    #
+    # Merges only present (non-blank) values from another hash
+    #
+    # This method merges key-value pairs from another hash, but only includes
+    # values that are present according to ActiveSupport's definition (not nil,
+    # not empty strings, not empty arrays, etc.).
+    #
+    # @param other [Hash] The hash to merge from
+    #
+    # @return [Hash] A new hash with present values merged
+    #
+    # @note Only available when ActiveSupport is loaded
+    #
+    # @example Building API responses without blank values
+    #   user_data = {name: "Alice", role: "admin"}
+    #   user_data.compact_blank_merge(
+    #     bio: "",           # excluded - blank string
+    #     tags: [],          # excluded - empty array
+    #     email: "a@example.com", # included - present
+    #     phone: nil         # excluded - nil
+    #   )
+    #   # => {name: "Alice", role: "admin", email: "a@example.com"}
+    #
+    # @example Configuration merging with blank filtering
+    #   defaults = {timeout: 30, retries: 3}
+    #   user_config = {timeout: "", retries: 5, debug: true}
+    #   defaults.compact_blank_merge(user_config)
+    #   # => {timeout: 30, retries: 5, debug: true}
+    #
+    def compact_blank_merge(other = {})
+      merge_if_values(other, &:present?)
+    end
+
+    #
+    # Merges only present (non-blank) values from another hash, in place
+    #
+    # This method merges key-value pairs from another hash into the current hash,
+    # but only includes values that are present according to ActiveSupport's
+    # definition (not nil, not empty strings, not empty arrays, etc.).
+    #
+    # @param other [Hash] The hash to merge from
+    #
+    # @return [self] The modified hash
+    #
+    # @note Only available when ActiveSupport is loaded
+    #
+    # @example Building parameters while excluding blanks
+    #   params = {action: "search", format: "json"}
+    #   params.compact_blank_merge!(
+    #     query: "",       # excluded - blank
+    #     page: 2,         # included - present
+    #     tags: []         # excluded - empty array
+    #   )
+    #   # => {action: "search", format: "json", page: 2}
+    #
+    def compact_blank_merge!(other = {})
+      merge_if_values!(other, &:present?)
+    end
+  end
 end
