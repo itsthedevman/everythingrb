@@ -831,7 +831,7 @@ class Hash
     #   # => {timeout: 30, retries: 5, debug: true}
     #
     def compact_blank_merge(other = {})
-      merge_if_values(other, &:present?)
+      merge_if_values(other) { |i| i.present? }
     end
 
     #
@@ -857,7 +857,7 @@ class Hash
     #   # => {action: "search", format: "json", page: 2}
     #
     def compact_blank_merge!(other = {})
-      merge_if_values!(other, &:present?)
+      merge_if_values!(other) { |i| i.present? }
     end
   end
 end
