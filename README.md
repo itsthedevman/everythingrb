@@ -415,22 +415,6 @@ config.rename_keys(api_key: :key, timeout: :request_timeout)
 
 _Methods used: [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method)_
 
-Filter hash by values:
-
-```ruby
-# BEFORE
-result = {a: 1, b: nil, c: 2}.select { |_k, v| v.is_a?(Integer) && v > 1 }
-# => {c: 2}
-```
-
-```ruby
-# AFTER
-{a: 1, b: nil, c: 2}.select_values { |v| v.is_a?(Integer) && v > 1 }
-# => {c: 2}
-```
-
-_Methods used: [`select_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#select_values-instance_method)_
-
 Conditionally merge hashes with clear intent:
 
 ```ruby
@@ -489,7 +473,7 @@ config.compact_blank_merge(timeout: "", retries: nil, debug: true, tags: [])
 
 _Methods used: [`compact_blank_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge-instance_method)_
 
-**Extensions:** [`new_nested_hash`](https://itsthedevman.com/docs/everythingrb/Hash.html#new_nested_hash-class_method), [`transform_values(with_key: true)`](https://itsthedevman.com/docs/everythingrb/Hash.html#transform_values-instance_method), [`value_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#value_where-instance_method), [`values_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#values_where-instance_method), [`rename_key`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_key-instance_method), [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method), [`select_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#select_values-instance_method), [`reject_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#reject_values-instance_method), [`merge_if`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if-instance_method), [`merge_if!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if%21-instance_method), [`merge_if_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values-instance_method), [`merge_if_values!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values%21-instance_method), [`compact_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge-instance_method), [`compact_merge!`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge%21-instance_method), [`compact_blank_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge-instance_method), [`compact_blank_merge!`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge%21-instance_method)
+**Extensions:** [`new_nested_hash`](https://itsthedevman.com/docs/everythingrb/Hash.html#new_nested_hash-class_method), [`transform_values(with_key: true)`](https://itsthedevman.com/docs/everythingrb/Hash.html#transform_values-instance_method), [`value_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#value_where-instance_method), [`values_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#values_where-instance_method), [`rename_key`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_key-instance_method), [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method), [`merge_if`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if-instance_method), [`merge_if!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if%21-instance_method), [`merge_if_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values-instance_method), [`merge_if_values!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values%21-instance_method), [`compact_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge-instance_method), [`compact_merge!`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge%21-instance_method), [`compact_blank_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge-instance_method), [`compact_blank_merge!`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge%21-instance_method)
 
 ### Array Cleaning
 
