@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 -->
 
-## [Unreleased]
+## [0.9.0] - 12025-08-01
 
 ### Added
 
@@ -342,7 +342,9 @@ This change aligns our method signatures with Ruby's conventions and matches our
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.8.3...HEAD
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/itsthedevman/everythingrb/compare/v0.8.3...v0.9.0
+[0.8.3]: https://github.com/itsthedevman/everythingrb/compare/v0.8.2...v0.8.3
 [0.8.3]: https://github.com/itsthedevman/everythingrb/compare/v0.8.2...v0.8.3
 [0.8.2]: https://github.com/itsthedevman/everythingrb/compare/v0.8.1...v0.8.2
 [0.8.1]: https://github.com/itsthedevman/everythingrb/compare/v0.8.0...v0.8.1
