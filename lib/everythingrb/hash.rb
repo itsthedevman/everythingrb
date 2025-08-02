@@ -94,25 +94,37 @@ class Hash
   # Combines filter_map and join operations
   #
   # @param join_with [String] The delimiter to join elements with (defaults to empty string)
+  # @param with_index [Boolean] Whether to include the index in the block (defaults to false)
   #
-  # @yield [key, value] Block that filters and transforms hash entries
-  # @yieldparam key [Object] The current key
-  # @yieldparam value [Object] The current value
+  # @yield [key_value_pair, index] Block that filters and transforms hash entries
+  # @yieldparam key_value_pair [Array] Two-element array containing [key, value] (can be destructured as |key, value|)
+  # @yieldparam index [Integer] The index of the current entry (only if with_index: true)
   #
   # @return [String] Joined string of filtered and transformed entries
   #
-  # @example
+  # @example Basic usage without index
   #   { a: 1, b: nil, c: 2, d: nil, e: 3 }.join_map(", ") { |k, v| "#{k}-#{v}" if v }
   #   # => "a-1, c-2, e-3"
   #
-  # @example Without a block
+  # @example With index for position-aware formatting
+  #   users = {alice: "Alice", bob: "Bob", charlie: "Charlie"}
+  #   users.join_map(", ", with_index: true) do |(k, v), i|
+  #     "#{i + 1}. #{v}"
+  #   end
+  #   # => "1. Alice, 2. Bob, 3. Charlie"
+  #
+  # @example Without a block (default behavior)
   #   { a: 1, b: nil, c: 2 }.join_map(" ")
   #   # => "a 1 b c 2"
   #
-  def join_map(join_with = "", &block)
+  def join_map(join_with = "", with_index: false, &block)
     block = ->(kv_pair) { kv_pair.compact } if block.nil?
 
-    filter_map(&block).join(join_with)
+    if with_index
+      filter_map.with_index(&block).join(join_with)
+    else
+      filter_map(&block).join(join_with)
+    end
   end
 
   #
