@@ -26,4 +26,28 @@ class TestHashJoinMap < Minitest::Test
       @input.join_map(", ") { |k, v| "#{k}-#{v}" if v }
     )
   end
+
+  def test_it_includes_the_index
+    assert_equal(
+      "a0, c2, e4",
+      @input.join_map(", ", with_index: true) { |(k, v), i| "#{k}#{i}" if v }
+    )
+  end
+
+  def test_it_works_with_destructuring
+    users = {alice: "Alice", bob: "Bob", charlie: "Charlie"}
+
+    assert_equal(
+      "1. Alice, 2. Bob, 3. Charlie",
+      users.join_map(", ", with_index: true) { |(k, v), i| "#{i + 1}. #{v}" }
+    )
+  end
+
+  def test_index_tracks_all_entries_not_just_yielded_ones
+    # Index should increment for all entries, not just the ones that pass the filter
+    result = @input.join_map(" | ", with_index: true) { |(k, v), i| "#{k}#{i}" if v }
+
+    # Indices should be 0, 2, 4 (for positions of a:1, c:2, e:3 in the original hash)
+    assert_equal("a0 | c2 | e4", result)
+  end
 end

@@ -192,7 +192,7 @@ Extract and transform data with elegant, expressive code:
 
 ```ruby
 # BEFORE
-users = [{ name: "Alice", roles: ["admin"] }, { name: "Bob", roles: ["user"] }]
+users = [{ name: "Alice", role: "admin" }, { name: "Bob", role: "user" }]
 names = users.map { |user| user[:name] }
 # => ["Alice", "Bob"]
 ```
@@ -239,6 +239,23 @@ result = data.compact.filter_map { |n| "Item #{n}" if n.odd? }.join(" | ")
 ```
 
 _Methods used: [`join_map`](https://itsthedevman.com/docs/everythingrb/Array.html#join_map-instance_method)_
+
+Need position-aware processing? Both Array and Hash support `with_index`:
+
+```ruby
+# BEFORE
+users = {alice: "Alice", bob: "Bob", charlie: "Charlie"}
+users.filter_map.with_index { |(k, v), i| "#{i + 1}. #{v}" }.join(", ")
+# => "1. Alice, 2. Bob, 3. Charlie"
+```
+
+```ruby
+# AFTER
+users.join_map(", ", with_index: true) { |(k, v), i| "#{i + 1}. #{v}" }
+# => "1. Alice, 2. Bob, 3. Charlie"
+```
+
+_Methods used: [`join_map`](https://itsthedevman.com/docs/everythingrb/Hash.html#join_map-instance_method)_
 
 Group elements with natural syntax:
 
