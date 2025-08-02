@@ -772,7 +772,7 @@ class Hash
   #   # => {id: 42, name: "Alice"}
   #
   def compact_merge(other = {})
-    merge_if_values(other, &:itself)
+    merge_if_values(other) { |i| i.itself }
   end
 
   #
@@ -795,6 +795,6 @@ class Hash
   #   # => {format: "json", page: 1, sort: "created_at"}
   #
   def compact_merge!(other = {})
-    merge_if_values!(other, &:itself)
+    merge_if_values!(other) { |i| i.itself }
   end
 end
