@@ -11,7 +11,7 @@ gem "minitest", "~> 5.16"
 
 gem "standard", "~> 1.3"
 
-gem "activesupport", "~> 8.0"
+gem "activesupport", "~> 8.1"
 
 gem "irb"
 gem "pry"
