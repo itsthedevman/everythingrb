@@ -45,7 +45,8 @@ GEM
     lint_roller (1.1.0)
     logger (1.7.0)
     method_source (1.1.0)
-    minitest (5.27.0)
+    minitest (6.0.0)
+      prism (~> 1.5)
     ostruct (0.6.3)
     parallel (1.27.0)
     parser (3.3.10.0)
@@ -123,7 +124,7 @@ DEPENDENCIES
   everythingrb!
   irb
   kramdown
-  minitest (~> 5.16)
+  minitest (~> 6.0)
   pry
   rake (~> 13.0)
   rdoc
