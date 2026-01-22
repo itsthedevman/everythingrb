@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 -->
 
+## [0.9.1] - 12026-01-22
+
+### Changed
+
+- **Deprecated `Hash.new_nested_hash`** - This method is now deprecated and will be removed in v1.0.0. Consider using `Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }` instead.
+
 ## [0.9.0] - 12025-08-01
 
 ### Added
@@ -342,7 +348,8 @@ This change aligns our method signatures with Ruby's conventions and matches our
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.9.0...HEAD
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.9.1...HEAD
+[0.9.1]: https://github.com/itsthedevman/everythingrb/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/itsthedevman/everythingrb/compare/v0.8.3...v0.9.0
 [0.8.3]: https://github.com/itsthedevman/everythingrb/compare/v0.8.2...v0.8.3
 [0.8.3]: https://github.com/itsthedevman/everythingrb/compare/v0.8.2...v0.8.3

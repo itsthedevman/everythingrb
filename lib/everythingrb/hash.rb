@@ -78,6 +78,11 @@ class Hash
   #   parameter to control this behavior.
   #
   def self.new_nested_hash(depth: nil)
+    Everythingrb.deprecator.warn(
+      "Hash.new_nested_hash is deprecated and will be removed in v1.0.0. " \
+      "Consider using Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) } instead."
+    )
+
     new do |hash, key|
       next if depth == 0
 
