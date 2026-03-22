@@ -4,7 +4,7 @@
 # Extensions to Ruby's core String class
 #
 # Provides:
-# - #to_h, #to_a: Convert JSON strings to Hash/Array with error handling
+# - #parse_json: Parse JSON strings with error handling
 # - #to_ostruct, #to_istruct, #to_struct: Convert JSON to data structures
 # - #with_quotes, #in_quotes: Wrap strings in quotes
 # - #to_camelcase: Convert strings to camelCase or PascalCase
@@ -19,6 +19,31 @@
 class String
   include Everythingrb::StringQuotable
 
+  #
+  # Parses the string as JSON and returns the result
+  #
+  # Safely parses JSON with symbolized keys by default. Returns nil
+  # instead of raising an exception if the string is not valid JSON.
+  #
+  # @param opts [Hash] Options to pass to JSON.parse
+  # @option opts [Boolean] :symbolize_names (true) Whether to symbolize keys
+  #
+  # @return [Hash, Array, nil] Parsed JSON or nil if invalid
+  #
+  # @example Basic usage
+  #   '{"name": "Alice"}'.parse_json  # => {name: "Alice"}
+  #
+  # @example With nested data
+  #   '{"user": {"roles": ["admin"]}}'.parse_json
+  #   # => {user: {roles: ["admin"]}}
+  #
+  # @example Invalid JSON returns nil
+  #   "not json".parse_json  # => nil
+  #
+  # @example Disable symbolized keys
+  #   '{"name": "Alice"}'.parse_json(symbolize_names: false)
+  #   # => {"name" => "Alice"}
+  #
   def parse_json(**opts)
     opts[:symbolize_names] = true unless opts.key?(:symbolize_names)
 
@@ -38,7 +63,7 @@ class String
   #   "not json".to_istruct               # => nil
   #
   def to_istruct
-    to_h&.to_istruct
+    parse_json&.to_istruct
   end
 
   #
@@ -52,7 +77,7 @@ class String
   #   "not json".to_ostruct               # => nil
   #
   def to_ostruct
-    to_h&.to_ostruct
+    parse_json&.to_ostruct
   end
 
   #
@@ -66,7 +91,7 @@ class String
   #   "not json".to_struct                # => nil
   #
   def to_struct
-    to_h&.to_struct
+    parse_json&.to_struct
   end
 
   #
