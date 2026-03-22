@@ -17,10 +17,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 12026-03-21
 
+### Added
+
+- **Added `from:` option to `attr_predicate`** - Map a predicate to a differently-named source. Use `@` prefix for instance variables (e.g., `from: :@started_at`), omit for methods (e.g., `from: :error_messages`). This enables patterns like `attr_predicate :started, from: :@started_at` and `attr_predicate :errored, from: :error_messages`.
+- **Added `private:` option to `attr_predicate`** - Define predicates as private methods with `attr_predicate :verified, private: true`.
+
 ### Changed
 
 - **BREAKING: Renamed `String#to_h` to `String#parse_json`** - This change improves compatibility with Ruby's type coercion expectations and avoids conflicts with methods like `Array(obj)` that rely on standard `to_a`/`to_h` behavior. The method parses JSON strings with symbolized keys by default and returns `nil` for invalid JSON.
 - **Fixed Ruby 3.4+ compatibility** - Added `require "date"` to ensure Date and DateTime classes are properly loaded before extending them.
+- **BREAKING: `attr_predicate` no longer falls back to method calls** - For performance reasons (~5x faster), `attr_predicate` now assumes direct instance variable access by default. The previous behavior checked `instance_variable_defined?` and `respond_to?` on every call, which was slow. Struct, OpenStruct, and Data classes are automatically detected and use method access. For other cases where you need method delegation, use the new `from:` option explicitly (e.g., `attr_predicate :errored, from: :error_messages`).
+- **Improved `attr_predicate` empty value handling** - Without ActiveSupport, values responding to `empty?` (arrays, hashes, strings) now return `false` when empty. Previously, an empty array would return `true` since `!![]` is truthy. With ActiveSupport, behavior is unchanged (uses `present?`).
 
 ### Removed
 

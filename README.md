@@ -575,6 +575,39 @@ user.admin?  # => true
 
 _Methods used: [`attr_predicate`](https://itsthedevman.com/docs/everythingrb/Module.html#attr_predicate-instance_method)_
 
+Map predicates to differently-named sources with `from:`:
+
+```ruby
+# BEFORE
+class Task
+  attr_accessor :started_at, :stopped_at
+
+  def started?
+    !@started_at.nil?
+  end
+
+  def finished?
+    !@stopped_at.nil?
+  end
+end
+```
+
+```ruby
+# AFTER
+class Task
+  attr_accessor :started_at, :stopped_at
+  attr_predicate :started, from: :@started_at
+  attr_predicate :finished, from: :@stopped_at
+end
+
+task = Task.new
+task.started?      # => false
+task.started_at = Time.now
+task.started?      # => true
+```
+
+_Methods used: [`attr_predicate`](https://itsthedevman.com/docs/everythingrb/Module.html#attr_predicate-instance_method)_
+
 Works with Data objects too:
 
 ```ruby
