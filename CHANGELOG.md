@@ -15,11 +15,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 -->
 
-## [0.9.1] - 12026-01-22
+## [1.0.0] - 12026-03-21
 
 ### Changed
 
-- **Deprecated `Hash.new_nested_hash`** - This method is now deprecated and will be removed in v1.0.0. Consider using `Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }` instead.
+- **BREAKING: Renamed `String#to_h` to `String#parse_json`** - This change improves compatibility with Ruby's type coercion expectations and avoids conflicts with methods like `Array(obj)` that rely on standard `to_a`/`to_h` behavior. The method parses JSON strings with symbolized keys by default and returns `nil` for invalid JSON.
+- **Fixed Ruby 3.4+ compatibility** - Added `require "date"` to ensure Date and DateTime classes are properly loaded before extending them.
+
+### Removed
+
+- **BREAKING: Removed `Hash.new_nested_hash`** - Use Ruby's built-in `Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }` instead.
+- **BREAKING: Removed `#to_deep_h` from all classes** - This method has been removed from String, Hash, Array, Struct, OpenStruct, and Data classes. If you need this functionality, implement it locally in your project.
+- **Removed `String#to_a`** - This method was removed along with the JSON parsing refactor.
 
 ## [0.9.0] - 12025-08-01
 
@@ -342,8 +349,8 @@ This change aligns our method signatures with Ruby's conventions and matches our
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.9.1...HEAD
-[0.9.1]: https://github.com/itsthedevman/everythingrb/compare/v0.9.0...v0.9.1
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/itsthedevman/everythingrb/compare/v0.9.0...v1.0.0
 [0.9.0]: https://github.com/itsthedevman/everythingrb/compare/v0.8.3...v0.9.0
 [0.8.3]: https://github.com/itsthedevman/everythingrb/compare/v0.8.2...v0.8.3
 [0.8.3]: https://github.com/itsthedevman/everythingrb/compare/v0.8.2...v0.8.3
