@@ -5,7 +5,6 @@
 #
 # Provides:
 # - #to_h, #to_a: Convert JSON strings to Hash/Array with error handling
-# - #to_deep_h: Recursively parse nested JSON strings
 # - #to_ostruct, #to_istruct, #to_struct: Convert JSON to data structures
 # - #with_quotes, #in_quotes: Wrap strings in quotes
 # - #to_camelcase: Convert strings to camelCase or PascalCase
@@ -20,62 +19,12 @@
 class String
   include Everythingrb::StringQuotable
 
-  #
-  # Converts JSON string to Hash, returning nil if it failed
-  #
-  # @return [Hash, nil] Parsed JSON as hash or nil if invalid JSON
-  #
-  # @example
-  #   '{"name": "Alice"}'.to_h  # => {name: "Alice"}
-  #   "invalid json".to_h       # => nil
-  #
-  def to_h
-    JSON.parse(self, symbolize_names: true)
+  def parse_json(**opts)
+    opts[:symbolize_names] = true unless opts.key?(:symbolize_names)
+
+    JSON.parse(self, opts)
   rescue JSON::ParserError
     nil
-  end
-
-  alias_method :to_a, :to_h
-
-  #
-  # Deep parsing of nested JSON strings
-  # Recursively attempts to parse string values as JSON
-  #
-  # @return [Hash] Deeply parsed hash with all nested JSON strings converted
-  # @return [nil] If the string is not valid JSON at the top level
-  #
-  # @note If nested JSON strings fail to parse, they remain as strings
-  #   rather than causing the entire operation to fail
-  #
-  # @example
-  #   nested_json = '{
-  #     "user": "{\"name\":\"Alice\",\"roles\":[\"admin\"]}"
-  #   }'
-  #   nested_json.to_deep_h
-  #   # => {user: {name: "Alice", roles: ["admin"]}}
-  #
-  def to_deep_h
-    recursive_convert = lambda do |object|
-      case object
-      when Array
-        object.map { |v| recursive_convert.call(v) }
-      when String
-        result = object.to_deep_h
-
-        # Nested JSON
-        if result.is_a?(Array) || result.is_a?(Hash)
-          recursive_convert.call(result)
-        else
-          object
-        end
-      when Hash
-        object.transform_values { |v| recursive_convert.call(v) }
-      else
-        object
-      end
-    end
-
-    recursive_convert.call(to_h)
   end
 
   #

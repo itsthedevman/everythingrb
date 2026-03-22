@@ -7,7 +7,6 @@
 # - #map, #filter_map: Enumeration methods for OpenStruct entries
 # - #join_map: Combine filter_map and join operations
 # - #blank?, #present?: ActiveSupport integrations when available
-# - #to_deep_h: Recursively convert to hash with all nested objects
 # - #in_quotes, #with_quotes: Wrap struct in quotes
 #
 # @example
@@ -116,24 +115,5 @@ class OpenStruct
   #
   def to_ostruct
     self
-  end
-
-  #
-  # Recursively converts the OpenStruct and all nested objects to hashes
-  #
-  # This method will convert the OpenStruct and all nested OpenStructs,
-  # Structs, Data objects, and other convertible objects to plain hashes.
-  #
-  # @return [Hash] A deeply converted hash of the OpenStruct
-  #
-  # @example
-  #   person = OpenStruct.new(
-  #     name: "Alice",
-  #     address: OpenStruct.new(city: "New York", country: "USA")
-  #   )
-  #   person.to_deep_h  # => {name: "Alice", address: {city: "New York", country: "USA"}}
-  #
-  def to_deep_h
-    to_h.to_deep_h
   end
 end

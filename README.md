@@ -87,7 +87,7 @@ Available modules:
 
 - `array`: Array extensions (join_map, key_map, etc.)
 - `boolean`: Boolean extensions (in_quotes, with_quotes)
-- `data`: Data extensions (to_deep_h, in_quotes)
+- `data`: Data extensions (in_quotes)
 - `date`: Date and DateTime extensions (in_quotes)
 - `enumerable`: Enumerable extensions (join_map, group_by_key)
 - `hash`: Hash extensions (to_ostruct, transform_values(with_key: true), etc.)
@@ -99,7 +99,7 @@ Available modules:
 - `range`: Range extensions (in_quotes)
 - `regexp`: Regexp extensions (in_quotes)
 - `string`: String extensions (to_h, to_ostruct, to_camelcase, etc.)
-- `struct`: Struct extensions (to_deep_h, in_quotes)
+- `struct`: Struct extensions (in_quotes)
 - `symbol`: Symbol extensions (with_quotes)
 - `time`: Time extensions (in_quotes)
 
@@ -164,27 +164,7 @@ config.server.host  # => "example.com"
 
 _Methods used: [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method)_
 
-Deep conversion to plain hashes is just as easy:
-
-```ruby
-# BEFORE
-data = OpenStruct.new(user: Data.define(:name).new(name: "Bob"))
-result = {
-  user: {
-    name: data.user.name
-  }
-}
-```
-
-```ruby
-# AFTER
-data = OpenStruct.new(user: Data.define(:name).new(name: "Bob"))
-data.to_deep_h  # => {user: {name: "Bob"}}
-```
-
-_Methods used: [`to_deep_h`](https://itsthedevman.com/docs/everythingrb/OpenStruct.html#to_deep_h-instance_method)_
-
-**Extensions:** [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method), [`to_ostruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_ostruct-instance_method), [`to_istruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_istruct-instance_method), [`to_h`](https://itsthedevman.com/docs/everythingrb/String.html#to_h-instance_method), [`to_deep_h`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_deep_h-instance_method)
+**Extensions:** [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method), [`to_ostruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_ostruct-instance_method), [`to_istruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_istruct-instance_method), [`to_h`](https://itsthedevman.com/docs/everythingrb/String.html#to_h-instance_method)
 
 ### Collection Processing
 

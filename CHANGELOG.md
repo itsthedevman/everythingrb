@@ -212,10 +212,6 @@ This change aligns our method signatures with Ruby's conventions and matches our
   - `#rename_keys!` - Same as `#rename_keys` but modifies the hash in place
   - `#rename_key_unordered` - Renames a key without preserving element order (faster operation)
   - `#rename_key_unordered!` - Same as `#rename_key_unordered` but modifies the hash in place
-- Added `to_deep_h` to core Ruby classes for consistent deep hash conversion:
-  - `Struct#to_deep_h` - Recursively converts Struct objects and all nested values to hashes
-  - `OpenStruct#to_deep_h` - Recursively converts OpenStruct objects and all nested values to hashes
-  - `Data#to_deep_h` - Recursively converts Data objects and all nested values to hashes
 - Added `depth` parameter to `Hash.new_nested_hash` to control nesting behaviors
 
 ### Changed
@@ -241,7 +237,6 @@ This change aligns our method signatures with Ruby's conventions and matches our
 
 - Added `Array#to_or_sentence`, creates a sentence with "or" connector between items
 - Added `#with_key` method to `Hash#transform_values` and `Hash#transform_values!`, grants access to both keys and values during transformations
-- Added `Array#to_deep_h` and `Hash#to_deep_h`, recursively converts underlying values to hashes
 - Added `Enumerable#group_by_key`, group an array of hashes by their keys
 - Added `Hash#new_nested_hash`, creates a new Hash that automatically initializes the value to a hash
 - Added `Hash#value_where` and `Hash#values_where`, easily find values in a hash based on key-value conditions
@@ -341,7 +336,6 @@ This change aligns our method signatures with Ruby's conventions and matches our
   - `join_map` method consistent with Array/Hash implementations
 - Enhanced `String` class with:
   - `to_h` and `to_a` methods for JSON parsing with `nil` fallback on error
-  - `to_deep_h` for recursive JSON string parsing
   - `to_istruct`, `to_ostruct`, and `to_struct` conversion methods
 
 ### Changed
