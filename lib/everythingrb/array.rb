@@ -188,5 +188,4 @@ class Array
       to_sentence(options)
     end
   end
-
 end
