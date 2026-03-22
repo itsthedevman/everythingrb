@@ -8,7 +8,7 @@
 # - #join_map: Combine filter_map and join operations
 # - #transform_values.with_key: Transform values with access to keys
 # - #transform, #transform!: Transform keys and values
-# - #value_where, #values_where: Find values based on conditions
+# - #find_value, #select_values: Find values based on conditions
 # - #rename_key, #rename_keys: Rename hash keys while preserving order
 # - #merge_if, #merge_if!: Conditionally merge based on key-value pairs
 # - #merge_if_values, #merge_if_values!: Conditionally merge based on values
@@ -411,10 +411,10 @@ class Hash
   #     bob: {name: "Bob", role: "user"},
   #     charlie: {name: "Charlie", role: "admin"}
   #   }
-  #   users.value_where { |k, v| v[:role] == "admin" } # => {name: "Alice", role: "admin"}
+  #   users.find_value { |k, v| v[:role] == "admin" } # => {name: "Alice", role: "admin"}
   #
-  def value_where(&block)
-    return to_enum(:value_where) if block.nil?
+  def find_value(&block)
+    return to_enum(:find_value) if block.nil?
 
     find(&block)&.last
   end
@@ -436,11 +436,11 @@ class Hash
   #     bob: {name: "Bob", role: "user"},
   #     charlie: {name: "Charlie", role: "admin"}
   #   }
-  #   users.values_where { |k, v| v[:role] == "admin" }
+  #   users.select_values { |k, v| v[:role] == "admin" }
   #   # => [{name: "Alice", role: "admin"}, {name: "Charlie", role: "admin"}]
   #
-  def values_where(&block)
-    return to_enum(:values_where) if block.nil?
+  def select_values(&block)
+    return to_enum(:select_values) if block.nil?
 
     select(&block).values
   end

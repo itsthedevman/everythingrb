@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **BREAKING: Renamed `Hash#value_where` to `Hash#find_value` and `Hash#values_where` to `Hash#select_values`** - The new names better align with Ruby conventions and clearly express the methods' purpose of finding values that match a condition.
 - **BREAKING: Renamed `String#to_h` to `String#parse_json`** - This change improves compatibility with Ruby's type coercion expectations and avoids conflicts with methods like `Array(obj)` that rely on standard `to_a`/`to_h` behavior. The method parses JSON strings with symbolized keys by default and returns `nil` for invalid JSON.
 - **Fixed Ruby 3.4+ compatibility** - Added `require "date"` to ensure Date and DateTime classes are properly loaded before extending them.
 - **BREAKING: `attr_predicate` no longer falls back to method calls** - For performance reasons (~5x faster), `attr_predicate` now assumes direct instance variable access by default. The previous behavior checked `instance_variable_defined?` and `respond_to?` on every call, which was slow. Struct, OpenStruct, and Data classes are automatically detected and use method access. For other cases where you need method delegation, use the new `from:` option explicitly (e.g., `attr_predicate :errored, from: :error_messages`).
