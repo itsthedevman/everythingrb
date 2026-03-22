@@ -98,7 +98,7 @@ Available modules:
 - `ostruct`: OpenStruct extensions (map, join_map, etc.)
 - `range`: Range extensions (in_quotes)
 - `regexp`: Regexp extensions (in_quotes)
-- `string`: String extensions (to_h, to_ostruct, to_camelcase, etc.)
+- `string`: String extensions (parse_json, to_ostruct, to_camelcase, etc.)
 - `struct`: Struct extensions (in_quotes)
 - `symbol`: Symbol extensions (with_quotes)
 - `time`: Time extensions (in_quotes)
@@ -164,7 +164,7 @@ config.server.host  # => "example.com"
 
 _Methods used: [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method)_
 
-**Extensions:** [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method), [`to_ostruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_ostruct-instance_method), [`to_istruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_istruct-instance_method), [`to_h`](https://itsthedevman.com/docs/everythingrb/String.html#to_h-instance_method)
+**Extensions:** [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method), [`to_ostruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_ostruct-instance_method), [`to_istruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_istruct-instance_method), [`parse_json`](https://itsthedevman.com/docs/everythingrb/String.html#parse_json-instance_method)
 
 ### Collection Processing
 
