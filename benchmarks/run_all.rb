@@ -42,7 +42,7 @@ def print_header
   puts
   puts "Ruby version: #{RUBY_VERSION}"
   puts "Platform: #{RUBY_PLATFORM}"
-  puts "ActiveSupport: #{ENV["LOAD_ACTIVE_SUPPORT"] == "true" ? "loaded" : "not loaded"}"
+  puts "ActiveSupport: #{(ENV["LOAD_ACTIVE_SUPPORT"] == "true") ? "loaded" : "not loaded"}"
   puts
   puts "Tip: Run with LOAD_ACTIVE_SUPPORT=true to include ActiveSupport benchmarks"
   puts

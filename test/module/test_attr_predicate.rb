@@ -172,7 +172,7 @@ class TestModuleAttrPredicate < Minitest::Test
     end
 
     object = klass.new
-    object.metadata = { key: "value" }
+    object.metadata = {key: "value"}
 
     assert(object.metadata?)
   end

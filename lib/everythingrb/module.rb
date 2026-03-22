@@ -107,7 +107,7 @@ class Module
       signature = "def #{attribute}?"
       signature.prepend("private ") if private_method
 
-      # Performance note: 
+      # Performance note:
       # This was originally checked if an instance variable or method was defined, both of which are sllllooooowwwww
       # Now as of 1.0.0, this assumes an instance variable (with exceptions) by default
       getter =
@@ -119,9 +119,9 @@ class Module
           "@#{attribute}"
         end
 
-      checker = 
-        if defined?(ActiveSupport) 
-          "!!value.presence" 
+      checker =
+        if defined?(ActiveSupport)
+          "!!value.presence"
         else
           # Handle empty arrays/hashes/strings
           "value.respond_to?(:empty?) ? !value.empty? : !!value"

@@ -7,7 +7,6 @@ BenchmarkHelper.header("Hash Extension Benchmarks")
 # Test data
 small_hash = {a: 1, b: 2, c: 3}
 medium_hash = (1..100).each_with_object({}) { |i, h| h[:"key#{i}"] = i }
-large_hash = (1..1000).each_with_object({}) { |i, h| h[:"key#{i}"] = i }
 
 nested_hash = {
   user: {

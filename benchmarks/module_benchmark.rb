@@ -25,8 +25,17 @@ PersonStruct = Struct.new(:active, :name)
 PersonStruct.attr_predicate(:active)
 
 # Test data
-user_true = UserWithPredicate.new.tap { |u| u.admin = true; u.active = true; u.verified = true }
-user_false = UserWithPredicate.new.tap { |u| u.admin = false; u.active = nil; u.verified = "" }
+user_true = UserWithPredicate.new.tap do |u|
+  u.admin = true
+  u.active = true
+  u.verified = true
+end
+
+user_false = UserWithPredicate.new.tap do |u|
+  u.admin = false
+  u.active = nil
+  u.verified = ""
+end
 
 task_started = TaskWithFrom.new.tap { |t| t.started_at = Time.now }
 task_not_started = TaskWithFrom.new

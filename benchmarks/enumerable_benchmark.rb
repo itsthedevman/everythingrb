@@ -68,8 +68,6 @@ end
 # Set as Enumerable
 # ============================================================================
 
-require "set"
-
 small_set = Set.new(1..10)
 medium_set = Set.new(1..100)
 
