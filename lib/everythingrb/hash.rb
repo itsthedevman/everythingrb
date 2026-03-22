@@ -8,9 +8,8 @@
 # - #join_map: Combine filter_map and join operations
 # - #transform_values.with_key: Transform values with access to keys
 # - #transform, #transform!: Transform keys and values
-# - #value_where, #values_where: Find values based on conditions
+# - #find_value, #select_values: Find values based on conditions
 # - #rename_key, #rename_keys: Rename hash keys while preserving order
-# - ::new_nested_hash: Create automatically nesting hashes
 # - #merge_if, #merge_if!: Conditionally merge based on key-value pairs
 # - #merge_if_values, #merge_if_values!: Conditionally merge based on values
 # - #compact_merge, #compact_merge!: Merge only non-nil values
@@ -36,64 +35,6 @@ class Hash
   # @api private
   #
   EMPTY_STRUCT = Struct.new(:_).new(nil)
-
-  #
-  # Creates a new Hash that automatically initializes missing keys with nested hashes
-  #
-  # This method creates a hash where any missing key access will automatically
-  # create another nested hash with the same behavior. You can control the nesting
-  # depth with the depth parameter.
-  #
-  # @param depth [Integer, nil] The maximum nesting depth for automatic hash creation
-  #   When nil (default), creates unlimited nesting depth
-  #   When 0, behaves like a regular hash (returns nil for missing keys)
-  #   When > 0, automatically creates hashes only up to the specified level
-  #
-  # @return [Hash] A hash that creates nested hashes for missing keys
-  #
-  # @note This implementation is not thread-safe for concurrent modifications of deeply
-  #   nested structures. If you need thread safety, consider using a mutex when modifying
-  #   the deeper levels of the hash.
-  #
-  # @example Unlimited nesting (default behavior)
-  #   users = Hash.new_nested_hash
-  #   users[:john][:role] = "admin"  # No need to initialize users[:john] first
-  #   users # => {john: {role: "admin"}}
-  #
-  # @example Deep nesting without initialization
-  #   stats = Hash.new_nested_hash
-  #   stats[:server][:region][:us_east][:errors] = ["Error"]
-  #   stats # => {server: {region: {us_east: {errors: ["Error"]}}}}
-  #
-  # @example Limited nesting depth
-  #   hash = Hash.new_nested_hash(depth: 1)
-  #   hash[:user][:name] = "Alice"  # Works fine - only one level of auto-creation
-  #
-  #   # This pattern works correctly with limited nesting:
-  #   (hash[:user][:roles] ||= []) << "admin"
-  #   hash # => {user: {name: "Alice", roles: ["admin"]}}
-  #
-  # @note While unlimited nesting is convenient, it can interfere with common Ruby
-  #   patterns like ||= when initializing values at deep depths. Use the depth
-  #   parameter to control this behavior.
-  #
-  def self.new_nested_hash(depth: nil)
-    Everythingrb.deprecator.warn(
-      "Hash.new_nested_hash is deprecated and will be removed in v1.0.0. " \
-      "Consider using Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) } instead."
-    )
-
-    new do |hash, key|
-      next if depth == 0
-
-      hash[key] =
-        if depth.nil?
-          new_nested_hash
-        else
-          new_nested_hash(depth: depth - 1)
-        end
-    end
-  end
 
   #
   # Combines filter_map and join operations
@@ -129,53 +70,6 @@ class Hash
       filter_map.with_index(&block).join(join_with)
     else
       filter_map(&block).join(join_with)
-    end
-  end
-
-  #
-  # Recursively converts all values that respond to #to_h
-  #
-  # Similar to #to_h but recursively traverses the Hash structure
-  # and calls #to_h on any object that responds to it. Useful for
-  # normalizing nested data structures and parsing nested JSON.
-  #
-  # @return [Hash] A deeply converted hash with all nested objects
-  #
-  # @example Converting nested Data objects
-  #   user = { name: "Alice", metadata: Data.define(:source).new(source: "API") }
-  #   user.to_deep_h  # => {name: "Alice", metadata: {source: "API"}}
-  #
-  # @example Parsing nested JSON strings
-  #   nested = { profile: '{"role":"admin"}' }
-  #   nested.to_deep_h  # => {profile: {role: "admin"}}
-  #
-  # @example Mixed nested structures
-  #   data = {
-  #     config: OpenStruct.new(api_key: "secret"),
-  #     users: [
-  #       Data.define(:name).new(name: "Bob"),
-  #       {role: "admin"}
-  #     ]
-  #   }
-  #   data.to_deep_h
-  #   # => {
-  #   #      config: {api_key: "secret"},
-  #   #      users: [{name: "Bob"}, {role: "admin"}]
-  #   #    }
-  #
-  def to_deep_h
-    transform_values do |value|
-      case value
-      when Hash
-        value.to_deep_h
-      when Array
-        value.to_deep_h
-      when String
-        # If the string is not valid JSON, #to_deep_h will return `nil`
-        value.to_deep_h || value
-      else
-        value.respond_to?(:to_h) ? value.to_h : value
-      end
     end
   end
 
@@ -517,10 +411,10 @@ class Hash
   #     bob: {name: "Bob", role: "user"},
   #     charlie: {name: "Charlie", role: "admin"}
   #   }
-  #   users.value_where { |k, v| v[:role] == "admin" } # => {name: "Alice", role: "admin"}
+  #   users.find_value { |k, v| v[:role] == "admin" } # => {name: "Alice", role: "admin"}
   #
-  def value_where(&block)
-    return to_enum(:value_where) if block.nil?
+  def find_value(&block)
+    return to_enum(:find_value) if block.nil?
 
     find(&block)&.last
   end
@@ -542,11 +436,11 @@ class Hash
   #     bob: {name: "Bob", role: "user"},
   #     charlie: {name: "Charlie", role: "admin"}
   #   }
-  #   users.values_where { |k, v| v[:role] == "admin" }
+  #   users.select_values { |k, v| v[:role] == "admin" }
   #   # => [{name: "Alice", role: "admin"}, {name: "Charlie", role: "admin"}]
   #
-  def values_where(&block)
-    return to_enum(:values_where) if block.nil?
+  def select_values(&block)
+    return to_enum(:select_values) if block.nil?
 
     select(&block).values
   end

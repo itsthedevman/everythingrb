@@ -17,3 +17,27 @@ require "standard/rake"
 
 task test: [:test_regular, :test_active_support]
 task default: %i[test standard]
+
+# Benchmark tasks
+namespace :benchmark do
+  desc "Run all benchmarks"
+  task :all do
+    ruby "benchmarks/run_all.rb"
+  end
+
+  desc "Run all benchmarks with ActiveSupport"
+  task :all_with_active_support do
+    ENV["LOAD_ACTIVE_SUPPORT"] = "true"
+    ruby "benchmarks/run_all.rb"
+  end
+
+  %w[array hash string enumerable ostruct module kernel quotable].each do |name|
+    desc "Run #{name} benchmarks"
+    task name.to_sym do
+      ruby "benchmarks/#{name}_benchmark.rb"
+    end
+  end
+end
+
+desc "Run all benchmarks"
+task benchmark: "benchmark:all"

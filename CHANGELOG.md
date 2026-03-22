@@ -15,11 +15,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 -->
 
-## [0.9.1] - 12026-01-22
+## [1.0.0] - 12026-03-21
+
+### Added
+
+- **Added `from:` option to `attr_predicate`** - Map a predicate to a differently-named source. Use `@` prefix for instance variables (e.g., `from: :@started_at`), omit for methods (e.g., `from: :error_messages`). This enables patterns like `attr_predicate :started, from: :@started_at` and `attr_predicate :errored, from: :error_messages`.
+- **Added `private:` option to `attr_predicate`** - Define predicates as private methods with `attr_predicate :verified, private: true`.
 
 ### Changed
 
-- **Deprecated `Hash.new_nested_hash`** - This method is now deprecated and will be removed in v1.0.0. Consider using `Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }` instead.
+- **BREAKING: Renamed `Hash#value_where` to `Hash#find_value` and `Hash#values_where` to `Hash#select_values`** - The new names better align with Ruby conventions and clearly express the methods' purpose of finding values that match a condition.
+- **BREAKING: Renamed `String#to_h` to `String#parse_json`** - This change improves compatibility with Ruby's type coercion expectations and avoids conflicts with methods like `Array(obj)` that rely on standard `to_a`/`to_h` behavior. The method parses JSON strings with symbolized keys by default and returns `nil` for invalid JSON.
+- **Fixed Ruby 3.4+ compatibility** - Added `require "date"` to ensure Date and DateTime classes are properly loaded before extending them.
+- **BREAKING: `attr_predicate` no longer falls back to method calls** - For performance reasons (~5x faster), `attr_predicate` now assumes direct instance variable access by default. The previous behavior checked `instance_variable_defined?` and `respond_to?` on every call, which was slow. Struct, OpenStruct, and Data classes are automatically detected and use method access. For other cases where you need method delegation, use the new `from:` option explicitly (e.g., `attr_predicate :errored, from: :error_messages`).
+- **Improved `attr_predicate` empty value handling** - Without ActiveSupport, values responding to `empty?` (arrays, hashes, strings) now return `false` when empty. Previously, an empty array would return `true` since `!![]` is truthy. With ActiveSupport, behavior is unchanged (uses `present?`).
+
+### Removed
+
+- **BREAKING: Removed `Hash.new_nested_hash`** - Use Ruby's built-in `Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }` instead.
+- **BREAKING: Removed `#to_deep_h` from all classes** - This method has been removed from String, Hash, Array, Struct, OpenStruct, and Data classes. If you need this functionality, implement it locally in your project.
+- **Removed `String#to_a`** - This method was removed along with the JSON parsing refactor.
 
 ## [0.9.0] - 12025-08-01
 
@@ -212,10 +227,6 @@ This change aligns our method signatures with Ruby's conventions and matches our
   - `#rename_keys!` - Same as `#rename_keys` but modifies the hash in place
   - `#rename_key_unordered` - Renames a key without preserving element order (faster operation)
   - `#rename_key_unordered!` - Same as `#rename_key_unordered` but modifies the hash in place
-- Added `to_deep_h` to core Ruby classes for consistent deep hash conversion:
-  - `Struct#to_deep_h` - Recursively converts Struct objects and all nested values to hashes
-  - `OpenStruct#to_deep_h` - Recursively converts OpenStruct objects and all nested values to hashes
-  - `Data#to_deep_h` - Recursively converts Data objects and all nested values to hashes
 - Added `depth` parameter to `Hash.new_nested_hash` to control nesting behaviors
 
 ### Changed
@@ -241,7 +252,6 @@ This change aligns our method signatures with Ruby's conventions and matches our
 
 - Added `Array#to_or_sentence`, creates a sentence with "or" connector between items
 - Added `#with_key` method to `Hash#transform_values` and `Hash#transform_values!`, grants access to both keys and values during transformations
-- Added `Array#to_deep_h` and `Hash#to_deep_h`, recursively converts underlying values to hashes
 - Added `Enumerable#group_by_key`, group an array of hashes by their keys
 - Added `Hash#new_nested_hash`, creates a new Hash that automatically initializes the value to a hash
 - Added `Hash#value_where` and `Hash#values_where`, easily find values in a hash based on key-value conditions
@@ -341,15 +351,14 @@ This change aligns our method signatures with Ruby's conventions and matches our
   - `join_map` method consistent with Array/Hash implementations
 - Enhanced `String` class with:
   - `to_h` and `to_a` methods for JSON parsing with `nil` fallback on error
-  - `to_deep_h` for recursive JSON string parsing
   - `to_istruct`, `to_ostruct`, and `to_struct` conversion methods
 
 ### Changed
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v0.9.1...HEAD
-[0.9.1]: https://github.com/itsthedevman/everythingrb/compare/v0.9.0...v0.9.1
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/itsthedevman/everythingrb/compare/v0.9.0...v1.0.0
 [0.9.0]: https://github.com/itsthedevman/everythingrb/compare/v0.8.3...v0.9.0
 [0.8.3]: https://github.com/itsthedevman/everythingrb/compare/v0.8.2...v0.8.3
 [0.8.3]: https://github.com/itsthedevman/everythingrb/compare/v0.8.2...v0.8.3

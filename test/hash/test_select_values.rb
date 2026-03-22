@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class TestHashValuesWhere < Minitest::Test
+class TestHashSelectValues < Minitest::Test
   def test_it_finds_all_hashes_by_key
     users = {
       alice: {name: "Alice", role: "admin"},
@@ -12,11 +12,11 @@ class TestHashValuesWhere < Minitest::Test
 
     assert_equal(
       [{name: "Alice", role: "admin"}, {name: "Charlie", role: "admin"}],
-      users.values_where { |k, v| v[:role] == "admin" }
+      users.select_values { |k, v| v[:role] == "admin" }
     )
   end
 
   def test_it_handles_finding_nothing
-    assert_equal([], {}.values_where { |k, v| k })
+    assert_equal([], {}.select_values { |k, v| k })
   end
 end

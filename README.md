@@ -4,7 +4,7 @@
 ![Ruby Version](https://img.shields.io/badge/ruby-3.3.7-ruby)
 [![Tests](https://github.com/itsthedevman/everythingrb/actions/workflows/main.yml/badge.svg)](https://github.com/everythingrb/sortsmith/actions/workflows/main.yml)
 
-Super handy extensions to Ruby core classes that make your code more expressive, readable, and fun to write. Stop writing boilerplate and start writing code that _actually matters_!
+Practical extensions to Ruby core classes that let your code say what it means.
 
 ## Express Your Intent, Not Your Logic
 
@@ -32,8 +32,6 @@ users.join_map(", ") { |u| u[:name] if u[:role] == "admin" }
 ```
 
 _Methods used: [`join_map`](https://itsthedevman.com/docs/everythingrb/Array.html#join_map-instance_method)_
-
-Because life's too short to write all that boilerplate!
 
 ## Installation
 
@@ -68,7 +66,7 @@ config.server.port  # => 443
 
 #### Cherry-Pick Extensions
 
-If you only need specific extensions (or you're a minimalist at heart):
+If you only need specific extensions:
 
 ```ruby
 require "everythingrb/prelude"  # Required base module
@@ -87,7 +85,7 @@ Available modules:
 
 - `array`: Array extensions (join_map, key_map, etc.)
 - `boolean`: Boolean extensions (in_quotes, with_quotes)
-- `data`: Data extensions (to_deep_h, in_quotes)
+- `data`: Data extensions (in_quotes)
 - `date`: Date and DateTime extensions (in_quotes)
 - `enumerable`: Enumerable extensions (join_map, group_by_key)
 - `hash`: Hash extensions (to_ostruct, transform_values(with_key: true), etc.)
@@ -98,14 +96,14 @@ Available modules:
 - `ostruct`: OpenStruct extensions (map, join_map, etc.)
 - `range`: Range extensions (in_quotes)
 - `regexp`: Regexp extensions (in_quotes)
-- `string`: String extensions (to_h, to_ostruct, to_camelcase, etc.)
-- `struct`: Struct extensions (to_deep_h, in_quotes)
+- `string`: String extensions (parse_json, to_ostruct, to_camelcase, etc.)
+- `struct`: Struct extensions (in_quotes)
 - `symbol`: Symbol extensions (with_quotes)
 - `time`: Time extensions (in_quotes)
 
 ### Rails Applications
 
-EverythingRB works out of the box with Rails! Just add it to your Gemfile and you're all set.
+EverythingRB works out of the box with Rails. Just add it to your Gemfile and you're all set.
 
 If you only want specific extensions, configure them in an initializer:
 
@@ -122,8 +120,6 @@ By default (when `config.everythingrb.extensions` is not set), all extensions ar
 
 ### Data Structure Conversions
 
-Stop writing complicated parsers and nested transformations:
-
 ```ruby
 # BEFORE
 json_string = '{"user":{"name":"Alice","roles":["admin"]}}'
@@ -137,8 +133,6 @@ result = OpenStruct.new(
 result.user.name  # => "Alice"
 ```
 
-With EverythingRB, it's one elegant step:
-
 ```ruby
 # AFTER
 '{"user":{"name":"Alice","roles":["admin"]}}'.to_ostruct.user.name  # => "Alice"
@@ -146,7 +140,7 @@ With EverythingRB, it's one elegant step:
 
 _Methods used: [`to_ostruct`](https://itsthedevman.com/docs/everythingrb/String.html#to_ostruct-instance_method)_
 
-Convert between data structures with ease:
+Convert between data structures:
 
 ```ruby
 # BEFORE
@@ -164,31 +158,11 @@ config.server.host  # => "example.com"
 
 _Methods used: [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method)_
 
-Deep conversion to plain hashes is just as easy:
-
-```ruby
-# BEFORE
-data = OpenStruct.new(user: Data.define(:name).new(name: "Bob"))
-result = {
-  user: {
-    name: data.user.name
-  }
-}
-```
-
-```ruby
-# AFTER
-data = OpenStruct.new(user: Data.define(:name).new(name: "Bob"))
-data.to_deep_h  # => {user: {name: "Bob"}}
-```
-
-_Methods used: [`to_deep_h`](https://itsthedevman.com/docs/everythingrb/OpenStruct.html#to_deep_h-instance_method)_
-
-**Extensions:** [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method), [`to_ostruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_ostruct-instance_method), [`to_istruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_istruct-instance_method), [`to_h`](https://itsthedevman.com/docs/everythingrb/String.html#to_h-instance_method), [`to_deep_h`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_deep_h-instance_method)
+**Extensions:** [`to_struct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_struct-instance_method), [`to_ostruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_ostruct-instance_method), [`to_istruct`](https://itsthedevman.com/docs/everythingrb/Hash.html#to_istruct-instance_method), [`parse_json`](https://itsthedevman.com/docs/everythingrb/String.html#parse_json-instance_method)
 
 ### Collection Processing
 
-Extract and transform data with elegant, expressive code:
+Extract and transform data:
 
 ```ruby
 # BEFORE
@@ -223,7 +197,7 @@ users.dig_map(:user, :profile, :name)  # => ["Alice", "Bob"]
 
 _Methods used: [`dig_map`](https://itsthedevman.com/docs/everythingrb/Array.html#dig_map-instance_method)_
 
-Combine filter, map, and join operations in one step:
+Combine filter, map, and join in one step:
 
 ```ruby
 # BEFORE
@@ -240,7 +214,7 @@ result = data.compact.filter_map { |n| "Item #{n}" if n.odd? }.join(" | ")
 
 _Methods used: [`join_map`](https://itsthedevman.com/docs/everythingrb/Array.html#join_map-instance_method)_
 
-Need position-aware processing? Both Array and Hash support `with_index`:
+Both Array and Hash support `with_index` when you need position-aware processing:
 
 ```ruby
 # BEFORE
@@ -257,7 +231,7 @@ users.join_map(", ", with_index: true) { |(k, v), i| "#{i + 1}. #{v}" }
 
 _Methods used: [`join_map`](https://itsthedevman.com/docs/everythingrb/Hash.html#join_map-instance_method)_
 
-Group elements with natural syntax:
+Group by a nested key path directly:
 
 ```ruby
 # BEFORE
@@ -278,7 +252,7 @@ users.group_by_key(:department, :name)
 
 _Methods used: [`group_by_key`](https://itsthedevman.com/docs/everythingrb/Enumerable.html#group_by_key-instance_method)_
 
-Create natural language lists:
+Build 'or'-joined lists:
 
 ```ruby
 # BEFORE
@@ -305,9 +279,11 @@ _Methods used: [`to_or_sentence`](https://itsthedevman.com/docs/everythingrb/Arr
 
 **Extensions:** [`join_map`](https://itsthedevman.com/docs/everythingrb/Array.html#join_map-instance_method), [`key_map`](https://itsthedevman.com/docs/everythingrb/Array.html#key_map-instance_method), [`dig_map`](https://itsthedevman.com/docs/everythingrb/Array.html#dig_map-instance_method), [`to_or_sentence`](https://itsthedevman.com/docs/everythingrb/Array.html#to_or_sentence-instance_method), [`group_by_key`](https://itsthedevman.com/docs/everythingrb/Enumerable.html#group_by_key-instance_method)
 
-### Hash Convenience
+Here's just that section with the fixes:
 
-Work with hashes more intuitively.
+---
+
+### Hash Convenience
 
 Transform values with access to their keys:
 
@@ -344,13 +320,13 @@ admins = users.select { |_k, v| v[:role] == "admin" }.values
 
 ```ruby
 # AFTER
-users.values_where { |_k, v| v[:role] == "admin" }
+users.select_values { |_k, v| v[:role] == "admin" }
 # => [{name: "Alice", role: "admin"}, {name: "Charlie", role: "admin"}]
 ```
 
-_Methods used: [`values_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#values_where-instance_method)_
+_Methods used: [`select_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#select_values-instance_method)_
 
-Just want the first match? Even simpler:
+Just want the first match?
 
 ```ruby
 # BEFORE
@@ -360,11 +336,11 @@ users.find { |_k, v| v[:role] == "admin" }&.last
 
 ```ruby
 # AFTER
-users.value_where { |_k, v| v[:role] == "admin" }
+users.find_value { |_k, v| v[:role] == "admin" }
 # => {name: "Alice", role: "admin"}
 ```
 
-_Methods used: [`value_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#value_where-instance_method)_
+_Methods used: [`find_value`](https://itsthedevman.com/docs/everythingrb/Hash.html#find_value-instance_method)_
 
 Rename keys while preserving order:
 
@@ -374,14 +350,10 @@ config = {api_key: "secret", timeout: 30}
 new_config = config.each_with_object({}) do |(key, value), hash|
   new_key =
     case key
-    when :api_key
-      :key
-    when :timeout
-      :request_timeout
-    else
-      key
+    when :api_key then :key
+    when :timeout then :request_timeout
+    else key
     end
-
   hash[new_key] = value
 end
 # => {key: "secret", request_timeout: 30}
@@ -396,65 +368,45 @@ config.rename_keys(api_key: :key, timeout: :request_timeout)
 
 _Methods used: [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method)_
 
-Conditionally merge hashes with clear intent:
-
-```ruby
-# BEFORE
-user_params = {name: "Alice", role: "user"}
-filtered = {verified: true, admin: true}.select { |k, v| v == true && k == :verified }
-user_params.merge(filtered)
-# => {name: "Alice", role: "user", verified: true}
-```
-
-```ruby
-# AFTER
-user_params = {name: "Alice", role: "user"}
-user_params.merge_if(verified: true, admin: true) { |k, v| v == true && k == :verified }
-# => {name: "Alice", role: "user", verified: true}
-```
-
-_Methods used: [`merge_if`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if-instance_method)_
-
-The nil-filtering pattern we've all written dozens of times:
+Merge while dropping nils:
 
 ```ruby
 # BEFORE
 params = {sort: "created_at"}
-filtered = {filter: "active", search: nil}.compact
-params.merge(filtered)
+search_params = {filter: "active", search: nil}.compact
+params.merge(search_params)
 # => {sort: "created_at", filter: "active"}
 ```
 
 ```ruby
 # AFTER
-params = {sort: "created_at"}
-params.compact_merge(filter: "active", search: nil)
+search_params = {filter: "active", search: nil}
+params.compact_merge(search_params)
 # => {sort: "created_at", filter: "active"}
 ```
 
 _Methods used: [`compact_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge-instance_method)_
 
-Filter out blank values too when ActiveSupport is loaded:
+Merge while dropping nils and blank values (requires ActiveSupport):
 
 ```ruby
 # BEFORE
-config = {api_key: "secret", timeout: 30}
-user_settings = {timeout: "", retries: nil, debug: true, tags: []}
-clean_settings = user_settings.reject { |k, v| v.blank? }
-config.merge(clean_settings)
-# => {api_key: "secret", timeout: 30, debug: true}
+params = {sort: "created_at"}
+search_params = {filter: "active", search: nil, query: ""}.reject { |_k, v| v.blank? }
+params.merge(search_params)
+# => {sort: "created_at", filter: "active"}
 ```
 
 ```ruby
 # AFTER
-config = {api_key: "secret", timeout: 30}
-config.compact_blank_merge(timeout: "", retries: nil, debug: true, tags: [])
-# => {api_key: "secret", timeout: 30, debug: true}
+search_params = {filter: "active", search: nil, query: ""}
+params.compact_blank_merge(search_params)
+# => {sort: "created_at", filter: "active"}
 ```
 
 _Methods used: [`compact_blank_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge-instance_method)_
 
-**Extensions:** [`transform_values(with_key: true)`](https://itsthedevman.com/docs/everythingrb/Hash.html#transform_values-instance_method), [`value_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#value_where-instance_method), [`values_where`](https://itsthedevman.com/docs/everythingrb/Hash.html#values_where-instance_method), [`rename_key`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_key-instance_method), [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method), [`merge_if`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if-instance_method), [`merge_if!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if%21-instance_method), [`merge_if_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values-instance_method), [`merge_if_values!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values%21-instance_method), [`compact_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge-instance_method), [`compact_merge!`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge%21-instance_method), [`compact_blank_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge-instance_method), [`compact_blank_merge!`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge%21-instance_method)
+**Extensions:** [`transform_values(with_key: true)`](https://itsthedevman.com/docs/everythingrb/Hash.html#transform_values-instance_method), [`find_value`](https://itsthedevman.com/docs/everythingrb/Hash.html#find_value-instance_method), [`select_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#select_values-instance_method), [`rename_key`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_key-instance_method), [`rename_keys`](https://itsthedevman.com/docs/everythingrb/Hash.html#rename_keys-instance_method), [`merge_if`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if-instance_method), [`merge_if!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if%21-instance_method), [`merge_if_values`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values-instance_method), [`merge_if_values!`](https://itsthedevman.com/docs/everythingrb/Hash.html#merge_if_values%21-instance_method), [`compact_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge-instance_method), [`compact_merge!`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_merge%21-instance_method), [`compact_blank_merge`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge-instance_method), [`compact_blank_merge!`](https://itsthedevman.com/docs/everythingrb/Hash.html#compact_blank_merge%21-instance_method)
 
 ### Array Cleaning
 
@@ -474,7 +426,7 @@ data.drop_while(&:nil?).reverse.drop_while(&:nil?).reverse
 
 _Methods used: [`trim_nils`](https://itsthedevman.com/docs/everythingrb/Array.html#trim_nils-instance_method)_
 
-With ActiveSupport, remove blank values too:
+With ActiveSupport, remove blank values from the edges too:
 
 ```ruby
 # BEFORE
@@ -494,7 +446,7 @@ _Methods used: [`trim_blanks`](https://itsthedevman.com/docs/everythingrb/Array.
 
 ### String Formatting
 
-Format strings and other values consistently:
+Format values consistently without a helper method:
 
 ```ruby
 # BEFORE
@@ -533,7 +485,7 @@ message = "You selected #{selection.in_quotes}"
 
 _Methods used: [`in_quotes`](https://itsthedevman.com/docs/everythingrb/Everythingrb/InspectQuotable.html#in_quotes-instance_method), [`with_quotes`](https://itsthedevman.com/docs/everythingrb/Everythingrb/InspectQuotable.html#with_quotes-instance_method)_
 
-Convert strings to camelCase with ease:
+Convert strings to camelCase:
 
 ```ruby
 # BEFORE
@@ -554,7 +506,7 @@ camel_case
 "user_profile_settings".to_camelcase       # => "UserProfileSettings"
 "user_profile_settings".to_camelcase(:lower)  # => "userProfileSettings"
 
-# Handles all kinds of input consistently
+# Handles mixed input consistently
 "please-WAIT while_loading...".to_camelcase  # => "PleaseWaitWhileLoading"
 ```
 
@@ -564,7 +516,7 @@ _Methods used: [`to_camelcase`](https://itsthedevman.com/docs/everythingrb/Strin
 
 ### Boolean Methods
 
-Create predicate methods with minimal code:
+Define predicate methods from any attribute:
 
 ```ruby
 # BEFORE
@@ -595,6 +547,39 @@ user.admin?  # => true
 
 _Methods used: [`attr_predicate`](https://itsthedevman.com/docs/everythingrb/Module.html#attr_predicate-instance_method)_
 
+Map predicates to differently-named sources with `from:`:
+
+```ruby
+# BEFORE
+class Task
+  attr_accessor :started_at, :stopped_at
+
+  def started?
+    !@started_at.nil?
+  end
+
+  def finished?
+    !@stopped_at.nil?
+  end
+end
+```
+
+```ruby
+# AFTER
+class Task
+  attr_accessor :started_at, :stopped_at
+  attr_predicate :started, from: :@started_at
+  attr_predicate :finished, from: :@stopped_at
+end
+
+task = Task.new
+task.started?      # => false
+task.started_at = Time.now
+task.started?      # => true
+```
+
+_Methods used: [`attr_predicate`](https://itsthedevman.com/docs/everythingrb/Module.html#attr_predicate-instance_method)_
+
 Works with Data objects too:
 
 ```ruby
@@ -619,7 +604,7 @@ _Methods used: [`attr_predicate`](https://itsthedevman.com/docs/everythingrb/Mod
 
 ### Value Transformation
 
-Chain transformations with a more descriptive syntax:
+An alias for `then`/`yield_self` that reads more naturally in transformation chains:
 
 ```ruby
 # BEFORE
@@ -650,9 +635,3 @@ Bug reports and pull requests are welcome! This project is intended to be a safe
 ## License
 
 [MIT License](LICENSE.txt)
-
-## Looking for a Software Engineer?
-
-I'm currently looking for opportunities where I can tackle meaningful problems and help build reliable software while mentoring the next generation of developers. If you're looking for a senior engineer with full-stack Rails expertise and a passion for clean, maintainable code, let's talk!
-
-[bryan@itsthedevman.com](mailto:bryan@itsthedevman.com)
