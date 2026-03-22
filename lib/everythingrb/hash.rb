@@ -10,7 +10,6 @@
 # - #transform, #transform!: Transform keys and values
 # - #value_where, #values_where: Find values based on conditions
 # - #rename_key, #rename_keys: Rename hash keys while preserving order
-# - ::new_nested_hash: Create automatically nesting hashes
 # - #merge_if, #merge_if!: Conditionally merge based on key-value pairs
 # - #merge_if_values, #merge_if_values!: Conditionally merge based on values
 # - #compact_merge, #compact_merge!: Merge only non-nil values
@@ -36,64 +35,6 @@ class Hash
   # @api private
   #
   EMPTY_STRUCT = Struct.new(:_).new(nil)
-
-  #
-  # Creates a new Hash that automatically initializes missing keys with nested hashes
-  #
-  # This method creates a hash where any missing key access will automatically
-  # create another nested hash with the same behavior. You can control the nesting
-  # depth with the depth parameter.
-  #
-  # @param depth [Integer, nil] The maximum nesting depth for automatic hash creation
-  #   When nil (default), creates unlimited nesting depth
-  #   When 0, behaves like a regular hash (returns nil for missing keys)
-  #   When > 0, automatically creates hashes only up to the specified level
-  #
-  # @return [Hash] A hash that creates nested hashes for missing keys
-  #
-  # @note This implementation is not thread-safe for concurrent modifications of deeply
-  #   nested structures. If you need thread safety, consider using a mutex when modifying
-  #   the deeper levels of the hash.
-  #
-  # @example Unlimited nesting (default behavior)
-  #   users = Hash.new_nested_hash
-  #   users[:john][:role] = "admin"  # No need to initialize users[:john] first
-  #   users # => {john: {role: "admin"}}
-  #
-  # @example Deep nesting without initialization
-  #   stats = Hash.new_nested_hash
-  #   stats[:server][:region][:us_east][:errors] = ["Error"]
-  #   stats # => {server: {region: {us_east: {errors: ["Error"]}}}}
-  #
-  # @example Limited nesting depth
-  #   hash = Hash.new_nested_hash(depth: 1)
-  #   hash[:user][:name] = "Alice"  # Works fine - only one level of auto-creation
-  #
-  #   # This pattern works correctly with limited nesting:
-  #   (hash[:user][:roles] ||= []) << "admin"
-  #   hash # => {user: {name: "Alice", roles: ["admin"]}}
-  #
-  # @note While unlimited nesting is convenient, it can interfere with common Ruby
-  #   patterns like ||= when initializing values at deep depths. Use the depth
-  #   parameter to control this behavior.
-  #
-  def self.new_nested_hash(depth: nil)
-    Everythingrb.deprecator.warn(
-      "Hash.new_nested_hash is deprecated and will be removed in v1.0.0. " \
-      "Consider using Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) } instead."
-    )
-
-    new do |hash, key|
-      next if depth == 0
-
-      hash[key] =
-        if depth.nil?
-          new_nested_hash
-        else
-          new_nested_hash(depth: depth - 1)
-        end
-    end
-  end
 
   #
   # Combines filter_map and join operations
