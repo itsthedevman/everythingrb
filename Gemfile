@@ -12,6 +12,7 @@ gem "minitest"
 gem "standard"
 
 gem "activesupport"
+gem "railties"
 
 gem "irb"
 gem "pry"

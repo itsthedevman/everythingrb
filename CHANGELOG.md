@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 -->
 
+## [1.0.1] - 12026-04-28
+
+### Fixed
+
+- Adjusted Rails initializer to fix an eager_load timing issue
+
 ## [1.0.0] - 12026-03-21
 
 ### Added
@@ -358,6 +364,7 @@ This change aligns our method signatures with Ruby's conventions and matches our
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
 [unreleased]: https://github.com/itsthedevman/everythingrb/compare/v1.0.0...HEAD
+[1.0.1]: https://github.com/itsthedevman/everythingrb/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/itsthedevman/everythingrb/compare/v0.9.0...v1.0.0
 [0.9.0]: https://github.com/itsthedevman/everythingrb/compare/v0.8.3...v0.9.0
 [0.8.3]: https://github.com/itsthedevman/everythingrb/compare/v0.8.2...v0.8.3

@@ -20,18 +20,16 @@ module Everythingrb
     config.everythingrb = ActiveSupport::OrderedOptions.new
     config.everythingrb.extensions = nil # Default to loading all
 
-    initializer "everythingrb.initialize" do
-      ActiveSupport.on_load(:after_initialize) do
-        require_relative "everythingrb/prelude"
+    initializer "everythingrb.initialize", after: :load_config_initializers, before: :eager_load! do
+      require_relative "everythingrb/prelude"
 
-        extensions = Rails.configuration.everythingrb.extensions
+      extensions = Rails.configuration.everythingrb.extensions
 
-        if extensions.is_a?(Array)
-          # Allow selective loading
-          extensions.each { |ext| require_relative "everythingrb/#{ext}" }
-        else
-          require_relative "everythingrb/all"
-        end
+      if extensions.is_a?(Array)
+        # Allow selective loading
+        extensions.each { |ext| require_relative "everythingrb/#{ext}" }
+      else
+        require_relative "everythingrb/all"
       end
     end
   end
