@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    everythingrb (1.0.1)
+    everythingrb (1.0.2)
       json (~> 2.10)
       ostruct (~> 0.6)
 
@@ -187,4 +187,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.4.19
+   2.7.2

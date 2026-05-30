@@ -38,14 +38,17 @@ class TestModuleAttrPredicate < Minitest::Test
     refute(object.foo?)
   end
 
-  def test_it_raises_on_method_defined
+  def test_it_overrides_an_existing_predicate
     klass = Data.define(:foo) do
       def foo?
-        puts "foo"
+        "original"
       end
     end
 
-    assert_raises(ArgumentError) { klass.attr_predicate(:foo) }
+    klass.attr_predicate(:foo)
+
+    assert(klass.new(foo: true).foo?)
+    refute(klass.new(foo: nil).foo?)
   end
 
   def test_from_with_ivar_source

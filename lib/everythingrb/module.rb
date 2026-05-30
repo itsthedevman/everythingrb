@@ -38,7 +38,6 @@ class Module
   #
   # @return [nil]
   #
-  # @raise [ArgumentError] If a predicate method of the same name already exists
   # @raise [ArgumentError] If from: is specified with multiple attributes
   #
   # @example With a regular class
@@ -100,10 +99,6 @@ class Module
     end
 
     attributes.each do |attribute|
-      if method_defined?(:"#{attribute}?")
-        raise ArgumentError, "Cannot create predicate method on #{self.class} - #{attribute}? is already defined. Please choose a different name or remove the existing method."
-      end
-
       signature = "def #{attribute}?"
       signature.prepend("private ") if private_method
 

@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 -->
 
+## [1.0.2] - 12026-05-30
+
+### Changed
+
+- **`attr_predicate` no longer raises when a predicate is already defined** - it now overwrites the existing method like `attr_accessor` does, so reloading a class that uses `attr_predicate` no longer crashes with an `ArgumentError`
+
 ## [1.0.1] - 12026-04-28
 
 ### Fixed
@@ -69,7 +75,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **Deprecated Hash value filtering methods** - `Hash#select_values`, `Hash#reject_values`, `Hash#select_values!` and `Hash#reject_values!` are now deprecated and will be removed in v0.9.0. These methods largely duplicate existing Ruby/ActiveSupport functionality:
-
   - `hash.reject_values(&:blank?)` → use `hash.compact_blank` instead
   - `hash.select_values { |v| condition }` → use `hash.select { |k, v| condition }`
   - `hash.reject_values { |v| condition }` → use `hash.reject { |k, v| condition }`
@@ -363,7 +368,8 @@ This change aligns our method signatures with Ruby's conventions and matches our
 
 - Added alias `each` to `each_pair` in OpenStruct for better enumerable compatibility
 
-[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/itsthedevman/everythingrb/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/itsthedevman/everythingrb/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/itsthedevman/everythingrb/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/itsthedevman/everythingrb/compare/v0.9.0...v1.0.0
 [0.9.0]: https://github.com/itsthedevman/everythingrb/compare/v0.8.3...v0.9.0
