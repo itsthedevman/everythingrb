@@ -4,7 +4,7 @@
 # Extensions to Ruby's core Hash class
 #
 # Provides:
-# - #to_struct, #to_ostruct, #to_istruct: Convert hashes to different structures
+# - #to_struct, #to_ostruct, #to_datum: Convert hashes to different structures (#to_istruct is deprecated, use #to_datum)
 # - #join_map: Combine filter_map and join operations
 # - #transform_values.with_key: Transform values with access to keys
 # - #transform, #transform!: Transform keys and values
@@ -74,29 +74,53 @@ class Hash
   end
 
   #
-  # Converts hash to an immutable Data structure
+  # Recursively converts hash to an immutable Datum
   #
-  # @return [Data] An immutable Data object with the same structure
+  # Nested hashes and arrays are converted too. Unlike a raw Data object, two
+  # Datums with the same attributes are equal, so the result is safe to compare
+  # or use as a Hash key.
+  #
+  # @return [Datum] An immutable object mirroring the hash structure
+  #
+  # @example
+  #   hash = { person: { name: "Bob", age: 30 } }
+  #   data = hash.to_datum
+  #   data.person.name # => "Bob"
+  #
+  def to_datum
+    recurse = lambda do |value|
+      case value
+      when Hash
+        value.to_datum
+      when Array
+        value.map(&recurse)
+      else
+        value
+      end
+    end
+
+    Datum.new(transform_values { |value| recurse.call(value) })
+  end
+
+  #
+  # Recursively converts hash to an immutable Data structure
+  #
+  # @deprecated Use {#to_datum} instead. Will be removed in v2.0.0.
+  #
+  # @return [Datum] An immutable object mirroring the hash structure
   #
   # @example
   #   hash = { person: { name: "Bob", age: 30 } }
   #   data = hash.to_istruct
   #   data.person.name # => "Bob"
-  #   data.class # => Data
   #
   def to_istruct
-    recurse = lambda do |input|
-      case input
-      when Hash
-        input.to_istruct
-      when Array
-        input.map(&recurse)
-      else
-        input
-      end
-    end
+    Everythingrb.deprecator.warn(
+      "Hash#to_istruct is deprecated and will be removed in v2.0.0. " \
+      "Use Hash#to_datum instead."
+    )
 
-    Data.define(*keys.map(&:to_sym)).new(*values.map { |value| recurse.call(value) })
+    to_datum
   end
 
   #

@@ -5,7 +5,7 @@
 #
 # Provides:
 # - #parse_json: Parse JSON strings with error handling
-# - #to_ostruct, #to_istruct, #to_struct: Convert JSON to data structures
+# - #to_ostruct, #to_datum, #to_struct: Convert JSON to data structures (#to_istruct is deprecated, use #to_datum)
 # - #with_quotes, #in_quotes: Wrap strings in quotes
 # - #to_camelcase: Convert strings to camelCase or PascalCase
 #
@@ -53,17 +53,38 @@ class String
   end
 
   #
+  # Attempts to parse JSON and convert to an immutable Datum.
+  # Returns nil if string does not contain valid JSON
+  #
+  # @return [Datum, nil] Immutable object or nil if invalid JSON
+  #
+  # @example
+  #   '{"name": "Alice"}'.to_datum      # => #<data name="Alice">
+  #   "not json".to_datum               # => nil
+  #
+  def to_datum
+    parse_json&.to_datum
+  end
+
+  #
   # Attempts to parse JSON and convert to Data struct.
   # Returns nil if string does not contain valid JSON
   #
-  # @return [Data, nil] Immutable Data structure or nil if invalid JSON
+  # @deprecated Use {#to_datum} instead. Will be removed in v2.0.0.
+  #
+  # @return [Datum, nil] Immutable object or nil if invalid JSON
   #
   # @example
   #   '{"name": "Alice"}'.to_istruct      # => #<data name="Alice">
   #   "not json".to_istruct               # => nil
   #
   def to_istruct
-    parse_json&.to_istruct
+    Everythingrb.deprecator.warn(
+      "String#to_istruct is deprecated and will be removed in v2.0.0. " \
+      "Use String#to_datum instead."
+    )
+
+    parse_json&.to_datum
   end
 
   #

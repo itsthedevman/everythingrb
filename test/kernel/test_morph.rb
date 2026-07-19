@@ -4,7 +4,7 @@ require "test_helper"
 
 class TestKernelMorph < Minitest::Test
   def test_it_morphs_the_value
-    struct = {id: 1, name: "Foo"}.to_istruct
+    struct = {id: 1, name: "Foo"}.to_datum
 
     result = struct.morph { |s| "id:#{s.id}, name:#{s.name}" }
 

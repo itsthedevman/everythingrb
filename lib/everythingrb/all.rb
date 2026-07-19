@@ -3,6 +3,7 @@
 require_relative "array"
 require_relative "boolean"
 require_relative "data"
+require_relative "datum"
 require_relative "date"
 require_relative "enumerable"
 require_relative "hash"

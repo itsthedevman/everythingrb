@@ -3,63 +3,15 @@
 require "test_helper"
 
 class TestHashToIstruct < Minitest::Test
-  def test_it_converts_to_data
-    input = {
-      a: 1,
-      b: nil,
-      c: 2,
-      d: nil,
-      e: 3
-    }
+  def test_it_delegates_to_to_datum_with_a_deprecation_warning
+    result = nil
 
-    object = input.to_istruct
+    out, err = capture_io do
+      result = {a: {b: 1}}.to_istruct
+    end
 
-    assert_kind_of(Data, object)
-
-    assert_equal(1, object.a)
-    assert_nil(object.b)
-    assert_equal(2, object.c)
-    assert_nil(object.d)
-    assert_equal(3, object.e)
-  end
-
-  def test_it_recursively_convert_hash
-    input = {
-      a: {
-        b: {
-          c: 1
-        }
-      }
-    }
-
-    output = input.to_istruct
-
-    assert_kind_of(Data, output.a)
-    assert_kind_of(Data, output.a.b)
-    assert_equal(1, output.a.b.c)
-  end
-
-  def test_it_recursively_convert_array
-    input = {
-      a: {
-        b: [
-          {c: 1},
-          {d: 2}
-        ]
-      }
-    }
-
-    output = input.to_istruct
-
-    assert_kind_of(Data, output.a)
-    assert_kind_of(Array, output.a.b)
-
-    first = output.a.b[0]
-    assert_kind_of(Data, first)
-    assert_equal(1, first.c)
-
-    second = output.a.b[1]
-    assert_kind_of(Data, second)
-    assert_equal(2, second.d)
+    assert_match(/deprecated/i, "#{out}#{err}")
+    assert_kind_of(Datum, result)
+    assert_equal(1, result.a.b)
   end
 end
