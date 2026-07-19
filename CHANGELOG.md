@@ -15,6 +15,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 -->
 
+## [1.1.0] - 12026-07-19
+
+### Added
+
+- **Added `Datum`** - an immutable, dot-notation value object built in a single call (e.g. `Datum.new(host: "localhost", port: 3000)`). Think of it as the sealed counterpart to OpenStruct: OpenStruct's ergonomics with Data's immutability. Values are stored as-is, so it's immutable at the top level only. Unlike a bare `Data.define(...)`, Datums compare by attributes, so two Datums with the same members and values are equal and hash alike.
+- **Added `Hash#to_datum` and `String#to_datum`** - convert into a `Datum`, recursing through nested hashes and arrays. These replace the deprecated `#to_istruct`.
+
+### Deprecated
+
+- **Deprecated `Hash#to_istruct` and `String#to_istruct`** - use `#to_datum` instead. Both still work but now emit a deprecation warning, and will be removed in v2.0.0.
+
 ## [1.0.2] - 12026-05-30
 
 ### Changed
